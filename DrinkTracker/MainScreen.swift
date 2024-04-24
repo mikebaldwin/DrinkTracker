@@ -11,7 +11,8 @@ import SwiftData
 struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var recordedDrinks: [Drink]
-    @State var showRecordDrinkScreen = false
+    @State private var showRecordDrinkScreen = false
+    @State private var drinkCount = 1
 
     var body: some View {
         NavigationStack {
@@ -20,16 +21,75 @@ struct MainScreen: View {
                     Text("Drinks today: 3")
                 }
                 Section {
-                    Button(action: {
-                        showRecordDrinkScreen = true
-                    }, label: {
-                        Text("Record Drink")
-                    })
+                    VStack {
+                        recordDrinkView
+                            .padding(.bottom)
+                        HStack {
+                            Spacer()
+                            Button {
+                                
+                            } label: {
+                                
+                                Text("Record Drink")
+                            }
+                            Spacer()
+                        }
+                    }
+                }
+                Section {
+                    HStack {
+                        Spacer()
+                        Button {
+                            showRecordDrinkScreen = true
+                        } label: {
+                            Text("Record drink from catalog")
+                        }
+                        Spacer()
+                    }
                 }
             }
         }
         .sheet(isPresented: $showRecordDrinkScreen) {
             RecordDrinkScreen()
+        }
+    }
+    
+    private var recordDrinkView: some View {
+        HStack {
+            Spacer()
+            
+            Button {
+                if drinkCount > 0 {
+                    drinkCount -= 1
+                    debugPrint("decrement drinkCount")
+                }
+            } label: {
+                Image(systemName: "minus.circle")
+                    .font(.largeTitle)
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            Text("\(drinkCount)")
+                .font(.largeTitle)
+                .padding(
+                    EdgeInsets(
+                        top: 0,
+                        leading: 20,
+                        bottom: 0,
+                        trailing: 20
+                    )
+                )
+            
+            Button {
+                drinkCount += 1
+                debugPrint("increment drinkCount")
+            } label: {
+                Image(systemName: "plus.circle")
+                    .font(.largeTitle)
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            Spacer()
         }
     }
 
