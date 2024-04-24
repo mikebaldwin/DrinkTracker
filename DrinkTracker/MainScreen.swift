@@ -11,6 +11,7 @@ import SwiftData
 struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var recordedDrinks: [Drink]
+    @State var showRecordDrinkScreen = false
 
     var body: some View {
         NavigationStack {
@@ -19,11 +20,16 @@ struct MainScreen: View {
                     Text("Drinks today: 3")
                 }
                 Section {
-                    Button(action: {}, label: {
+                    Button(action: {
+                        showRecordDrinkScreen = true
+                    }, label: {
                         Text("Record Drink")
                     })
                 }
             }
+        }
+        .sheet(isPresented: $showRecordDrinkScreen) {
+            RecordDrinkScreen()
         }
     }
 
