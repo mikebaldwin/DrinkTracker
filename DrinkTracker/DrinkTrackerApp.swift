@@ -12,7 +12,7 @@ import SwiftData
 struct DrinkTrackerApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            RecordedDrink.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +25,7 @@ struct DrinkTrackerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainScreen()
         }
         .modelContainer(sharedModelContainer)
     }

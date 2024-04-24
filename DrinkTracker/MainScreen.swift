@@ -8,9 +8,9 @@
 import SwiftUI
 import SwiftData
 
-struct ContentView: View {
+struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var items: [RecordedDrink]
 
     var body: some View {
         NavigationSplitView {
@@ -41,7 +41,7 @@ struct ContentView: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
+            let newItem = RecordedDrink(timestamp: Date())
             modelContext.insert(newItem)
         }
     }
@@ -56,6 +56,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+    MainScreen()
+        .modelContainer(for: RecordedDrink.self, inMemory: true)
 }

@@ -3,18 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */; };
-		CE4169972BD97FB10028D64A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169962BD97FB10028D64A /* ContentView.swift */; };
-		CE4169992BD97FB10028D64A /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169982BD97FB10028D64A /* Item.swift */; };
+		CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169962BD97FB10028D64A /* MainScreen.swift */; };
+		CE4169992BD97FB10028D64A /* RecordedDrink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169982BD97FB10028D64A /* RecordedDrink.swift */; };
 		CE41699B2BD97FB30028D64A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE41699A2BD97FB30028D64A /* Assets.xcassets */; };
 		CE41699E2BD97FB30028D64A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE41699D2BD97FB30028D64A /* Preview Assets.xcassets */; };
 		CE4169A82BD97FB30028D64A /* DrinkTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169A72BD97FB30028D64A /* DrinkTrackerTests.swift */; };
 		CE4169B22BD97FB30028D64A /* DrinkTrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169B12BD97FB30028D64A /* DrinkTrackerUITests.swift */; };
 		CE4169B42BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169B32BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift */; };
+		CE4169C22BD9810C0028D64A /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CE4169C12BD9810C0028D64A /* Utilities */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,8 +38,8 @@
 /* Begin PBXFileReference section */
 		CE4169912BD97FB10028D64A /* DrinkTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerApp.swift; sourceTree = "<group>"; };
-		CE4169962BD97FB10028D64A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		CE4169982BD97FB10028D64A /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		CE4169962BD97FB10028D64A /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		CE4169982BD97FB10028D64A /* RecordedDrink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordedDrink.swift; sourceTree = "<group>"; };
 		CE41699A2BD97FB30028D64A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE41699D2BD97FB30028D64A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CE4169A32BD97FB30028D64A /* DrinkTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinkTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE4169C22BD9810C0028D64A /* Utilities in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,8 +99,8 @@
 			isa = PBXGroup;
 			children = (
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
-				CE4169962BD97FB10028D64A /* ContentView.swift */,
-				CE4169982BD97FB10028D64A /* Item.swift */,
+				CE4169962BD97FB10028D64A /* MainScreen.swift */,
+				CE4169C32BD981A10028D64A /* Models */,
 				CE41699A2BD97FB30028D64A /* Assets.xcassets */,
 				CE41699C2BD97FB30028D64A /* Preview Content */,
 			);
@@ -130,6 +132,14 @@
 			path = DrinkTrackerUITests;
 			sourceTree = "<group>";
 		};
+		CE4169C32BD981A10028D64A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CE4169982BD97FB10028D64A /* RecordedDrink.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -146,6 +156,9 @@
 			dependencies = (
 			);
 			name = DrinkTracker;
+			packageProductDependencies = (
+				CE4169C12BD9810C0028D64A /* Utilities */,
+			);
 			productName = DrinkTracker;
 			productReference = CE4169912BD97FB10028D64A /* DrinkTracker.app */;
 			productType = "com.apple.product-type.application";
@@ -218,6 +231,9 @@
 				Base,
 			);
 			mainGroup = CE4169882BD97FB10028D64A;
+			packageReferences = (
+				CE4169C02BD9810C0028D64A /* XCLocalSwiftPackageReference "../Utilities" */,
+			);
 			productRefGroup = CE4169922BD97FB10028D64A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -260,8 +276,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE4169972BD97FB10028D64A /* ContentView.swift in Sources */,
-				CE4169992BD97FB10028D64A /* Item.swift in Sources */,
+				CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */,
+				CE4169992BD97FB10028D64A /* RecordedDrink.swift in Sources */,
 				CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -592,6 +608,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		CE4169C02BD9810C0028D64A /* XCLocalSwiftPackageReference "../Utilities" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Utilities;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CE4169C12BD9810C0028D64A /* Utilities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Utilities;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CE4169892BD97FB10028D64A /* Project object */;
 }
