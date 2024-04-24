@@ -50,7 +50,7 @@ struct MainScreen: View {
             }
         }
         .sheet(isPresented: $showRecordDrinkScreen) {
-            RecordDrinkScreen()
+            DrinkCatalogScreen()
         }
     }
     
