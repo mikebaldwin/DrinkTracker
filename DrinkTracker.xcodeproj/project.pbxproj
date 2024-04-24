@@ -47,6 +47,7 @@
 		CE4169AD2BD97FB30028D64A /* DrinkTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinkTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4169B12BD97FB30028D64A /* DrinkTrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerUITests.swift; sourceTree = "<group>"; };
 		CE4169B32BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		CE4169C42BD984C40028D64A /* CatalogDrink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogDrink.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				CE4169982BD97FB10028D64A /* RecordedDrink.swift */,
+				CE4169C42BD984C40028D64A /* CatalogDrink.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -276,6 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE4169C52BD984C40028D64A /* CatalogDrink.swift in Sources */,
 				CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */,
 				CE4169992BD97FB10028D64A /* RecordedDrink.swift in Sources */,
 				CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */,
