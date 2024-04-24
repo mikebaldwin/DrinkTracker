@@ -10,7 +10,7 @@ import SwiftData
 
 struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [RecordedDrink]
+    @Query private var recordedDrinks: [Drink]
 
     var body: some View {
         NavigationSplitView {
@@ -41,15 +41,15 @@ struct MainScreen: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = RecordedDrink(timestamp: Date())
-            modelContext.insert(newItem)
+//            let newItem = Drink(standardDrinks: <#T##Double#>, name: <#T##String?#>)
+//            modelContext.insert(newItem)
         }
     }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(items[index])
+                modelContext.delete(recordedDrinks[index])
             }
         }
     }
@@ -57,5 +57,5 @@ struct MainScreen: View {
 
 #Preview {
     MainScreen()
-        .modelContainer(for: RecordedDrink.self, inMemory: true)
+        .modelContainer(for: Drink.self, inMemory: true)
 }
