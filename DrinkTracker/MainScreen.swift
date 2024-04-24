@@ -60,7 +60,9 @@ struct MainScreen: View {
             
             Button {
                 if drinkCount > 0 {
-                    drinkCount -= 1
+                    withAnimation {
+                        drinkCount -= 1
+                    }
                     debugPrint("decrement drinkCount")
                 }
             } label: {
@@ -71,17 +73,12 @@ struct MainScreen: View {
             
             Text("\(drinkCount)")
                 .font(.largeTitle)
-                .padding(
-                    EdgeInsets(
-                        top: 0,
-                        leading: 20,
-                        bottom: 0,
-                        trailing: 20
-                    )
-                )
+                .frame(width: 75)
             
             Button {
-                drinkCount += 1
+                withAnimation {
+                    drinkCount += 1
+                }
                 debugPrint("increment drinkCount")
             } label: {
                 Image(systemName: "plus.circle")
