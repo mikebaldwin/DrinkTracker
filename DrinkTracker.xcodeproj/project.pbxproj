@@ -18,6 +18,7 @@
 		CE4169C22BD9810C0028D64A /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CE4169C12BD9810C0028D64A /* Utilities */; };
 		CE4169C52BD984C40028D64A /* CatalogDrink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169C42BD984C40028D64A /* CatalogDrink.swift */; };
 		CEB911BB2BD98A7F00224660 /* DrinkCatalogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* DrinkCatalogScreen.swift */; };
+		CEB911BF2BDAA73300224660 /* RecordCatalogDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* RecordCatalogDrinkScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		CE4169B32BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CE4169C42BD984C40028D64A /* CatalogDrink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogDrink.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* DrinkCatalogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCatalogScreen.swift; sourceTree = "<group>"; };
+		CEB911BE2BDAA73300224660 /* RecordCatalogDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCatalogDrinkScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,9 +104,10 @@
 		CE4169932BD97FB10028D64A /* DrinkTracker */ = {
 			isa = PBXGroup;
 			children = (
+				CEB911BA2BD98A7F00224660 /* DrinkCatalogScreen.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
 				CE4169962BD97FB10028D64A /* MainScreen.swift */,
-				CEB911BA2BD98A7F00224660 /* DrinkCatalogScreen.swift */,
+				CEB911BE2BDAA73300224660 /* RecordCatalogDrinkScreen.swift */,
 				CE41699A2BD97FB30028D64A /* Assets.xcassets */,
 				CE4169C32BD981A10028D64A /* Models */,
 				CE41699C2BD97FB30028D64A /* Preview Content */,
@@ -287,6 +290,7 @@
 				CEB911BB2BD98A7F00224660 /* DrinkCatalogScreen.swift in Sources */,
 				CE4169992BD97FB10028D64A /* Drink.swift in Sources */,
 				CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */,
+				CEB911BF2BDAA73300224660 /* RecordCatalogDrinkScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
