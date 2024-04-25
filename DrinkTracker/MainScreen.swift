@@ -12,6 +12,7 @@ struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var recordedDrinks: [Drink]
     @State private var showRecordDrinkScreen = false
+    @State private var showCustomDrinksEditor = false
     @State private var drinkCount = 1
 
     var body: some View {
@@ -48,9 +49,18 @@ struct MainScreen: View {
                     }
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showCustomDrinksEditor = true
+                    }) {
+                        Image(systemName: "wineglass")
+                    }
+                }
+            }
         }
-        .sheet(isPresented: $showRecordDrinkScreen) {
-            DrinkCatalogScreen()
+        .sheet(isPresented: $showCustomDrinksEditor) {
+            DrinkCatalogScreen { addCatalogDrink($0) }
         }
     }
     
@@ -90,13 +100,14 @@ struct MainScreen: View {
         }
     }
 
-    private func addItem() {
-        withAnimation {
-//            let newItem = Drink(standardDrinks: <#T##Double#>, name: <#T##String?#>)
-//            modelContext.insert(newItem)
-        }
+    private func addCatalogDrink(_ catalogDrink: CatalogDrink) {
+        modelContext.insert(catalogDrink)
     }
-
+    
+    private func recordDrink(_ drink: Drink) {
+        modelContext.insert(drink)
+    }
+    
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {

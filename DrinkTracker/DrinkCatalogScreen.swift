@@ -8,8 +8,51 @@
 import SwiftUI
 
 struct DrinkCatalogScreen: View {
+    var completion: ((CatalogDrink) -> Void)?
+    
+    @Environment(\.dismiss) private var dismiss
+    @State private var nameText = ""
+    @State private var standardDrinks = ""
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("Drink Name", text: $nameText)
+                    TextField("Standard Drinks", text: $standardDrinks)
+                        .keyboardType(.decimalPad)
+                }
+                Section {
+                    HStack {
+                        Spacer()
+                        Button {
+                            if let completion,
+                                let standardDrinks = Double(standardDrinks) {
+                                completion(
+                                    CatalogDrink(
+                                        name: nameText,
+                                        standardDrinks: Double(standardDrinks)
+                                    )
+                                )
+                            }
+                        } label: {
+                            Text("Add Drink to Catalog")
+                        }
+                        Spacer()
+                    }
+                }
+            }
+            .navigationTitle("Create a Drink")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Text("Cancel")
+                    }
+                }
+            }
+        }
     }
 }
 
