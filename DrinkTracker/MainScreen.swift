@@ -10,7 +10,7 @@ import SwiftData
 
 struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
-    @State private var showRecordDrinkScreen = false
+    
     static var startOfDay = Calendar.current.startOfDay(for: Date())
     static var endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
 
@@ -20,6 +20,9 @@ struct MainScreen: View {
         },
         sort: [SortDescriptor(\.timestamp)]
     ) var drinks: [Drink]
+
+    @State private var showRecordDrinksConfirmation = false
+    @State private var showRecordCustomDrinkScreen = false
     @State private var showCustomDrinksEditor = false
     @State private var drinkCount = 1
 
@@ -36,9 +39,8 @@ struct MainScreen: View {
                         HStack {
                             Spacer()
                             Button {
-                                
+                                showRecordDrinksConfirmation = true
                             } label: {
-                                
                                 Text("Record Drink")
                             }
                             Spacer()
@@ -49,7 +51,7 @@ struct MainScreen: View {
                     HStack {
                         Spacer()
                         Button {
-                            showRecordDrinkScreen = true
+                            showRecordCustomDrinkScreen = true
                         } label: {
                             Text("Record drink from catalog")
                         }
@@ -69,6 +71,24 @@ struct MainScreen: View {
         }
         .sheet(isPresented: $showCustomDrinksEditor) {
             DrinkCatalogScreen { addCatalogDrink($0) }
+        }
+        .sheet(isPresented: $showRecordCustomDrinkScreen) {
+            RecordCatalogDrinkScreen { recordDrink($0)}
+        }
+        .confirmationDialog(
+            "Add \(drinkCount) drinks to today's record?",
+            isPresented: $showRecordDrinksConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Record Drink") {
+                recordDrink(
+                    Drink(
+                        standardDrinks: Double(drinkCount),
+                        name: "Quick Record"
+                    )
+                )
+            }
+            Button("Cancel", role: .cancel) { }
         }
     }
     
@@ -114,14 +134,6 @@ struct MainScreen: View {
     
     private func recordDrink(_ drink: Drink) {
         modelContext.insert(drink)
-    }
-    
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(recordedDrinks[index])
-            }
-        }
     }
 }
 
