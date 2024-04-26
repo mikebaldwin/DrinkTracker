@@ -35,6 +35,7 @@ struct DrinkCatalogScreen: View {
                                     )
                                 )
                             }
+                            dismiss()
                         } label: {
                             Text("Add Drink to Catalog")
                         }
