@@ -25,12 +25,27 @@ struct MainScreen: View {
     @State private var showRecordCustomDrinkScreen = false
     @State private var showCustomDrinksEditor = false
     @State private var drinkCount = 1
+    
+    private var totalStandardDrinksToday: Double {
+        drinks.reduce(0) { total, drink in
+            total + drink.standardDrinks
+        }
+    }
 
+    private var formattedTotalStandardDrinksToday: String {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        formatter.numberStyle = .decimal
+
+        return formatter.string(from: totalStandardDrinksToday as NSNumber) ?? "0"
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    Text("Drinks today: 3")
+                    Text("Drinks today: " + formattedTotalStandardDrinksToday)
                 }
                 Section {
                     VStack {
