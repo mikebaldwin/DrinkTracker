@@ -15,37 +15,28 @@ struct MainScreen: View {
     static var endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
 
     @Query(
-        filter: #Predicate<Drink> {
+        filter: #Predicate<DrinkRecord> {
             $0.timestamp >= startOfDay && $0.timestamp < endOfDay
         },
         sort: [SortDescriptor(\.timestamp)]
-    ) var drinks: [Drink]
+    ) var drinks: [DrinkRecord]
 
     @State private var showRecordDrinksConfirmation = false
     @State private var showRecordCustomDrinkScreen = false
     @State private var showCustomDrinksEditor = false
-    @State private var drinkCount = 1
+    @State private var drinkCount = 1.0
     
     private var totalStandardDrinksToday: Double {
         drinks.reduce(0) { total, drink in
             total + drink.standardDrinks
         }
     }
-
-    private var formattedTotalStandardDrinksToday: String {
-        let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 0
-        formatter.numberStyle = .decimal
-
-        return formatter.string(from: totalStandardDrinksToday as NSNumber) ?? "0"
-    }
     
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    Text("Drinks today: " + formattedTotalStandardDrinksToday)
+                    Text("Drinks today: " + formatDecimal(totalStandardDrinksToday))
                 }
                 Section {
                     VStack {
@@ -97,7 +88,7 @@ struct MainScreen: View {
         ) {
             Button("Record Drink") {
                 recordDrink(
-                    Drink(
+                    DrinkRecord(
                         standardDrinks: Double(drinkCount),
                         name: "Quick Record"
                     )
@@ -114,7 +105,7 @@ struct MainScreen: View {
             Button {
                 if drinkCount > 0 {
                     withAnimation {
-                        drinkCount -= 1
+                        drinkCount -= 0.5
                     }
                     debugPrint("decrement drinkCount")
                 }
@@ -124,13 +115,13 @@ struct MainScreen: View {
             }
             .buttonStyle(PlainButtonStyle())
             
-            Text("\(drinkCount)")
+            Text("\(formatDecimal(drinkCount))")
                 .font(.largeTitle)
                 .frame(width: 75)
             
             Button {
                 withAnimation {
-                    drinkCount += 1
+                    drinkCount += 0.5
                 }
                 debugPrint("increment drinkCount")
             } label: {
@@ -143,16 +134,25 @@ struct MainScreen: View {
         }
     }
 
-    private func addCatalogDrink(_ catalogDrink: CatalogDrink) {
+    private func addCatalogDrink(_ catalogDrink: CustomDrink) {
         modelContext.insert(catalogDrink)
     }
     
-    private func recordDrink(_ drink: Drink) {
+    private func recordDrink(_ drink: DrinkRecord) {
         modelContext.insert(drink)
+    }
+    
+    private func formatDecimal(_ number: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        formatter.numberStyle = .decimal
+
+        return formatter.string(from: number as NSNumber) ?? "0"
     }
 }
 
 #Preview {
     MainScreen()
-        .modelContainer(for: Drink.self, inMemory: true)
+        .modelContainer(for: DrinkRecord.self, inMemory: true)
 }

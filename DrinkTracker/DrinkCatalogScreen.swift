@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DrinkCatalogScreen: View {
-    var completion: ((CatalogDrink) -> Void)?
+    var completion: ((CustomDrink) -> Void)?
     
     @Environment(\.dismiss) private var dismiss
     @State private var nameText = ""
@@ -29,7 +29,7 @@ struct DrinkCatalogScreen: View {
                             if let completion,
                                 let standardDrinks = Double(standardDrinks) {
                                 completion(
-                                    CatalogDrink(
+                                    CustomDrink(
                                         name: nameText,
                                         standardDrinks: Double(standardDrinks)
                                     )

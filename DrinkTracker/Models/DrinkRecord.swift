@@ -9,20 +9,18 @@ import Foundation
 import SwiftData
 
 @Model
-final class Drink {
+final class DrinkRecord {
     let name: String?
-    let standardDrinks: Double
-    var timestamp: Date
+    let standardDrinks: Double = 0.0
+    var timestamp = Date()
     
     init(standardDrinks: Double, name: String?) {
         self.standardDrinks = standardDrinks
         self.name = name
-        self.timestamp = Date()
     }
     
-    init(_ catalogDrink: CatalogDrink) {
+    init(_ catalogDrink: CustomDrink) {
         self.name = catalogDrink.name
         self.standardDrinks = catalogDrink.standardDrinks
-        self.timestamp = Date()
     }
 }

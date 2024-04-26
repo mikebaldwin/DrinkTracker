@@ -9,15 +9,15 @@ import SwiftUI
 import SwiftData
 
 struct RecordCatalogDrinkScreen: View {
-    var completion: ((Drink) -> Void)?
+    var completion: ((DrinkRecord) -> Void)?
     
     @Environment(\.dismiss) private var dismiss
     @Query(
-        sort: \CatalogDrink.name,
+        sort: \CustomDrink.name,
         order: .forward
-    ) var catalogDrinks: [CatalogDrink]
+    ) var catalogDrinks: [CustomDrink]
     @State private var showConfirmation = false
-    @State private var selectedDrink: CatalogDrink?
+    @State private var selectedDrink: CustomDrink?
     
     var body: some View {
         NavigationStack {
@@ -48,7 +48,7 @@ struct RecordCatalogDrinkScreen: View {
             ) {
                 Button("Record Drink") {
                     if let selectedDrink, let completion {
-                        completion(Drink(selectedDrink))
+                        completion(DrinkRecord(selectedDrink))
                     }
                     dismiss()
                 }

@@ -12,13 +12,21 @@ import SwiftData
 struct DrinkTrackerApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Drink.self,
-            CatalogDrink.self
+            DrinkRecord.self,
+            CustomDrink.self
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let modelConfiguration = ModelConfiguration(
+            nil,
+            schema: schema,
+            isStoredInMemoryOnly: false,
+            cloudKitDatabase: .private("iCloud.com.mikebaldwin.DrinkTracker")
+        )
 
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            return try ModelContainer(
+                for: schema,
+                configurations: [modelConfiguration]
+            )
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }

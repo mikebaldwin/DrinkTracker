@@ -9,16 +9,17 @@
 /* Begin PBXBuildFile section */
 		CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */; };
 		CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169962BD97FB10028D64A /* MainScreen.swift */; };
-		CE4169992BD97FB10028D64A /* Drink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169982BD97FB10028D64A /* Drink.swift */; };
+		CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169982BD97FB10028D64A /* DrinkRecord.swift */; };
 		CE41699B2BD97FB30028D64A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE41699A2BD97FB30028D64A /* Assets.xcassets */; };
 		CE41699E2BD97FB30028D64A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE41699D2BD97FB30028D64A /* Preview Assets.xcassets */; };
 		CE4169A82BD97FB30028D64A /* DrinkTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169A72BD97FB30028D64A /* DrinkTrackerTests.swift */; };
 		CE4169B22BD97FB30028D64A /* DrinkTrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169B12BD97FB30028D64A /* DrinkTrackerUITests.swift */; };
 		CE4169B42BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169B32BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift */; };
 		CE4169C22BD9810C0028D64A /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CE4169C12BD9810C0028D64A /* Utilities */; };
-		CE4169C52BD984C40028D64A /* CatalogDrink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169C42BD984C40028D64A /* CatalogDrink.swift */; };
+		CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169C42BD984C40028D64A /* CustomDrink.swift */; };
 		CEB911BB2BD98A7F00224660 /* DrinkCatalogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* DrinkCatalogScreen.swift */; };
 		CEB911BF2BDAA73300224660 /* RecordCatalogDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* RecordCatalogDrinkScreen.swift */; };
+		CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CEB911C12BDAAD1E00224660 /* Utilities */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,7 +43,7 @@
 		CE4169912BD97FB10028D64A /* DrinkTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerApp.swift; sourceTree = "<group>"; };
 		CE4169962BD97FB10028D64A /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
-		CE4169982BD97FB10028D64A /* Drink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drink.swift; sourceTree = "<group>"; };
+		CE4169982BD97FB10028D64A /* DrinkRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkRecord.swift; sourceTree = "<group>"; };
 		CE41699A2BD97FB30028D64A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE41699D2BD97FB30028D64A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CE4169A32BD97FB30028D64A /* DrinkTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinkTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,9 +51,11 @@
 		CE4169AD2BD97FB30028D64A /* DrinkTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinkTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4169B12BD97FB30028D64A /* DrinkTrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerUITests.swift; sourceTree = "<group>"; };
 		CE4169B32BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		CE4169C42BD984C40028D64A /* CatalogDrink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogDrink.swift; sourceTree = "<group>"; };
+		CE4169C42BD984C40028D64A /* CustomDrink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrink.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* DrinkCatalogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCatalogScreen.swift; sourceTree = "<group>"; };
 		CEB911BE2BDAA73300224660 /* RecordCatalogDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCatalogDrinkScreen.swift; sourceTree = "<group>"; };
+		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
+		CEB911C42BDBF9E300224660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE4169C22BD9810C0028D64A /* Utilities in Frameworks */,
+				CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +108,8 @@
 		CE4169932BD97FB10028D64A /* DrinkTracker */ = {
 			isa = PBXGroup;
 			children = (
+				CEB911C42BDBF9E300224660 /* Info.plist */,
+				CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */,
 				CEB911BA2BD98A7F00224660 /* DrinkCatalogScreen.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
 				CE4169962BD97FB10028D64A /* MainScreen.swift */,
@@ -143,8 +149,8 @@
 		CE4169C32BD981A10028D64A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				CE4169982BD97FB10028D64A /* Drink.swift */,
-				CE4169C42BD984C40028D64A /* CatalogDrink.swift */,
+				CE4169982BD97FB10028D64A /* DrinkRecord.swift */,
+				CE4169C42BD984C40028D64A /* CustomDrink.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -167,6 +173,7 @@
 			name = DrinkTracker;
 			packageProductDependencies = (
 				CE4169C12BD9810C0028D64A /* Utilities */,
+				CEB911C12BDAAD1E00224660 /* Utilities */,
 			);
 			productName = DrinkTracker;
 			productReference = CE4169912BD97FB10028D64A /* DrinkTracker.app */;
@@ -241,7 +248,7 @@
 			);
 			mainGroup = CE4169882BD97FB10028D64A;
 			packageReferences = (
-				CE4169C02BD9810C0028D64A /* XCLocalSwiftPackageReference "../Utilities" */,
+				CEB911C02BDAAD1E00224660 /* XCLocalSwiftPackageReference "../Utilities" */,
 			);
 			productRefGroup = CE4169922BD97FB10028D64A /* Products */;
 			projectDirPath = "";
@@ -285,10 +292,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE4169C52BD984C40028D64A /* CatalogDrink.swift in Sources */,
+				CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */,
 				CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */,
 				CEB911BB2BD98A7F00224660 /* DrinkCatalogScreen.swift in Sources */,
-				CE4169992BD97FB10028D64A /* Drink.swift in Sources */,
+				CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */,
 				CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */,
 				CEB911BF2BDAA73300224660 /* RecordCatalogDrinkScreen.swift in Sources */,
 			);
@@ -451,12 +458,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DrinkTracker/DrinkTracker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DrinkTracker/Preview Content\"";
 				DEVELOPMENT_TEAM = 84MPEV8978;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DrinkTracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -480,12 +489,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DrinkTracker/DrinkTracker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DrinkTracker/Preview Content\"";
 				DEVELOPMENT_TEAM = 84MPEV8978;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DrinkTracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -622,7 +633,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		CE4169C02BD9810C0028D64A /* XCLocalSwiftPackageReference "../Utilities" */ = {
+		CEB911C02BDAAD1E00224660 /* XCLocalSwiftPackageReference "../Utilities" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Utilities;
 		};
@@ -630,6 +641,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		CE4169C12BD9810C0028D64A /* Utilities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Utilities;
+		};
+		CEB911C12BDAAD1E00224660 /* Utilities */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Utilities;
 		};
