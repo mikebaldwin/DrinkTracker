@@ -10,8 +10,16 @@ import SwiftData
 
 struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var recordedDrinks: [Drink]
     @State private var showRecordDrinkScreen = false
+    static var startOfDay = Calendar.current.startOfDay(for: Date())
+    static var endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+
+    @Query(
+        filter: #Predicate<Drink> {
+            $0.timestamp >= startOfDay && $0.timestamp < endOfDay
+        },
+        sort: [SortDescriptor(\.timestamp)]
+    ) var drinks: [Drink]
     @State private var showCustomDrinksEditor = false
     @State private var drinkCount = 1
 
