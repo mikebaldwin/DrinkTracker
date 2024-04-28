@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 final class DrinkRecord {
+    var dayLog: DayLog?
     let name: String?
     let standardDrinks: Double = 0.0
     var timestamp = Date()

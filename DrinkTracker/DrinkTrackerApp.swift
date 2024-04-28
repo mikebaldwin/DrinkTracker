@@ -12,6 +12,7 @@ import SwiftData
 struct DrinkTrackerApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
+            DayLog.self,
             DrinkRecord.self,
             CustomDrink.self
         ])
