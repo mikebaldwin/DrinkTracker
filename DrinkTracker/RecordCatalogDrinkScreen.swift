@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct RecordCatalogDrinkScreen: View {
-    var completion: ((DrinkRecord) -> Void)?
+    var completion: ((CustomDrink) -> Void)?
     
     @Environment(\.dismiss) private var dismiss
     @Query(
@@ -48,7 +48,7 @@ struct RecordCatalogDrinkScreen: View {
             ) {
                 Button("Record Drink") {
                     if let selectedDrink, let completion {
-                        completion(DrinkRecord(selectedDrink))
+                        completion(selectedDrink)
                     }
                     dismiss()
                 }
