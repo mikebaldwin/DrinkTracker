@@ -119,13 +119,13 @@ struct MainScreen: View {
                         name: "Quick Record"
                     )
                 )
-                model.refresh()
+                model.fetchDayLogs()
             }
             Button("Cancel", role: .cancel) { }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                model.refresh()
+                model.fetchDayLogs()
             }
         }
     }
