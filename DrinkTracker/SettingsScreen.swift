@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SettingsScreen: View {
-    @AppStorage("dailyTarget") private var dailyTarget = 1
-    @AppStorage("weeklyTarget") private var weeklyTarget = 14
+    @AppStorage("dailyTarget") private var dailyTarget = 1.0
+    @AppStorage("weeklyTarget") private var weeklyTarget = 14.0
     
     @Environment(\.dismiss) private var dismiss
     
@@ -18,20 +18,20 @@ struct SettingsScreen: View {
             Form {
                 Section {
                     Stepper {
-                        Text("Daily target: \(dailyTarget)")
+                        Text("Daily target: \(Formatter.formatDecimal(dailyTarget))")
                     } onIncrement: {
                         dailyTarget += 1
                     } onDecrement: {
-                        if dailyTarget < 0 {
+                        if dailyTarget > 0 {
                             dailyTarget -= 1
                         }
                     }
                     Stepper {
-                        Text("Weekly target: \(weeklyTarget)")
+                        Text("Weekly target: \(Formatter.formatDecimal(weeklyTarget))")
                     } onIncrement: {
                         weeklyTarget += 1
                     } onDecrement: {
-                        if weeklyTarget < 0 {
+                        if weeklyTarget > 0 {
                             weeklyTarget -= 1
                         }
                     }
