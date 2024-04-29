@@ -11,12 +11,14 @@ import SwiftData
 struct RecordCatalogDrinkScreen: View {
     var completion: ((CustomDrink) -> Void)?
     
+    @Environment(DrinkTrackerModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     @Query(
         sort: \CustomDrink.name,
         order: .forward
     ) var catalogDrinks: [CustomDrink]
     @State private var showConfirmation = false
+    @State private var showCustomDrinksEditor = false
     @State private var selectedDrink: CustomDrink?
     
     var body: some View {
@@ -33,12 +35,27 @@ struct RecordCatalogDrinkScreen: View {
             }
             .navigationTitle("Which drink?")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         dismiss()
                     } label: {
                         Text("Cancel")
                     }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showCustomDrinksEditor = true
+                    }) {
+                        Image(systemName: "wineglass")
+                    }
+                }
+            }
+            .sheet(isPresented: $showCustomDrinksEditor) {
+                DrinkCatalogScreen {
+                    model.addCatalogDrink($0)
+                    model.refresh()
                 }
             }
             .confirmationDialog(

@@ -22,34 +22,32 @@ struct DrinkCatalogScreen: View {
                     TextField("Standard Drinks", text: $standardDrinks)
                         .keyboardType(.decimalPad)
                 }
-                Section {
-                    HStack {
-                        Spacer()
-                        Button {
-                            if let completion,
-                                let standardDrinks = Double(standardDrinks) {
-                                completion(
-                                    CustomDrink(
-                                        name: nameText,
-                                        standardDrinks: Double(standardDrinks)
-                                    )
-                                )
-                            }
-                            dismiss()
-                        } label: {
-                            Text("Add Drink to Catalog")
-                        }
-                        Spacer()
-                    }
-                }
             }
             .navigationTitle("Create a Drink")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
                         dismiss()
                     }) {
                         Text("Cancel")
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        if let completion,
+                            let standardDrinks = Double(standardDrinks) {
+                            completion(
+                                CustomDrink(
+                                    name: nameText,
+                                    standardDrinks: Double(standardDrinks)
+                                )
+                            )
+                        }
+                        dismiss()
+                    }) {
+                        Text("Done")
                     }
                 }
             }

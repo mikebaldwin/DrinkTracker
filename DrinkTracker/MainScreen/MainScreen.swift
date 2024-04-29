@@ -15,7 +15,6 @@ struct MainScreen: View {
     
     @State private var showRecordDrinksConfirmation = false
     @State private var showRecordCustomDrinkScreen = false
-    @State private var showCustomDrinksEditor = false
     @State private var drinkCount = 1.0
     
     var body: some View {
@@ -50,21 +49,6 @@ struct MainScreen: View {
                         Spacer()
                     }
                 }
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showCustomDrinksEditor = true
-                    }) {
-                        Image(systemName: "wineglass")
-                    }
-                }
-            }
-        }
-        .sheet(isPresented: $showCustomDrinksEditor) {
-            DrinkCatalogScreen {
-                model.addCatalogDrink($0)
-                model.refresh()
             }
         }
         .sheet(isPresented: $showRecordCustomDrinkScreen) {
