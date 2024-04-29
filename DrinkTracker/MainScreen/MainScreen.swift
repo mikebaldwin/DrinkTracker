@@ -9,6 +9,9 @@ import Charts
 import SwiftUI
 
 struct MainScreen: View {
+    @AppStorage("dailyTarget") private var dailyTarget: Double?
+    @AppStorage("weeklyTarget") private var weeklyTarget: Double?
+
     @Environment(\.scenePhase) private var scenePhase
     @Environment(DrinkTrackerModel.self) private var model
     
@@ -20,10 +23,46 @@ struct MainScreen: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section {
+                Section("Progress") {
                     ChartView()
                 }
-                Section {
+                if dailyTarget != nil || weeklyTarget != nil {
+                    Section("Targets") {
+                        if let dailyTarget {
+                            HStack {
+                                Text("Daily Target")
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                if model.totalStandardDrinksToday < dailyTarget {
+                                    Text("\(Formatter.formatDecimal(dailyTarget - model.totalStandardDrinksToday)) drinks below target")
+                                } else if model.totalStandardDrinksToday == dailyTarget {
+                                    Text("Daily target reached!")
+                                } else {
+                                    Text("\(Formatter.formatDecimal(model.totalStandardDrinksToday - dailyTarget)) drinks above target")
+                                        .foregroundStyle(Color(.red))
+                                        .fontWeight(.semibold)
+                                }
+                            }
+                        }
+                        if let weeklyTarget {
+                            HStack {
+                                Text("Weekly Target")
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                if model.totalStandardDrinksThisWeek < weeklyTarget {
+                                    Text("\(Formatter.formatDecimal(weeklyTarget - model.totalStandardDrinksThisWeek)) drinks below target")
+                                } else if model.totalStandardDrinksThisWeek == weeklyTarget {
+                                    Text("Daily target reached!")
+                                } else {
+                                    Text("\(Formatter.formatDecimal(model.totalStandardDrinksThisWeek - weeklyTarget)) drinks above target")
+                                        .foregroundStyle(Color(.red))
+                                        .fontWeight(.semibold)
+                                }
+                            }
+                        }
+                    }
+                }
+                Section("Record") {
                     VStack {
                         recordDrinkView
                             .padding(.bottom)
@@ -130,5 +169,4 @@ struct MainScreen: View {
 
 //#Preview {
 //    MainScreen()
-//        .modelContainer(for: DrinkRecord.self, inMemory: true)
 //}
