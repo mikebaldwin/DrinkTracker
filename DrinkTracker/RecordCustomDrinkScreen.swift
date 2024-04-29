@@ -13,10 +13,7 @@ struct RecordCustomDrinkScreen: View {
     
     @Environment(DrinkTrackerModel.self) private var model
     @Environment(\.dismiss) private var dismiss
-    @Query(
-        sort: \CustomDrink.name,
-        order: .forward
-    ) var catalogDrinks: [CustomDrink]
+    
     @State private var showConfirmation = false
     @State private var showCustomDrinksEditor = false
     @State private var selectedDrink: CustomDrink?
@@ -24,7 +21,7 @@ struct RecordCustomDrinkScreen: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(catalogDrinks) { drink in
+                ForEach(model.customDrinks) { drink in
                     Button {
                         selectedDrink = drink
                         showConfirmation = true
@@ -71,6 +68,9 @@ struct RecordCustomDrinkScreen: View {
                 }
                 Button("Cancel", role: .cancel) { dismiss() }
             }
+        }
+        .onAppear {
+            model.fetchCustomDrinks()
         }
     }
 }

@@ -12,6 +12,7 @@ import SwiftData
 @Observable
 final class DrinkTrackerModel {
     var dayLogs = [DayLog]()
+    var customDrinks = [CustomDrink]()
     
     var startOfWeek: Date {
         return Calendar.current.dateComponents(
@@ -71,6 +72,15 @@ final class DrinkTrackerModel {
             self.dayLogs = try context.fetch(dayLogs)
         } catch {
             self.dayLogs = []
+        }
+    }
+    
+    func fetchCustomDrinks() {
+        let customDrinks = FetchDescriptor<CustomDrink>(sortBy: [SortDescriptor(\.name)])
+        do {
+            self.customDrinks = try context.fetch(customDrinks)
+        } catch {
+            self.customDrinks = []
         }
     }
     
