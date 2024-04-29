@@ -56,6 +56,7 @@ final class DrinkTrackerModel {
     init(context: ModelContext) {
         self.context = context
         fetchDayLogs()
+        _ = todaysLog
     }
     
     func fetchDayLogs() {
