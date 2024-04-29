@@ -30,7 +30,7 @@ struct MainScreen: View {
                     Section("Targets") {
                         if let dailyTarget {
                             HStack {
-                                Text("Daily Target")
+                                Text("Today")
                                     .fontWeight(.semibold)
                                 Spacer()
                                 if model.totalStandardDrinksToday < dailyTarget {
@@ -46,7 +46,7 @@ struct MainScreen: View {
                         }
                         if let weeklyTarget {
                             HStack {
-                                Text("Weekly Target")
+                                Text("This week")
                                     .fontWeight(.semibold)
                                 Spacer()
                                 if model.totalStandardDrinksThisWeek < weeklyTarget {
