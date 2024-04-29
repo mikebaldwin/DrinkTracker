@@ -56,9 +56,6 @@ final class DrinkTrackerModel {
     
     init(context: ModelContext) {
         self.context = context
-    }
-    
-    func refresh() {
         fetchDayLogs()
     }
     
