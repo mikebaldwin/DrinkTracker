@@ -10,6 +10,8 @@ import SwiftUI
 
 struct ChartView: View {
     @Environment(DrinkTrackerModel.self) private var model
+    
+    private let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
     var body: some View {
         VStack {
@@ -17,11 +19,14 @@ struct ChartView: View {
                 Image(systemName: "wineglass.fill")
                     .fontWeight(.bold)
                     .foregroundStyle(.blue)
+                
                 Text("Drinks today: " + Formatter.formatDecimal(model.totalStandardDrinksToday))
                     .font(.body)
                     .fontWeight(.bold)
                     .foregroundStyle(.blue)
+                
                 Spacer()
+                
                 Image(systemName: "chevron.right")
                     .font(.caption)
                     .foregroundStyle(.gray)
@@ -34,8 +39,6 @@ struct ChartView: View {
                     trailing: 0
                 )
             )
-            
-            let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
             Chart {
                 ForEach(daysOfWeek, id: \.self) { day in
@@ -67,6 +70,6 @@ struct ChartView: View {
     }
 }
 
-#Preview {
-    ChartView()
-}
+//#Preview {
+//    ChartView()
+//}
