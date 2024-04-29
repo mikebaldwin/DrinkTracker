@@ -10,7 +10,6 @@ import SwiftUI
 import SwiftData
 
 struct MainScreen: View {
-    @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
     @Environment(DrinkTrackerModel.self) private var model
     
