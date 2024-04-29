@@ -68,4 +68,12 @@ final class DrinkTrackerModel {
             self.dayLogs = []
         }
     }
+    
+    func addCatalogDrink(_ catalogDrink: CustomDrink) {
+        context.insert(catalogDrink)
+    }
+    
+    func recordDrink(_ drink: DrinkRecord) {
+        todaysLog.addDrink(drink)
+    }
 }

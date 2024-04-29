@@ -64,13 +64,13 @@ struct MainScreen: View {
         }
         .sheet(isPresented: $showCustomDrinksEditor) {
             DrinkCatalogScreen {
-                addCatalogDrink($0)
+                model.addCatalogDrink($0)
                 model.refresh()
             }
         }
         .sheet(isPresented: $showRecordCustomDrinkScreen) {
             RecordCatalogDrinkScreen {
-                recordDrink(DrinkRecord($0))
+                model.recordDrink(DrinkRecord($0))
             }
         }
         .confirmationDialog(
@@ -79,7 +79,7 @@ struct MainScreen: View {
             titleVisibility: .visible
         ) {
             Button("Record Drink") {
-                recordDrink(
+                model.recordDrink(
                     DrinkRecord(
                         standardDrinks: Double(drinkCount),
                         name: "Quick Record"
@@ -130,14 +130,6 @@ struct MainScreen: View {
             
             Spacer()
         }
-    }
-
-    private func addCatalogDrink(_ catalogDrink: CustomDrink) {
-        modelContext.insert(catalogDrink)
-    }
-    
-    private func recordDrink(_ drink: DrinkRecord) {
-        model.todaysLog.addDrink(drink)
     }
 }
 
