@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct RecordCatalogDrinkScreen: View {
+struct RecordCustomDrinkScreen: View {
     var completion: ((CustomDrink) -> Void)?
     
     @Environment(DrinkTrackerModel.self) private var model
@@ -76,5 +76,5 @@ struct RecordCatalogDrinkScreen: View {
 }
 
 #Preview {
-    RecordCatalogDrinkScreen()
+    RecordCustomDrinkScreen()
 }
