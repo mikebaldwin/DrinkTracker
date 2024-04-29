@@ -7,7 +7,6 @@
 
 import Charts
 import SwiftUI
-import SwiftData
 
 struct MainScreen: View {
     @Environment(\.scenePhase) private var scenePhase
