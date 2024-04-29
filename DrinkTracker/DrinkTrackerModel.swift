@@ -13,8 +13,12 @@ import SwiftData
 final class DrinkTrackerModel {
     var dayLogs = [DayLog]()
     var customDrinks = [CustomDrink]()
-    
-    var startOfWeek: Date {
+    var totalStandardDrinksToday: Double { todaysLog.totalDrinks }
+    var totalStandardDrinksThisWeek: Double {
+        dayLogs.reduce(into: 0.0) { partialResult, dayLog in
+            partialResult += dayLog.totalDrinks
+        }
+    }
 
     private var startOfWeek: Date {
         return Calendar.current.dateComponents(
@@ -44,13 +48,6 @@ final class DrinkTrackerModel {
             let dayLog = DayLog()
             context.insert(dayLog)
             return dayLog
-        }
-    }
-    
-    var totalStandardDrinksToday: Double { todaysLog.totalDrinks }
-    var totalStandardDrinksThisWeek: Double {
-        dayLogs.reduce(into: 0.0) { partialResult, dayLog in
-            partialResult += dayLog.totalDrinks
         }
     }
     
