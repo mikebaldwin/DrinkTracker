@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE3DACE62BDFD49A00BB52EA /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DACE52BDFD49A00BB52EA /* ChartView.swift */; };
+		CE3DACE92BDFD59100BB52EA /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DACE82BDFD59100BB52EA /* Formatter.swift */; };
 		CE3DACEB2BDFD7D700BB52EA /* DrinkTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DACEA2BDFD7D700BB52EA /* DrinkTrackerModel.swift */; };
 		CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */; };
 		CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169962BD97FB10028D64A /* MainScreen.swift */; };
@@ -42,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE3DACE52BDFD49A00BB52EA /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		CE3DACE82BDFD59100BB52EA /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		CE3DACEA2BDFD7D700BB52EA /* DrinkTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerModel.swift; sourceTree = "<group>"; };
 		CE4169912BD97FB10028D64A /* DrinkTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerApp.swift; sourceTree = "<group>"; };
@@ -89,6 +93,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE3DACE42BDFD48400BB52EA /* MainScreen */ = {
+			isa = PBXGroup;
+			children = (
+				CE4169962BD97FB10028D64A /* MainScreen.swift */,
+				CE3DACE52BDFD49A00BB52EA /* ChartView.swift */,
+			);
+			path = MainScreen;
+			sourceTree = "<group>";
+		};
+		CE3DACE72BDFD57A00BB52EA /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				CE3DACE82BDFD59100BB52EA /* Formatter.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		CE4169882BD97FB10028D64A = {
 			isa = PBXGroup;
 			children = (
@@ -112,16 +133,17 @@
 		CE4169932BD97FB10028D64A /* DrinkTracker */ = {
 			isa = PBXGroup;
 			children = (
-				CEB911C42BDBF9E300224660 /* Info.plist */,
 				CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */,
+				CEB911C42BDBF9E300224660 /* Info.plist */,
 				CEB911BA2BD98A7F00224660 /* DrinkCatalogScreen.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
-				CE4169962BD97FB10028D64A /* MainScreen.swift */,
 				CE3DACEA2BDFD7D700BB52EA /* DrinkTrackerModel.swift */,
 				CEB911BE2BDAA73300224660 /* RecordCatalogDrinkScreen.swift */,
 				CE41699A2BD97FB30028D64A /* Assets.xcassets */,
+				CE3DACE42BDFD48400BB52EA /* MainScreen */,
 				CE4169C32BD981A10028D64A /* Models */,
 				CE41699C2BD97FB30028D64A /* Preview Content */,
+				CE3DACE72BDFD57A00BB52EA /* Utilities */,
 			);
 			path = DrinkTracker;
 			sourceTree = "<group>";
@@ -302,10 +324,12 @@
 				CE3DACEB2BDFD7D700BB52EA /* DrinkTrackerModel.swift in Sources */,
 				CEB911C62BDC241100224660 /* DayLog.swift in Sources */,
 				CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */,
+				CE3DACE92BDFD59100BB52EA /* Formatter.swift in Sources */,
 				CEB911BB2BD98A7F00224660 /* DrinkCatalogScreen.swift in Sources */,
 				CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */,
 				CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */,
 				CEB911BF2BDAA73300224660 /* RecordCatalogDrinkScreen.swift in Sources */,
+				CE3DACE62BDFD49A00BB52EA /* ChartView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

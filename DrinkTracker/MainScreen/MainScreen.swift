@@ -12,42 +12,18 @@ import SwiftData
 struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
-    
-    static var startOfWeek: Date {
-        return Calendar.current.dateComponents([.calendar, .yearForWeekOfYear, .weekOfYear], from: Date()).date!
-    }
-
-    static var endOfWeek: Date {
-        return Calendar.current.date(byAdding: .day, value: 7, to: startOfWeek)!
-    }
-
-    @Query(
-        filter: #Predicate<DayLog> { $0.date >= startOfWeek && $0.date < endOfWeek },
-        sort: [SortDescriptor(\.date)]
-    ) var dayLogs: [DayLog]
+    @Environment(DrinkTrackerModel.self) private var model
     
     @State private var showRecordDrinksConfirmation = false
     @State private var showRecordCustomDrinkScreen = false
     @State private var showCustomDrinksEditor = false
     @State private var drinkCount = 1.0
     
-    private var todaysLog: DayLog {
-        if let dayLog = dayLogs.first(where: { Calendar.current.isDateInToday($0.date) }) {
-            return dayLog
-        } else {
-            let dayLog = DayLog()
-            modelContext.insert(dayLog)
-            return dayLog
-        }
-    }
-    
-    private var totalStandardDrinksToday: Double { todaysLog.totalDrinks }
-    
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    chartView
+                    ChartView()
                 }
                 Section {
                     VStack {
@@ -87,7 +63,10 @@ struct MainScreen: View {
             }
         }
         .sheet(isPresented: $showCustomDrinksEditor) {
-            DrinkCatalogScreen { addCatalogDrink($0) }
+            DrinkCatalogScreen {
+                addCatalogDrink($0)
+                model.refresh()
+            }
         }
         .sheet(isPresented: $showRecordCustomDrinkScreen) {
             RecordCatalogDrinkScreen {
@@ -95,7 +74,7 @@ struct MainScreen: View {
             }
         }
         .confirmationDialog(
-            "Add \(formatDecimal(drinkCount)) drinks to today's record?",
+            "Add \(Formatter.formatDecimal(drinkCount)) drinks to today's record?",
             isPresented: $showRecordDrinksConfirmation,
             titleVisibility: .visible
         ) {
@@ -106,68 +85,14 @@ struct MainScreen: View {
                         name: "Quick Record"
                     )
                 )
+                model.refresh()
             }
             Button("Cancel", role: .cancel) { }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                _ = dayLogs
+                model.refresh()
             }
-        }
-    }
-    
-    private var chartView: some View {
-        VStack {
-            HStack(alignment: .firstTextBaseline) {
-                Image(systemName: "wineglass.fill")
-                    .fontWeight(.bold)
-                    .foregroundStyle(.blue)
-                Text("Drinks today: " + formatDecimal(totalStandardDrinksToday))
-                    .font(.body)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.blue)
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundStyle(.gray)
-            }
-            .padding(
-                EdgeInsets(
-                    top: 6,
-                    leading: 0,
-                    bottom: 0,
-                    trailing: 0
-                )
-            )
-            
-            let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-
-            Chart {
-                ForEach(daysOfWeek, id: \.self) { day in
-                    // use the first(where:) method to find the corresponding
-                    // dayLog entry for each day of the week. We compare the
-                    // weekday component of the date property with the index of
-                    // the current day in the daysOfWeek array (plus 1 to match
-                    // the weekday numbering). If a matching entry is found, we
-                    // use its totalDrinks value; otherwise, we use 0 as the
-                    // default value.
-                    let totalDrinks = dayLogs.first(where: {
-                        Calendar.current.component(.weekday, from: $0.date) ==
-                        daysOfWeek.firstIndex(of: day)! + 1
-                    })?.totalDrinks ?? 0
-                    
-                    BarMark(
-                        x: .value("Day", day),
-                        y: .value("Drinks", totalDrinks)
-                    )
-                }
-            }
-            .chartXAxis {
-                AxisMarks(values: daysOfWeek) { _ in
-                    AxisValueLabel()
-                }
-            }
-            .padding()
         }
     }
     
@@ -188,7 +113,7 @@ struct MainScreen: View {
             }
             .buttonStyle(PlainButtonStyle())
             
-            Text("\(formatDecimal(drinkCount))")
+            Text("\(Formatter.formatDecimal(drinkCount))")
                 .font(.largeTitle)
                 .frame(width: 75)
             
@@ -212,18 +137,8 @@ struct MainScreen: View {
     }
     
     private func recordDrink(_ drink: DrinkRecord) {
-        todaysLog.addDrink(drink)
+        model.todaysLog.addDrink(drink)
     }
-    
-    private func formatDecimal(_ number: Double) -> String {
-        let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 0
-        formatter.numberStyle = .decimal
-
-        return formatter.string(from: number as NSNumber) ?? "0"
-    }
-    
 }
 
 #Preview {
