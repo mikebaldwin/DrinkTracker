@@ -15,6 +15,8 @@ final class DrinkTrackerModel {
     var customDrinks = [CustomDrink]()
     
     var startOfWeek: Date {
+
+    private var startOfWeek: Date {
         return Calendar.current.dateComponents(
             [
                 .calendar,
@@ -25,7 +27,7 @@ final class DrinkTrackerModel {
         ).date!
     }
     
-    var endOfWeek: Date {
+    private var endOfWeek: Date {
         return Calendar.current.date(
             byAdding: .day,
             value: 7,
@@ -33,7 +35,7 @@ final class DrinkTrackerModel {
         )!
     }
     
-    var todaysLog: DayLog {
+    private var todaysLog: DayLog {
         if let dayLog = dayLogs.first(where: {
             Calendar.current.isDateInToday($0.date)
         }) {
