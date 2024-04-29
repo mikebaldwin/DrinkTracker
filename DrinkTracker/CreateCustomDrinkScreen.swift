@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DrinkCatalogScreen: View {
+struct CreateCustomDrinkScreen: View {
     var completion: ((CustomDrink) -> Void)?
     
     @Environment(\.dismiss) private var dismiss
@@ -56,5 +56,5 @@ struct DrinkCatalogScreen: View {
 }
 
 #Preview {
-    DrinkCatalogScreen()
+    CreateCustomDrinkScreen()
 }

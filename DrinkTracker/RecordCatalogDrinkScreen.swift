@@ -53,7 +53,7 @@ struct RecordCatalogDrinkScreen: View {
                 }
             }
             .sheet(isPresented: $showCustomDrinksEditor) {
-                DrinkCatalogScreen {
+                CreateCustomDrinkScreen {
                     model.addCatalogDrink($0)
                     model.refresh()
                 }
