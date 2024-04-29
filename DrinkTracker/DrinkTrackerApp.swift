@@ -38,9 +38,8 @@ struct DrinkTrackerApp: App {
     var body: some Scene {
         WindowGroup {
             MainScreen()
+                .environment(model)
         }
-        .modelContainer(sharedModelContainer)
-        .environment(model)
     }
     
     init() {
