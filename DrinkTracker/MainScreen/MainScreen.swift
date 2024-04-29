@@ -14,6 +14,7 @@ struct MainScreen: View {
     
     @State private var showRecordDrinksConfirmation = false
     @State private var showRecordCustomDrinkScreen = false
+    @State private var showSettingsScreen = false
     @State private var drinkCount = 1.0
     
     var body: some View {
@@ -49,11 +50,23 @@ struct MainScreen: View {
                     }
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showSettingsScreen = true
+                    }) {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            }
         }
         .sheet(isPresented: $showRecordCustomDrinkScreen) {
-            RecordCatalogDrinkScreen {
+            RecordCustomDrinkScreen {
                 model.recordDrink(DrinkRecord($0))
             }
+        }
+        .sheet(isPresented: $showSettingsScreen) {
+            SettingsScreen()
         }
         .confirmationDialog(
             "Add \(Formatter.formatDecimal(drinkCount)) drinks to today's record?",
@@ -115,7 +128,7 @@ struct MainScreen: View {
     }
 }
 
-#Preview {
-    MainScreen()
-        .modelContainer(for: DrinkRecord.self, inMemory: true)
-}
+//#Preview {
+//    MainScreen()
+//        .modelContainer(for: DrinkRecord.self, inMemory: true)
+//}
