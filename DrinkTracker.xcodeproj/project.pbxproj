@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE3DACEB2BDFD7D700BB52EA /* DrinkTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DACEA2BDFD7D700BB52EA /* DrinkTrackerModel.swift */; };
 		CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */; };
 		CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169962BD97FB10028D64A /* MainScreen.swift */; };
 		CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169982BD97FB10028D64A /* DrinkRecord.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE3DACEA2BDFD7D700BB52EA /* DrinkTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerModel.swift; sourceTree = "<group>"; };
 		CE4169912BD97FB10028D64A /* DrinkTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerApp.swift; sourceTree = "<group>"; };
 		CE4169962BD97FB10028D64A /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				CEB911BA2BD98A7F00224660 /* DrinkCatalogScreen.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
 				CE4169962BD97FB10028D64A /* MainScreen.swift */,
+				CE3DACEA2BDFD7D700BB52EA /* DrinkTrackerModel.swift */,
 				CEB911BE2BDAA73300224660 /* RecordCatalogDrinkScreen.swift */,
 				CE41699A2BD97FB30028D64A /* Assets.xcassets */,
 				CE4169C32BD981A10028D64A /* Models */,
@@ -296,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */,
+				CE3DACEB2BDFD7D700BB52EA /* DrinkTrackerModel.swift in Sources */,
 				CEB911C62BDC241100224660 /* DayLog.swift in Sources */,
 				CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */,
 				CEB911BB2BD98A7F00224660 /* DrinkCatalogScreen.swift in Sources */,
