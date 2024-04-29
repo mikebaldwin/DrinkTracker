@@ -164,6 +164,7 @@ struct MainScreen: View {
             
             Spacer()
         }
+        .padding(.top)
     }
 }
 
