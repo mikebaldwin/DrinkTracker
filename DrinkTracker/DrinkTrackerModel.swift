@@ -45,6 +45,11 @@ final class DrinkTrackerModel {
     }
     
     var totalStandardDrinksToday: Double { todaysLog.totalDrinks }
+    var totalStandardDrinksThisWeek: Double {
+        dayLogs.reduce(into: 0.0) { partialResult, dayLog in
+            partialResult += dayLog.totalDrinks
+        }
+    }
     
     private var context: ModelContext
     
