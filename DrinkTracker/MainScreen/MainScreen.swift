@@ -18,7 +18,7 @@ struct MainScreen: View {
     @State private var showRecordDrinksConfirmation = false
     @State private var showRecordCustomDrinkScreen = false
     @State private var showSettingsScreen = false
-    @State private var drinkCount = 1.0
+    @State private var drinkCount = 0.0
     
     var body: some View {
         NavigationStack {
@@ -120,6 +120,7 @@ struct MainScreen: View {
                     )
                 )
                 model.fetchDayLogs()
+                drinkCount = 0
             }
             Button("Cancel", role: .cancel) { }
         }
