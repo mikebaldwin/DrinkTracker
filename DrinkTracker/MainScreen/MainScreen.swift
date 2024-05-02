@@ -18,7 +18,9 @@ struct MainScreen: View {
     @State private var showRecordDrinksConfirmation = false
     @State private var showRecordCustomDrinkScreen = false
     @State private var showSettingsScreen = false
+    @State private var showDrinkEntryAlert = false
     @State private var drinkCount = 0.0
+    @State private var quickEntryValue = ""
     
     var body: some View {
         NavigationStack {
@@ -122,7 +124,24 @@ struct MainScreen: View {
                 model.fetchDayLogs()
                 drinkCount = 0
             }
-            Button("Cancel", role: .cancel) { }
+            Button("Cancel", role: .cancel) { drinkCount = 0 }
+        }
+        .alert("Enter standard drinks", isPresented: $showDrinkEntryAlert) {
+            TextField("", text: $quickEntryValue)
+                .keyboardType(.decimalPad)
+            
+            Button("Cancel", role: .cancel) {
+                showDrinkEntryAlert = false
+                quickEntryValue = ""
+            }
+            Button("Done") {
+                if let value = Double(quickEntryValue) {
+                    drinkCount = value
+                }
+                showDrinkEntryAlert = false
+                showRecordDrinksConfirmation = true
+                quickEntryValue = ""
+            }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
@@ -148,9 +167,15 @@ struct MainScreen: View {
             }
             .buttonStyle(PlainButtonStyle())
             
-            Text("\(Formatter.formatDecimal(drinkCount))")
-                .font(.largeTitle)
-                .frame(width: 75)
+            Button {
+                showDrinkEntryAlert = true
+            } label: {
+                Text("\(Formatter.formatDecimal(drinkCount))")
+                    .font(.largeTitle)
+                    .frame(width: 75)
+                    .foregroundStyle(Color.black)
+            }
+            .buttonStyle(PlainButtonStyle())
             
             Button {
                 withAnimation {
