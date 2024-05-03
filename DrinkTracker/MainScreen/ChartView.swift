@@ -20,12 +20,17 @@ struct ChartView: View {
                     .fontWeight(.bold)
                     .foregroundStyle(.blue)
                 
-                Text("Drinks today: " + Formatter.formatDecimal(model.totalStandardDrinksToday))
+                Text("Today: " + Formatter.formatDecimal(model.totalStandardDrinksToday))
                     .font(.body)
                     .fontWeight(.bold)
                     .foregroundStyle(.blue)
-                
+
                 Spacer()
+                
+                Text("This week: " + Formatter.formatDecimal(model.totalStandardDrinksThisWeek))
+                    .font(.body)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.blue)
                 
                 Image(systemName: "chevron.right")
                     .font(.caption)
@@ -39,7 +44,7 @@ struct ChartView: View {
                     trailing: 0
                 )
             )
-
+            
             Chart {
                 ForEach(daysOfWeek, id: \.self) { day in
                     // use the first(where:) method to find the corresponding

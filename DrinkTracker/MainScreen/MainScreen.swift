@@ -25,7 +25,7 @@ struct MainScreen: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Progress") {
+                Section("Drinks") {
                     ChartView()
                 }
                 if dailyTarget != nil || weeklyTarget != nil {
