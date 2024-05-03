@@ -20,25 +20,6 @@ final class DrinkTrackerModel {
         }
     }
 
-    private var startOfWeek: Date {
-        return Calendar.current.dateComponents(
-            [
-                .calendar,
-                .yearForWeekOfYear,
-                .weekOfYear
-            ],
-            from: Date()
-        ).date!
-    }
-    
-    private var endOfWeek: Date {
-        return Calendar.current.date(
-            byAdding: .day,
-            value: 7,
-            to: startOfWeek
-        )!
-    }
-    
     private var todaysLog: DayLog {
         if let dayLog = dayLogs.first(where: {
             Calendar.current.isDateInToday($0.date)
@@ -61,7 +42,7 @@ final class DrinkTrackerModel {
     
     func fetchDayLogs() {
         let dayLogs = FetchDescriptor(
-            predicate: #Predicate<DayLog> { $0.date >= startOfWeek && $0.date < endOfWeek },
+            predicate: #Predicate<DayLog> { $0.date >= DateMath.startOfWeek && $0.date < DateMath.endOfWeek },
             sortBy: [SortDescriptor(\DayLog.date)]
         )
         
