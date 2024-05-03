@@ -9,10 +9,12 @@ import Charts
 import SwiftUI
 
 struct ChartView: View {
-    @Environment(DrinkTrackerModel.self) private var model
+    private var dayLogs: [DayLog]
+    private var totalStandardDrinksToday: Double
+    private var totalStandardDrinksThisWeek: Double
     
     private let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-
+    
     var body: some View {
         VStack {
             HStack(alignment: .firstTextBaseline) {
@@ -20,14 +22,14 @@ struct ChartView: View {
                     .fontWeight(.bold)
                     .foregroundStyle(.blue)
                 
-                Text("Today: " + Formatter.formatDecimal(model.totalStandardDrinksToday))
+                Text("Today: " + Formatter.formatDecimal(totalStandardDrinksToday))
                     .font(.body)
                     .fontWeight(.bold)
                     .foregroundStyle(.blue)
 
                 Spacer()
                 
-                Text("This week: " + Formatter.formatDecimal(model.totalStandardDrinksThisWeek))
+                Text("This week: " + Formatter.formatDecimal(totalStandardDrinksThisWeek))
                     .font(.body)
                     .fontWeight(.bold)
                     .foregroundStyle(.blue)
@@ -54,7 +56,7 @@ struct ChartView: View {
                     // the weekday numbering). If a matching entry is found, we
                     // use its totalDrinks value; otherwise, we use 0 as the
                     // default value.
-                    let totalDrinks = model.dayLogs.first(where: {
+                    let totalDrinks = dayLogs.first(where: {
                         Calendar.current.component(.weekday, from: $0.date) ==
                         daysOfWeek.firstIndex(of: day)! + 1
                     })?.totalDrinks ?? 0
@@ -72,6 +74,16 @@ struct ChartView: View {
             }
             .padding()
         }
+    }
+    
+    init(
+        dayLogs: [DayLog],
+        totalStandardDrinksToday: Double,
+        totalStandardDrinksThisWeek: Double
+    ) {
+        self.dayLogs = dayLogs
+        self.totalStandardDrinksToday = totalStandardDrinksToday
+        self.totalStandardDrinksThisWeek = totalStandardDrinksThisWeek
     }
 }
 

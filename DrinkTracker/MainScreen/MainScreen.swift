@@ -6,14 +6,17 @@
 //
 
 import Charts
+import SwiftData
 import SwiftUI
 
 struct MainScreen: View {
     @AppStorage("dailyTarget") private var dailyTarget: Double?
     @AppStorage("weeklyTarget") private var weeklyTarget: Double?
-
+    
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(DrinkTrackerModel.self) private var model
+    
+    @Query(sort: [SortDescriptor(\DayLog.date)]) private var dayLogs: [DayLog]
     
     @State private var showRecordDrinksConfirmation = false
     @State private var showRecordCustomDrinkScreen = false
@@ -22,11 +25,33 @@ struct MainScreen: View {
     @State private var drinkCount = 0.0
     @State private var quickEntryValue = ""
     
+    private var todaysLog: DayLog {
+        if let dayLog = dayLogs.first(where: {
+            Calendar.current.isDateInToday($0.date)
+        }) {
+            return dayLog
+        } else {
+            let dayLog = DayLog()
+            modelContext.insert(dayLog)
+            return dayLog
+        }
+    }
+    private var totalStandardDrinksToday: Double { todaysLog.totalDrinks }
+    private var totalStandardDrinksThisWeek: Double {
+        dayLogs.reduce(into: 0.0) { partialResult, dayLog in
+            partialResult += dayLog.totalDrinks
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section("Drinks") {
-                    ChartView()
+                    ChartView(
+                        dayLogs: dayLogs,
+                        totalStandardDrinksToday: totalStandardDrinksToday,
+                        totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
+                    )
                 }
                 if dailyTarget != nil || weeklyTarget != nil {
                     Section("Targets") {
@@ -35,12 +60,12 @@ struct MainScreen: View {
                                 Text("Today")
                                     .fontWeight(.semibold)
                                 Spacer()
-                                if model.totalStandardDrinksToday < dailyTarget {
-                                    Text("\(Formatter.formatDecimal(dailyTarget - model.totalStandardDrinksToday)) drinks below target")
-                                } else if model.totalStandardDrinksToday == dailyTarget {
+                                if totalStandardDrinksToday < dailyTarget {
+                                    Text("\(Formatter.formatDecimal(dailyTarget - totalStandardDrinksToday)) drinks below target")
+                                } else if totalStandardDrinksToday == dailyTarget {
                                     Text("Daily target reached!")
                                 } else {
-                                    Text("\(Formatter.formatDecimal(model.totalStandardDrinksToday - dailyTarget)) drinks above target")
+                                    Text("\(Formatter.formatDecimal(totalStandardDrinksToday - dailyTarget)) drinks above target")
                                         .foregroundStyle(Color(.red))
                                         .fontWeight(.semibold)
                                 }
@@ -51,12 +76,12 @@ struct MainScreen: View {
                                 Text("This week")
                                     .fontWeight(.semibold)
                                 Spacer()
-                                if model.totalStandardDrinksThisWeek < weeklyTarget {
-                                    Text("\(Formatter.formatDecimal(weeklyTarget - model.totalStandardDrinksThisWeek)) drinks below target")
-                                } else if model.totalStandardDrinksThisWeek == weeklyTarget {
+                                if totalStandardDrinksThisWeek < weeklyTarget {
+                                    Text("\(Formatter.formatDecimal(weeklyTarget - totalStandardDrinksThisWeek)) drinks below target")
+                                } else if totalStandardDrinksThisWeek == weeklyTarget {
                                     Text("Daily target reached!")
                                 } else {
-                                    Text("\(Formatter.formatDecimal(model.totalStandardDrinksThisWeek - weeklyTarget)) drinks above target")
+                                    Text("\(Formatter.formatDecimal(totalStandardDrinksThisWeek - weeklyTarget)) drinks above target")
                                         .foregroundStyle(Color(.red))
                                         .fontWeight(.semibold)
                                 }
@@ -102,8 +127,8 @@ struct MainScreen: View {
             }
         }
         .sheet(isPresented: $showRecordCustomDrinkScreen) {
-            RecordCustomDrinkScreen {
-                model.recordDrink(DrinkRecord($0))
+            RecordCustomDrinkScreen(modelContext: modelContext) {
+                recordDrink(DrinkRecord($0))
             }
         }
         .sheet(isPresented: $showSettingsScreen) {
@@ -115,13 +140,13 @@ struct MainScreen: View {
             titleVisibility: .visible
         ) {
             Button("Record Drink") {
-                model.recordDrink(
+                recordDrink(
                     DrinkRecord(
                         standardDrinks: Double(drinkCount),
                         name: "Quick Record"
                     )
                 )
-                model.fetchDayLogs()
+                _ = dayLogs
                 drinkCount = 0
             }
             Button("Cancel", role: .cancel) { drinkCount = 0 }
@@ -145,7 +170,7 @@ struct MainScreen: View {
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                model.fetchDayLogs()
+                _ = dayLogs
             }
         }
     }
@@ -192,6 +217,15 @@ struct MainScreen: View {
         }
         .padding(.top)
     }
+    
+    private func addCatalogDrink(_ catalogDrink: CustomDrink) {
+        modelContext.insert(catalogDrink)
+    }
+    
+    private func recordDrink(_ drink: DrinkRecord) {
+        todaysLog.addDrink(drink)
+    }
+
 }
 
 //#Preview {

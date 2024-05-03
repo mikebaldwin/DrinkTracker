@@ -33,16 +33,10 @@ struct DrinkTrackerApp: App {
         }
     }()
 
-    private var model: DrinkTrackerModel
-    
     var body: some Scene {
         WindowGroup {
             MainScreen()
-                .environment(model)
         }
-    }
-    
-    init() {
-        model = DrinkTrackerModel(context: sharedModelContainer.mainContext)
+        .modelContainer(sharedModelContainer)
     }
 }

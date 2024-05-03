@@ -11,17 +11,23 @@ import SwiftData
 struct RecordCustomDrinkScreen: View {
     var completion: ((CustomDrink) -> Void)?
     
-    @Environment(DrinkTrackerModel.self) private var model
     @Environment(\.dismiss) private var dismiss
+    
+    @Query(
+        sort: \CustomDrink.name,
+        order: .forward
+    ) var customDrinks: [CustomDrink]
     
     @State private var showConfirmation = false
     @State private var showCustomDrinksEditor = false
     @State private var selectedDrink: CustomDrink?
     
+    private var modelContext: ModelContext
+    
     var body: some View {
         NavigationStack {
             List {
-                ForEach(model.customDrinks) { drink in
+                ForEach(customDrinks) { drink in
                     Button {
                         selectedDrink = drink
                         showConfirmation = true
@@ -51,8 +57,7 @@ struct RecordCustomDrinkScreen: View {
             }
             .sheet(isPresented: $showCustomDrinksEditor) {
                 CreateCustomDrinkScreen {
-                    model.addCatalogDrink($0)
-                    model.fetchDayLogs()
+                    modelContext.insert($0)
                 }
             }
             .confirmationDialog(
@@ -69,12 +74,14 @@ struct RecordCustomDrinkScreen: View {
                 Button("Cancel", role: .cancel) { dismiss() }
             }
         }
-        .onAppear {
-            model.fetchCustomDrinks()
-        }
+    }
+    
+    init(modelContext: ModelContext, completion: ((CustomDrink) -> Void)?) {
+        self.modelContext = modelContext
+        self.completion = completion
     }
 }
 
-#Preview {
-    RecordCustomDrinkScreen()
-}
+//#Preview {
+//    RecordCustomDrinkScreen(modelContext: ModelContext(<#ModelContainer#>))
+//}
