@@ -36,9 +36,12 @@ struct MainScreen: View {
             return dayLog
         }
     }
+    private var thisWeeksLogs: [DayLog] {
+        dayLogs.filter { $0.date >= DateMath.startOfWeek && $0.date < DateMath.endOfWeek }
+    }
     private var totalStandardDrinksToday: Double { todaysLog.totalDrinks }
     private var totalStandardDrinksThisWeek: Double {
-        dayLogs.reduce(into: 0.0) { partialResult, dayLog in
+        thisWeeksLogs.reduce(into: 0.0) { partialResult, dayLog in
             partialResult += dayLog.totalDrinks
         }
     }
@@ -48,7 +51,7 @@ struct MainScreen: View {
             Form {
                 Section("Drinks") {
                     ChartView(
-                        dayLogs: dayLogs,
+                        dayLogs: thisWeeksLogs,
                         totalStandardDrinksToday: totalStandardDrinksToday,
                         totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
                     )
