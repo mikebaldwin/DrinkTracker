@@ -32,7 +32,12 @@ struct RecordCustomDrinkScreen: View {
                         selectedDrink = drink
                         showConfirmation = true
                     } label: {
-                        Text(drink.name)
+                        HStack {
+                            Text(drink.name)
+                            Spacer()
+                            Text(Formatter.formatDecimal(drink.standardDrinks))
+                        }
+                        .foregroundStyle(Color.black)
                     }
                 }
             }

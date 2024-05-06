@@ -12,6 +12,9 @@
 		CE3DACED2BDFE62000BB52EA /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DACEC2BDFE62000BB52EA /* SettingsScreen.swift */; };
 		CE3ECA272BE539E10046E242 /* DateMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3ECA262BE539E10046E242 /* DateMath.swift */; };
 		CE3ECA2B2BE91F6C0046E242 /* ModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3ECA2A2BE91F6C0046E242 /* ModelContainer.swift */; };
+		CE3ECA2D2BE92BBF0046E242 /* DrinkCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3ECA2C2BE92BBF0046E242 /* DrinkCalculator.swift */; };
+		CE3ECA2F2BE92BD30046E242 /* DrinkCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3ECA2E2BE92BD30046E242 /* DrinkCalculatorTests.swift */; };
+		CE3ECA312BE956BB0046E242 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3ECA302BE956BB0046E242 /* Ingredient.swift */; };
 		CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */; };
 		CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169962BD97FB10028D64A /* MainScreen.swift */; };
 		CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169982BD97FB10028D64A /* DrinkRecord.swift */; };
@@ -51,6 +54,9 @@
 		CE3DACEC2BDFE62000BB52EA /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		CE3ECA262BE539E10046E242 /* DateMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateMath.swift; sourceTree = "<group>"; };
 		CE3ECA2A2BE91F6C0046E242 /* ModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContainer.swift; sourceTree = "<group>"; };
+		CE3ECA2C2BE92BBF0046E242 /* DrinkCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCalculator.swift; sourceTree = "<group>"; };
+		CE3ECA2E2BE92BD30046E242 /* DrinkCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCalculatorTests.swift; sourceTree = "<group>"; };
+		CE3ECA302BE956BB0046E242 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
 		CE4169912BD97FB10028D64A /* DrinkTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerApp.swift; sourceTree = "<group>"; };
 		CE4169962BD97FB10028D64A /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
@@ -109,6 +115,7 @@
 		CE3DACE72BDFD57A00BB52EA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				CE3ECA2C2BE92BBF0046E242 /* DrinkCalculator.swift */,
 				CE3DACE82BDFD59100BB52EA /* Formatter.swift */,
 			);
 			path = Utilities;
@@ -166,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				CE4169A72BD97FB30028D64A /* DrinkTrackerTests.swift */,
+				CE3ECA2E2BE92BD30046E242 /* DrinkCalculatorTests.swift */,
 			);
 			path = DrinkTrackerTests;
 			sourceTree = "<group>";
@@ -185,6 +193,7 @@
 				CE4169982BD97FB10028D64A /* DrinkRecord.swift */,
 				CE4169C42BD984C40028D64A /* CustomDrink.swift */,
 				CEB911C52BDC241100224660 /* DayLog.swift */,
+				CE3ECA302BE956BB0046E242 /* Ingredient.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -328,6 +337,7 @@
 			files = (
 				CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */,
 				CEB911C62BDC241100224660 /* DayLog.swift in Sources */,
+				CE3ECA312BE956BB0046E242 /* Ingredient.swift in Sources */,
 				CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */,
 				CE3DACE92BDFD59100BB52EA /* Formatter.swift in Sources */,
 				CE3ECA272BE539E10046E242 /* DateMath.swift in Sources */,
@@ -335,6 +345,7 @@
 				CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */,
 				CE3ECA2B2BE91F6C0046E242 /* ModelContainer.swift in Sources */,
 				CE3DACED2BDFE62000BB52EA /* SettingsScreen.swift in Sources */,
+				CE3ECA2D2BE92BBF0046E242 /* DrinkCalculator.swift in Sources */,
 				CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */,
 				CEB911BF2BDAA73300224660 /* RecordCustomDrinkScreen.swift in Sources */,
 				CE3DACE62BDFD49A00BB52EA /* ChartView.swift in Sources */,
@@ -345,6 +356,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE3ECA2F2BE92BD30046E242 /* DrinkCalculatorTests.swift in Sources */,
 				CE4169A82BD97FB30028D64A /* DrinkTrackerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
