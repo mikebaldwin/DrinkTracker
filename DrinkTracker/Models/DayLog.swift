@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 final class DayLog {
-    let date = Date()
+    private(set) var date = Date()
     
     @Relationship(deleteRule: .cascade, inverse: \DrinkRecord.dayLog?)
     private(set) var drinks: [DrinkRecord]? = [DrinkRecord]()
@@ -20,9 +20,13 @@ final class DayLog {
         drinks!.reduce(into: 0.0) { $0 += $1.standardDrinks }
     }
     
-    init() { }
+    init(date: Date? = Date()) { }
     
     func addDrink(_ drink: DrinkRecord) {
         drinks!.append(drink)
+    }
+    
+    func addDrinks(_ drinks: [DrinkRecord]) {
+        drinks.forEach { self.drinks!.append($0) }
     }
 }

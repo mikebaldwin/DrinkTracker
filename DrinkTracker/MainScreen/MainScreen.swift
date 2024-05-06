@@ -231,6 +231,7 @@ struct MainScreen: View {
 
 }
 
-//#Preview {
-//    MainScreen()
-//}
+#Preview {
+    MainScreen()
+        .modelContainer(previewContainer)
+}
