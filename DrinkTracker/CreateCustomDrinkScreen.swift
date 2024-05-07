@@ -13,7 +13,6 @@ struct CreateCustomDrinkScreen: View {
     @Environment(\.dismiss) private var dismiss
     @State private var nameText = ""
     @State private var ingredients = [Ingredient]()
-    @State private var showRemoveIngredientConfirmation = false
     @State private var showDrinkEntryAlert = false
     @State private var totalStandardDrinks = 0.0
     
@@ -44,39 +43,25 @@ struct CreateCustomDrinkScreen: View {
                                 Text("ABV: \(ingredient.abv.wrappedValue)")
                             }
                         }
+                        .onDelete { offsets in
+                            if let first = offsets.first {
+                                ingredients.remove(at: first)
+                                updateTotalStandardDrinks()
+                            }
+                        }
                     }
                 }
                 
                 // Ingredient control section
                 Section {
-                    GeometryReader { geometry in
-                        HStack {
-                            Button {
-                                showDrinkEntryAlert = true
-                            } label: {
-                                Text("Add Ingredient")
-                                    .frame(maxWidth: .infinity)
-                            }
+                    HStack {
+                        Button {
+                            showDrinkEntryAlert = true
+                        } label: {
+                            Text("Add Ingredient")
+                                .frame(maxWidth: .infinity)
                         }
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                    }
-                    GeometryReader { geometry in
-                        HStack {
-                            Button(role: .destructive) {
-                                if let ingredient = ingredients.last, ingredient.isEmpty {
-                                    withAnimation {
-                                        _ = ingredients.popLast()
-                                    }
-                                } else {
-                                    showRemoveIngredientConfirmation = true
-                                }
-                            } label: {
-                                Text("Remove ingredient")
-                                    .frame(maxWidth: .infinity)
-                            }
-                            .disabled(ingredients.count < 2)
-                        }
-                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .frame(maxWidth: .infinity)
                     }
                 }
             }
@@ -107,18 +92,6 @@ struct CreateCustomDrinkScreen: View {
                     }
                 }
             }
-            .confirmationDialog(
-                "Remove this ingredient?",
-                isPresented: $showRemoveIngredientConfirmation,
-                titleVisibility: .visible
-            ) {
-                Button("Remove", role: .destructive) {
-                    withAnimation {
-                        _ = ingredients.popLast()
-                    }
-                }
-                Button("Cancel", role: .cancel) { }
-            }
         }
         .alert("Enter drink details", isPresented: $showDrinkEntryAlert) {
             TextField("", text: $newVolume, prompt: Text("Volume"))
@@ -138,15 +111,14 @@ struct CreateCustomDrinkScreen: View {
         }
     }
     
-    private func calculateStandardDrinks(_ ingredients: [Ingredient]) -> Double {
-        let result = DrinkCalculator().calculateStandardDrinks(ingredients)
-        return result
+    private func updateTotalStandardDrinks() {
+        totalStandardDrinks = DrinkCalculator().calculateStandardDrinks(ingredients)
     }
     
     private func addIngredient(_ ingredient: Ingredient) {
         withAnimation {
             ingredients.append(ingredient)
-            totalStandardDrinks = calculateStandardDrinks(ingredients)
+            updateTotalStandardDrinks()
         }
     }
 }
