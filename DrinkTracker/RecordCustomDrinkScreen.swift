@@ -41,7 +41,7 @@ struct RecordCustomDrinkScreen: View {
                     }
                 }
             }
-            .navigationTitle("Which drink?")
+            .navigationTitle("Whatcha drinkin?")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
