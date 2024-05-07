@@ -14,34 +14,45 @@ struct CreateCustomDrinkScreen: View {
     @State private var nameText = ""
     @State private var ingredients = [Ingredient]()
     @State private var showRemoveIngredientConfirmation = false
+    @State private var showDrinkEntryAlert = false
     @State private var totalStandardDrinks = 0.0
+    
+    @State private var newVolume = ""
+    @State private var newAbv = ""
     
     var body: some View {
         NavigationStack {
             Form {
+                // Drink name section
                 Section {
                     TextField("Drink Name", text: $nameText)
-                    HStack {
-                        Text("Standard drinks ")
-                        Spacer()
-                        Text(Formatter.formatDecimal(totalStandardDrinks))
+                    if totalStandardDrinks > 0 {
+                        Text("\(Formatter.formatDecimal(totalStandardDrinks)) standard drinks")
+                    } else {
+                        Text("Add ingredients to calculate standard drinks")
+                            .foregroundStyle(Color.gray)
                     }
                 }
-                ForEach($ingredients) { ingredient in
-                    Section("Ingredient") {
-                        TextField("Volume", text: ingredient.volume)
-                            .keyboardType(.decimalPad)
-                        TextField("ABV", text: ingredient.abv)
-                            .keyboardType(.decimalPad)
+                
+                // Ingredients entry section
+                if !ingredients.isEmpty {
+                    Section("Ingredients") {
+                        ForEach($ingredients) { ingredient in
+                            HStack {
+                                Text("Volume: \(ingredient.volume.wrappedValue)")
+                                Spacer()
+                                Text("ABV: \(ingredient.abv.wrappedValue)")
+                            }
+                        }
                     }
                 }
+                
+                // Ingredient control section
                 Section {
                     GeometryReader { geometry in
                         HStack {
                             Button {
-                                withAnimation {
-                                    addIngredient(Ingredient(volume: "", abv: ""))
-                                }
+                                showDrinkEntryAlert = true
                             } label: {
                                 Text("Add Ingredient")
                                     .frame(maxWidth: .infinity)
@@ -109,20 +120,34 @@ struct CreateCustomDrinkScreen: View {
                 Button("Cancel", role: .cancel) { }
             }
         }
-        .onAppear {
-            ingredients.append(Ingredient(volume: "", abv: ""))
+        .alert("Enter drink details", isPresented: $showDrinkEntryAlert) {
+            TextField("", text: $newVolume, prompt: Text("Volume"))
+                .keyboardType(.decimalPad)
+            TextField("", text: $newAbv, prompt: Text("ABV"))
+                .keyboardType(.decimalPad)
+            
+            Button("Cancel", role: .cancel) {
+                showDrinkEntryAlert = false
+            }
+            Button("Done") {
+                addIngredient(Ingredient(volume: newVolume, abv: newAbv))
+                showDrinkEntryAlert = false
+                newVolume = ""
+                newAbv = ""
+            }
         }
     }
     
     private func calculateStandardDrinks(_ ingredients: [Ingredient]) -> Double {
-        let result = DrinkCalculator()
-            .calculateStandardDrinks(ingredients.filter { !$0.isEmpty })
+        let result = DrinkCalculator().calculateStandardDrinks(ingredients)
         return result
     }
     
     private func addIngredient(_ ingredient: Ingredient) {
-        ingredients.append(ingredient)
-        totalStandardDrinks = calculateStandardDrinks(ingredients)
+        withAnimation {
+            ingredients.append(ingredient)
+            totalStandardDrinks = calculateStandardDrinks(ingredients)
+        }
     }
 }
 
