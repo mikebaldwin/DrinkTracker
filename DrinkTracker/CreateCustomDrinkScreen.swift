@@ -27,9 +27,6 @@ struct CreateCustomDrinkScreen: View {
                     TextField("Drink Name", text: $nameText)
                     if totalStandardDrinks > 0 {
                         Text("\(Formatter.formatDecimal(totalStandardDrinks)) standard drinks")
-                    } else {
-                        Text("Add ingredients to calculate standard drinks")
-                            .foregroundStyle(Color.gray)
                     }
                 }
                 
