@@ -12,21 +12,26 @@ struct CreateCustomDrinkScreen: View {
     
     @Environment(\.dismiss) private var dismiss
     @State private var nameText = ""
-    @State private var standardDrinks = ""
     @State private var ingredients = [Ingredient]()
     @State private var showRemoveIngredientConfirmation = false
+    @State private var totalStandardDrinks = 0.0
     
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     TextField("Drink Name", text: $nameText)
+                    HStack {
+                        Text("Standard drinks ")
+                        Spacer()
+                        Text(Formatter.formatDecimal(totalStandardDrinks))
+                    }
                 }
-                ForEach($ingredients) { component in
+                ForEach($ingredients) { ingredient in
                     Section("Ingredient") {
-                        TextField("Volume", text: component.volume)
+                        TextField("Volume", text: ingredient.volume)
                             .keyboardType(.decimalPad)
-                        TextField("ABV", text: component.abv)
+                        TextField("ABV", text: ingredient.abv)
                             .keyboardType(.decimalPad)
                     }
                 }
@@ -35,7 +40,7 @@ struct CreateCustomDrinkScreen: View {
                         HStack {
                             Button {
                                 withAnimation {
-                                    ingredients.append(Ingredient(volume: "", abv: ""))
+                                    addIngredient(Ingredient(volume: "", abv: ""))
                                 }
                             } label: {
                                 Text("Add Ingredient")
@@ -81,7 +86,7 @@ struct CreateCustomDrinkScreen: View {
                             completion(
                                 CustomDrink(
                                     name: nameText,
-                                    standardDrinks: calculateStandardDrinks(ingredients)
+                                    standardDrinks: totalStandardDrinks
                                 )
                             )
                         }
@@ -113,6 +118,11 @@ struct CreateCustomDrinkScreen: View {
         let result = DrinkCalculator()
             .calculateStandardDrinks(ingredients.filter { !$0.isEmpty })
         return result
+    }
+    
+    private func addIngredient(_ ingredient: Ingredient) {
+        ingredients.append(ingredient)
+        totalStandardDrinks = calculateStandardDrinks(ingredients)
     }
 }
 
