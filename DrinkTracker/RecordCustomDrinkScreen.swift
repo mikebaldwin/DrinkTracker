@@ -40,6 +40,11 @@ struct RecordCustomDrinkScreen: View {
                         .foregroundStyle(Color.black)
                     }
                 }
+                .onDelete { offsets in
+                    if let first = offsets.first {
+                        modelContext.delete(customDrinks[first])
+                    }
+                }
             }
             .navigationTitle("Whatcha drinkin?")
             .toolbar {
