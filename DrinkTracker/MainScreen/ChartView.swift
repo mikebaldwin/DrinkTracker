@@ -17,26 +17,30 @@ struct ChartView: View {
     
     var body: some View {
         VStack {
-            HStack(alignment: .firstTextBaseline) {
-                Image(systemName: "wineglass.fill")
-                    .fontWeight(.bold)
-                    .foregroundStyle(.blue)
-                
-                Text("Today: " + Formatter.formatDecimal(totalStandardDrinksToday))
-                    .font(.body)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.blue)
-
-                Spacer()
-                
-                Text("This week: " + Formatter.formatDecimal(totalStandardDrinksThisWeek))
-                    .font(.body)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.blue)
-                
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundStyle(.gray)
+            NavigationLink {
+                DayLogHistoryScreen()
+            } label: {
+                HStack(alignment: .firstTextBaseline) {
+                    Image(systemName: "wineglass.fill")
+                        .fontWeight(.bold)
+                        .foregroundStyle(.blue)
+                    
+                    Text("Today: " + Formatter.formatDecimal(totalStandardDrinksToday))
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.blue)
+                    
+                    Spacer()
+                    
+                    Text("This week: " + Formatter.formatDecimal(totalStandardDrinksThisWeek))
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.blue)
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(.gray)
+                }
             }
             .padding(
                 EdgeInsets(

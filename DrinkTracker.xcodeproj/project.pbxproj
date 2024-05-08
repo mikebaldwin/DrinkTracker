@@ -29,6 +29,7 @@
 		CEB911BF2BDAA73300224660 /* RecordCustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */; };
 		CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CEB911C12BDAAD1E00224660 /* Utilities */; };
 		CEB911C62BDC241100224660 /* DayLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911C52BDC241100224660 /* DayLog.swift */; };
+		CEEDC17C2BEBAE420019DF65 /* DayLogHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
 		CEB911C42BDBF9E300224660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CEB911C52BDC241100224660 /* DayLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLog.swift; sourceTree = "<group>"; };
+		CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLogHistoryScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 				CE41699C2BD97FB30028D64A /* Preview Content */,
 				CE3DACE72BDFD57A00BB52EA /* Utilities */,
 				CE3ECA262BE539E10046E242 /* DateMath.swift */,
+				CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */,
 			);
 			path = DrinkTracker;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				CE3ECA272BE539E10046E242 /* DateMath.swift in Sources */,
 				CEB911BB2BD98A7F00224660 /* CreateCustomDrinkScreen.swift in Sources */,
 				CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */,
+				CEEDC17C2BEBAE420019DF65 /* DayLogHistoryScreen.swift in Sources */,
 				CE3ECA2B2BE91F6C0046E242 /* ModelContainer.swift in Sources */,
 				CE3DACED2BDFE62000BB52EA /* SettingsScreen.swift in Sources */,
 				CE3ECA2D2BE92BBF0046E242 /* DrinkCalculator.swift in Sources */,
