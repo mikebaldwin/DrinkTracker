@@ -29,4 +29,10 @@ final class DayLog {
     func addDrinks(_ drinks: [DrinkRecord]) {
         drinks.forEach { self.drinks!.append($0) }
     }
+    
+    func removeDrink(_ drink: DrinkRecord) {
+        if let index = drinks!.firstIndex(of: drink) {
+            drinks!.remove(at: index)
+        }
+    }
 }

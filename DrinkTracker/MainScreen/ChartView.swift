@@ -36,10 +36,6 @@ struct ChartView: View {
                         .font(.body)
                         .fontWeight(.bold)
                         .foregroundStyle(.blue)
-                    
-                    Image(systemName: "chevron.right")
-                        .font(.caption)
-                        .foregroundStyle(.gray)
                 }
             }
             .padding(

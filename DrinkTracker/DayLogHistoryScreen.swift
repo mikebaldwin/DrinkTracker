@@ -17,16 +17,31 @@ struct DayLogHistoryScreen: View {
             List {
                 ForEach(dayLogs) { dayLog in
                     Section(formatDate(dayLog.date)) {
-                        if let drinks = dayLog.drinks {
-                            if drinks.isEmpty {
-                                Spacer()
-                                Text("0")
-                            } else {
+                        if dayLog.drinks!.isEmpty {
+                            Text("Alcohol-free")
+                        } else {
+                            if let drinks = dayLog.drinks?.sorted(by: { $0.timestamp < $1.timestamp }) {
                                 ForEach(drinks) { drink in
-                                    HStack {
-                                        Text(formatTimestamp(drink.timestamp))
-                                        Spacer()
-                                        Text(Formatter.formatDecimal(drink.standardDrinks))
+                                    NavigationLink {
+                                        DrinkRecordDetailScreen(drinkRecord: drink) { drinkRecord, newDate in
+                                            if let oldDayLog = dayLogs.first(where: { oldDayLog in
+                                                Calendar.current.isDate(oldDayLog.date, inSameDayAs: drinkRecord.timestamp)
+                                            }) {
+                                                oldDayLog.removeDrink(drinkRecord)
+                                            }
+                                            if let newDayLog = dayLogs.first(where: { newDayLog in
+                                                Calendar.current.isDate(newDayLog.date, inSameDayAs: newDate)
+                                            }) {
+                                                newDayLog.addDrink(drinkRecord)
+                                                drinkRecord.timestamp = newDate
+                                            }
+                                        }
+                                    } label: {
+                                        HStack {
+                                            Text(formatTimestamp(drink.timestamp))
+                                            Spacer()
+                                            Text(Formatter.formatDecimal(drink.standardDrinks))
+                                        }
                                     }
                                 }
                             }

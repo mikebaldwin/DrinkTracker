@@ -30,6 +30,7 @@
 		CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CEB911C12BDAAD1E00224660 /* Utilities */; };
 		CEB911C62BDC241100224660 /* DayLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911C52BDC241100224660 /* DayLog.swift */; };
 		CEEDC17C2BEBAE420019DF65 /* DayLogHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */; };
+		CEEDC17E2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		CEB911C42BDBF9E300224660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CEB911C52BDC241100224660 /* DayLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLog.swift; sourceTree = "<group>"; };
 		CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLogHistoryScreen.swift; sourceTree = "<group>"; };
+		CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkRecordDetailScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 				CE3DACE72BDFD57A00BB52EA /* Utilities */,
 				CE3ECA262BE539E10046E242 /* DateMath.swift */,
 				CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */,
+				CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */,
 			);
 			path = DrinkTracker;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 			files = (
 				CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */,
 				CEB911C62BDC241100224660 /* DayLog.swift in Sources */,
+				CEEDC17E2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift in Sources */,
 				CE3ECA312BE956BB0046E242 /* Ingredient.swift in Sources */,
 				CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */,
 				CE3DACE92BDFD59100BB52EA /* Formatter.swift in Sources */,

@@ -9,8 +9,9 @@ import Foundation
 import SwiftData
 
 @Model
-final class DrinkRecord {
+final class DrinkRecord: Identifiable {
     var dayLog: DayLog?
+    let id = UUID().uuidString
     let name: String?
     let standardDrinks: Double = 0.0
     var timestamp = Date()
