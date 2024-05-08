@@ -71,7 +71,7 @@ struct DayLogHistoryScreen: View {
     private let dateFormatter = DateFormatter()
     
     private func formatDate(_ date: Date) -> String {
-        dateFormatter.dateFormat = "MMM d"
+        dateFormatter.dateFormat = "E, MMM d"
         return dateFormatter.string(from: date)
     }
     
