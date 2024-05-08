@@ -44,6 +44,14 @@ struct DayLogHistoryScreen: View {
                                         }
                                     }
                                 }
+                                if dayLog.drinks!.count > 1 {
+                                    HStack {
+                                        Text("Total")
+                                            .fontWeight(.semibold)
+                                        Spacer()
+                                        Text(Formatter.formatDecimal(dayLog.totalDrinks))
+                                    }
+                                }
                             }
                         }
                     }
