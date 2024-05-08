@@ -21,7 +21,7 @@ struct DayLogHistoryScreen: View {
                             Text("Alcohol-free")
                         } else {
                             if let drinks = dayLog.drinks?.sorted(by: { $0.timestamp < $1.timestamp }) {
-                                ForEach(drinks) { drink in
+                                ForEach(drinks, id: \.timestamp) { drink in
                                     NavigationLink {
                                         DrinkRecordDetailScreen(drinkRecord: drink) { drinkRecord, newDate in
                                             if let oldDayLog = dayLogs.first(where: { oldDayLog in
