@@ -26,13 +26,12 @@ struct MainScreen: View {
     @State private var quickEntryValue = ""
     
     private var todaysLog: DayLog {
-        if let dayLog = dayLogs.first(where: {
-            Calendar.current.isDateInToday($0.date)
-        }) {
-            return dayLog
+        if let todaysLog = dayLogs.last, Calendar.current.isDateInToday(todaysLog.date) {
+            return todaysLog
         } else {
             let dayLog = DayLog()
             modelContext.insert(dayLog)
+            try? modelContext.save()
             return dayLog
         }
     }
