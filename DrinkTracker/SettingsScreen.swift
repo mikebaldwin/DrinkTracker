@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SettingsScreen: View {
-    @AppStorage("dailyTarget") private var dailyTarget = 1.0
-    @AppStorage("weeklyTarget") private var weeklyTarget = 14.0
+    @AppStorage("dailyTarget") private var dailyTarget = 0.0
+    @AppStorage("weeklyTarget") private var weeklyTarget = 0.0
     
     @Environment(\.dismiss) private var dismiss
     
