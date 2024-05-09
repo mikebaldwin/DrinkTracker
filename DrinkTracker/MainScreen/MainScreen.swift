@@ -63,11 +63,15 @@ struct MainScreen: View {
                                     .fontWeight(.semibold)
                                 Spacer()
                                 if totalStandardDrinksToday < dailyTarget {
-                                    Text("\(Formatter.formatDecimal(dailyTarget - totalStandardDrinksToday)) drinks below target")
+                                    let drinksRemaining = dailyTarget - totalStandardDrinksToday
+                                    let noun = drinksRemaining > 1 ? "drinks" : "drink"
+                                    Text("\(Formatter.formatDecimal(drinksRemaining)) \(noun) below target")
                                 } else if totalStandardDrinksToday == dailyTarget {
                                     Text("Daily target reached!")
                                 } else {
-                                    Text("\(Formatter.formatDecimal(totalStandardDrinksToday - dailyTarget)) drinks above target")
+                                    let drinksOverTarget = totalStandardDrinksToday - dailyTarget
+                                    let noun = drinksOverTarget > 1 ? "drinks" : "drink"
+                                    Text("\(Formatter.formatDecimal(drinksOverTarget)) \(noun) above target")
                                         .foregroundStyle(Color(.red))
                                         .fontWeight(.semibold)
                                 }
