@@ -44,6 +44,13 @@ struct DayLogHistoryScreen: View {
                                         }
                                     }
                                 }
+                                .onDelete { offsets in
+                                    if let index = offsets.first {
+                                        let drinkRecord = drinks[index]
+                                        dayLog.removeDrink(drinkRecord)
+                                        modelContext.delete(drinkRecord)
+                                    }
+                                }
                                 if dayLog.drinks!.count > 1 {
                                     HStack {
                                         Text("Total")
@@ -53,13 +60,6 @@ struct DayLogHistoryScreen: View {
                                     }
                                 }
                             }
-                        }
-                    }
-                }
-                .onDelete { offsets in
-                    if let first = offsets.first {
-                        withAnimation {
-                            modelContext.delete(dayLogs[first])
                         }
                     }
                 }
