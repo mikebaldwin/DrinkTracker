@@ -13,7 +13,7 @@ final class DrinkRecord: Identifiable {
     var dayLog: DayLog?
     let id = UUID().uuidString
     let name: String?
-    let standardDrinks: Double = 0.0
+    var standardDrinks: Double = 0.0
     var timestamp = Date()
     
     init(standardDrinks: Double, name: String?) {
