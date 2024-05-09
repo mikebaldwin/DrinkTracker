@@ -188,7 +188,7 @@ struct MainScreen: View {
             Button {
                 if drinkCount > 0 {
                     withAnimation {
-                        drinkCount -= 0.5
+                        drinkCount -= 1.0
                     }
                     debugPrint("decrement drinkCount")
                 }
@@ -210,7 +210,7 @@ struct MainScreen: View {
             
             Button {
                 withAnimation {
-                    drinkCount += 0.5
+                    drinkCount += 1.0
                 }
                 debugPrint("increment drinkCount")
             } label: {
