@@ -9,6 +9,9 @@ import Charts
 import SwiftUI
 
 struct ChartView: View {
+    @AppStorage("dailyTarget") private var dailyTarget: Double?
+    @AppStorage("weeklyTarget") private var weeklyTarget: Double?
+
     private var dayLogs: [DayLog]
     private var totalStandardDrinksToday: Double
     private var totalStandardDrinksThisWeek: Double
@@ -65,6 +68,7 @@ struct ChartView: View {
                         x: .value("Day", day),
                         y: .value("Drinks", totalDrinks)
                     )
+                    .foregroundStyle(colorFor(totalDrinks: totalDrinks))
                 }
             }
             .chartXAxis {
@@ -84,6 +88,25 @@ struct ChartView: View {
         self.dayLogs = dayLogs
         self.totalStandardDrinksToday = totalStandardDrinksToday
         self.totalStandardDrinksThisWeek = totalStandardDrinksThisWeek
+    }
+    
+    private func colorFor(totalDrinks: Double) -> Color {
+        guard let dailyTarget else { return .blue }
+        
+        let inGreenZone = totalDrinks < dailyTarget - 0.6
+        let inYellowZone = totalDrinks > dailyTarget - 0.6 && totalDrinks < dailyTarget
+        let inRedZone = totalDrinks >= dailyTarget
+        
+        switch totalDrinks {
+        case _ where inGreenZone:
+            return .green
+        case _ where inYellowZone:
+            return .yellow
+        case _ where inRedZone:
+            return .red
+        default:
+            return .blue
+        }
     }
 }
 
