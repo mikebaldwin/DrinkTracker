@@ -69,6 +69,11 @@ struct ChartView: View {
                         y: .value("Drinks", totalDrinks)
                     )
                     .foregroundStyle(colorFor(totalDrinks: totalDrinks))
+                    
+                    if let dailyTarget, shouldShowRuleMark() {
+                        RuleMark(y: .value("Daily Target", dailyTarget))
+                            .foregroundStyle(.red)
+                    }
                 }
             }
             .chartXAxis {
@@ -107,6 +112,14 @@ struct ChartView: View {
         default:
             return .blue
         }
+    }
+    
+    private func shouldShowRuleMark() -> Bool {
+        guard let dailyTarget else { return false }
+        for dayLog in dayLogs where dayLog.totalDrinks > dailyTarget {
+            return true
+        }
+        return false
     }
 }
 
