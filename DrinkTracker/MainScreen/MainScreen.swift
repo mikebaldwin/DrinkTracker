@@ -6,6 +6,7 @@
 //
 
 import Charts
+import HealthKitUI
 import SwiftData
 import SwiftUI
 
@@ -15,6 +16,7 @@ struct MainScreen: View {
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(HealthStoreManager.self) private var healthStoreManager
     
     @Query(sort: [SortDescriptor(\DayLog.date)]) private var dayLogs: [DayLog]
     
@@ -149,7 +151,7 @@ struct MainScreen: View {
                 recordDrink(
                     DrinkRecord(
                         standardDrinks: Double(drinkCount),
-                        name: "Quick Record"
+                        name: "Untitled Drink"
                     )
                 )
                 _ = dayLogs
@@ -230,6 +232,17 @@ struct MainScreen: View {
     
     private func recordDrink(_ drink: DrinkRecord) {
         todaysLog.addDrink(drink)
+        Task {
+            do {
+                try await healthStoreManager.save(
+                    standardDrinks: drink.standardDrinks,
+                    for: drink.timestamp
+                )
+                debugPrint("✅ Drink saved to HealthKit on \(drink.timestamp)")
+            } catch {
+                debugPrint("🛑 Failed to save drink to HealthKit: \(error.localizedDescription)")
+            }
+        }
     }
 
 }

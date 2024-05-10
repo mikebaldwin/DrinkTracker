@@ -7,9 +7,12 @@
 
 import SwiftUI
 import SwiftData
+import HealthKitUI
 
 @main
 struct DrinkTrackerApp: App {
+    @State private var trigger = false
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             DayLog.self,
@@ -32,11 +35,35 @@ struct DrinkTrackerApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
     var body: some Scene {
         WindowGroup {
             MainScreen()
+                .onAppear() {
+                    if HKHealthStore.isHealthDataAvailable() {
+                        trigger.toggle()
+                    }
+                }
+                .healthDataAccessRequest(
+                    store: healthStoreManager.healthStore,
+                    shareTypes: allTypes,
+                    readTypes: allTypes,
+                    trigger: trigger
+                ) { result in
+                    switch result {
+                    case .success(_):
+                        // authorized
+                        break
+                    case .failure(let error):
+                        // Handle the error here.
+                        fatalError("*** An error occurred while requesting authentication: \(error) ***")
+                    }
+                }
         }
         .modelContainer(sharedModelContainer)
+        .environment(healthStoreManager)
     }
+    
+    private let healthStoreManager = HealthStoreManager()
+    private let allTypes: Set = [HKQuantityType(.numberOfAlcoholicBeverages)]
 }

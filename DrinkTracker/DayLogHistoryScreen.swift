@@ -9,6 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct DayLogHistoryScreen: View {
+    @Environment(HealthStoreManager.self) private var healthStoreManager
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \DayLog.date, order: .reverse) var dayLogs: [DayLog]
     
@@ -24,27 +25,7 @@ struct DayLogHistoryScreen: View {
                                 ForEach(drinks, id: \.timestamp) { drink in
                                     NavigationLink {
                                         DrinkRecordDetailScreen(drinkRecord: drink) { drinkRecord, newDate in
-                                            // grab the old date now for updating healthkit later
-                                            let oldDate = drinkRecord.timestamp
-                                            // Remove drink from its original dayLog
-                                            if let oldDayLog = dayLogs.first(where: { oldDayLog in
-                                                Calendar.current.isDate(oldDayLog.date, inSameDayAs: oldDate)
-                                            }) {
-                                                oldDayLog.removeDrink(drinkRecord)
-                                            }
-                                            // Add drink to its new dayLog
-                                            if let newDayLog = dayLogs.first(where: { newDayLog in
-                                                Calendar.current.isDate(newDayLog.date, inSameDayAs: newDate)
-                                            }) {
-                                                newDayLog.addDrink(drinkRecord)
-                                                drinkRecord.timestamp = newDate
-                                            } else {
-                                                // Daylog wasn't found, so create it
-                                                let newDayLog = DayLog(date: Calendar.current.startOfDay(for: newDate))
-                                                newDayLog.addDrink(drinkRecord)
-                                                drinkRecord.timestamp = newDate
-                                            }
-                                            }
+                                            update(drinkRecord, with: newDate)
                                         }
                                     } label: {
                                         HStack {
@@ -55,11 +36,7 @@ struct DayLogHistoryScreen: View {
                                     }
                                 }
                                 .onDelete { offsets in
-                                    if let index = offsets.first {
-                                        let drinkRecord = drinks[index]
-                                        dayLog.removeDrink(drinkRecord)
-                                        modelContext.delete(drinkRecord)
-                                    }
+                                    delete(from: drinks, at: offsets, in: dayLog)
                                 }
                                 if dayLog.drinks!.count > 1 {
                                     HStack {
@@ -88,6 +65,58 @@ struct DayLogHistoryScreen: View {
     private func formatTimestamp(_ date: Date) -> String {
         dateFormatter.dateFormat = "h:mm a"
         return dateFormatter.string(from: date)
+    }
+    
+    private func update(_ drinkRecord: DrinkRecord, with newDate: Date) {
+        // grab the old date now for updating healthkit later
+        let oldDate = drinkRecord.timestamp
+        // Remove drink from its original dayLog
+        if let oldDayLog = dayLogs.first(where: { oldDayLog in
+            Calendar.current.isDate(oldDayLog.date, inSameDayAs: oldDate)
+        }) {
+            oldDayLog.removeDrink(drinkRecord)
+        }
+        // Add drink to its new dayLog
+        if let newDayLog = dayLogs.first(where: { newDayLog in
+            Calendar.current.isDate(newDayLog.date, inSameDayAs: newDate)
+        }) {
+            newDayLog.addDrink(drinkRecord)
+            drinkRecord.timestamp = newDate
+        } else {
+            // Daylog wasn't found, so create it
+            let newDayLog = DayLog(date: Calendar.current.startOfDay(for: newDate))
+            newDayLog.addDrink(drinkRecord)
+            drinkRecord.timestamp = newDate
+        }
+        // Update in healthkit
+        Task {
+            do {
+                try await healthStoreManager.updateAlcoholicBeverageDate(
+                    forDate: oldDate,
+                    newDate: newDate
+                )
+                debugPrint("✅ Date reassigned in HealthKit!")
+            } catch {
+                debugPrint("🛑 Failed to assign drink to new day: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func delete(from drinks: [DrinkRecord], at offsets: IndexSet, in dayLog: DayLog) {
+        if let index = offsets.first {
+            let drinkRecord = drinks[index]
+            dayLog.removeDrink(drinkRecord)
+            modelContext.delete(drinkRecord)
+            
+            Task {
+                do {
+                    try await healthStoreManager.deleteAlcoholicBeverage(for: drinkRecord.timestamp)
+                    debugPrint("✅ Deleted from HealthKit!")
+                } catch {
+                    debugPrint("🛑 Failed to delete from HealthKit: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }
 
