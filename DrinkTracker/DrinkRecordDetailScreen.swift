@@ -12,6 +12,7 @@ struct DrinkRecordDetailScreen: View {
     
     var drinkRecord: DrinkRecord
     @State var date: Date
+    @State var newName = ""
     
     private let dateRange: ClosedRange<Date> = {
         let calendar = Calendar.current
@@ -27,17 +28,21 @@ struct DrinkRecordDetailScreen: View {
         NavigationStack {
             Form {
                 Section {
-                        Button {
-                            quickEntryValue = Formatter.formatDecimal(drinkRecord.standardDrinks)
-                            showDrinkQuantityAlert = true
-                        } label: {
-                            HStack {
-                                Text("Standard Drinks")
-                                Spacer()
-                                Text(Formatter.formatDecimal(drinkRecord.standardDrinks))
-                            }
+                    TextField(drinkRecord.name, text: $newName)
+                        .onChange(of: newName) {
+                            drinkRecord.name = newName
                         }
-                        .buttonStyle(PlainButtonStyle())
+                    Button {
+                        quickEntryValue = Formatter.formatDecimal(drinkRecord.standardDrinks)
+                        showDrinkQuantityAlert = true
+                    } label: {
+                        HStack {
+                            Text("Standard Drinks")
+                            Spacer()
+                            Text(Formatter.formatDecimal(drinkRecord.standardDrinks))
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
                     HStack {
                         DatePicker(
                             "Date",
