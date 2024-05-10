@@ -19,6 +19,10 @@ struct CreateCustomDrinkScreen: View {
     @State private var newVolume = ""
     @State private var newAbv = ""
     
+    private var isValid: Bool {
+        !nameText.isEmpty && !ingredients.isEmpty
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -71,8 +75,6 @@ struct CreateCustomDrinkScreen: View {
                         Text("Cancel")
                     }
                 }
-            }
-            .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         if let completion {
@@ -87,6 +89,7 @@ struct CreateCustomDrinkScreen: View {
                     }) {
                         Text("Done")
                     }
+                    .disabled(!isValid)
                 }
             }
         }
