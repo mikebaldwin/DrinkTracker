@@ -24,16 +24,26 @@ struct DayLogHistoryScreen: View {
                                 ForEach(drinks, id: \.timestamp) { drink in
                                     NavigationLink {
                                         DrinkRecordDetailScreen(drinkRecord: drink) { drinkRecord, newDate in
+                                            // grab the old date now for updating healthkit later
+                                            let oldDate = drinkRecord.timestamp
+                                            // Remove drink from its original dayLog
                                             if let oldDayLog = dayLogs.first(where: { oldDayLog in
-                                                Calendar.current.isDate(oldDayLog.date, inSameDayAs: drinkRecord.timestamp)
+                                                Calendar.current.isDate(oldDayLog.date, inSameDayAs: oldDate)
                                             }) {
                                                 oldDayLog.removeDrink(drinkRecord)
                                             }
+                                            // Add drink to its new dayLog
                                             if let newDayLog = dayLogs.first(where: { newDayLog in
                                                 Calendar.current.isDate(newDayLog.date, inSameDayAs: newDate)
                                             }) {
                                                 newDayLog.addDrink(drinkRecord)
                                                 drinkRecord.timestamp = newDate
+                                            } else {
+                                                // Daylog wasn't found, so create it
+                                                let newDayLog = DayLog(date: Calendar.current.startOfDay(for: newDate))
+                                                newDayLog.addDrink(drinkRecord)
+                                                drinkRecord.timestamp = newDate
+                                            }
                                             }
                                         }
                                     } label: {
