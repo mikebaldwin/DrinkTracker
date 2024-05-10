@@ -29,7 +29,11 @@ struct DayLogHistoryScreen: View {
                                         }
                                     } label: {
                                         HStack {
-                                            Text(formatTimestamp(drink.timestamp))
+                                            VStack(alignment: .leading) {
+                                                Text(drink.name)
+                                                    .font(.footnote)
+                                                Text(formatTimestamp(drink.timestamp))
+                                            }
                                             Spacer()
                                             Text(Formatter.formatDecimal(drink.standardDrinks))
                                         }

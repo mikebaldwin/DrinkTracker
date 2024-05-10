@@ -12,11 +12,11 @@ import SwiftData
 final class DrinkRecord: Identifiable {
     var dayLog: DayLog?
     let id = UUID().uuidString
-    let name: String?
+    let name: String!
     var standardDrinks: Double = 0.0
     var timestamp = Date()
     
-    init(standardDrinks: Double, name: String?) {
+    init(standardDrinks: Double, name: String) {
         self.standardDrinks = standardDrinks
         self.name = name
     }
