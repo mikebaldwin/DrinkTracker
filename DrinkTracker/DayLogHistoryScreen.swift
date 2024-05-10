@@ -18,7 +18,7 @@ struct DayLogHistoryScreen: View {
             List {
                 ForEach(dayLogs) { dayLog in
                     Section(formatDate(dayLog.date)) {
-                        if dayLog.drinks!.isEmpty {
+                        if dayLog.drinks.isEmpty {
                             Text("Alcohol-free")
                         } else {
                             if let drinks = dayLog.drinks?.sorted(by: { $0.timestamp < $1.timestamp }) {
@@ -42,7 +42,7 @@ struct DayLogHistoryScreen: View {
                                 .onDelete { offsets in
                                     delete(from: drinks, at: offsets, in: dayLog)
                                 }
-                                if dayLog.drinks!.count > 1 {
+                                if dayLog.drinks.count > 1 {
                                     HStack {
                                         Text("Total")
                                             .fontWeight(.semibold)
