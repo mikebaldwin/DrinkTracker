@@ -41,7 +41,7 @@ struct CreateCustomDrinkScreen: View {
                             HStack {
                                 Text("Volume: \(ingredient.volume.wrappedValue)")
                                 Spacer()
-                                Text("ABV: \(ingredient.abv.wrappedValue)")
+                                Text("ABV: \(ingredient.abv.wrappedValue)%")
                             }
                         }
                         .onDelete { offsets in
