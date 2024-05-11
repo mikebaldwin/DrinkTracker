@@ -108,6 +108,7 @@ struct MainScreen: View {
                             } label: {
                                 Text("Record Drink")
                             }
+                            .disabled(drinkCount < 1)
                             Spacer()
                         }
                     }
@@ -192,7 +193,6 @@ struct MainScreen: View {
                     withAnimation {
                         drinkCount -= 1.0
                     }
-                    debugPrint("decrement drinkCount")
                 }
             } label: {
                 Image(systemName: "minus.circle")
@@ -214,7 +214,6 @@ struct MainScreen: View {
                 withAnimation {
                     drinkCount += 1.0
                 }
-                debugPrint("increment drinkCount")
             } label: {
                 Image(systemName: "plus.circle")
                     .font(.largeTitle)
