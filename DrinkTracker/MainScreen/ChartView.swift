@@ -68,8 +68,8 @@ struct ChartView: View {
                         x: .value("Day", day),
                         y: .value("Drinks", totalDrinks)
                     )
-                    .foregroundStyle(colorFor(totalDrinks: totalDrinks))
-                    
+                    .foregroundStyle(gradientColorFor(totalDrinks: totalDrinks))
+
                     if let dailyTarget, shouldShowRuleMark() {
                         RuleMark(y: .value("Daily Target", dailyTarget))
                             .foregroundStyle(.red)
@@ -95,22 +95,43 @@ struct ChartView: View {
         self.totalStandardDrinksThisWeek = totalStandardDrinksThisWeek
     }
     
-    private func colorFor(totalDrinks: Double) -> Color {
-        guard let dailyTarget else { return .blue }
-        
+    private func gradientColorFor(totalDrinks: Double) -> LinearGradient {
+        guard let dailyTarget else {
+            return LinearGradient(
+                gradient: Gradient(colors: [.blue, .blue]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        }
         let inGreenZone = totalDrinks < dailyTarget - 0.6
         let inYellowZone = totalDrinks > dailyTarget - 0.6 && totalDrinks < dailyTarget
         let inRedZone = totalDrinks >= dailyTarget
         
         switch totalDrinks {
         case _ where inGreenZone:
-            return .green
+            return LinearGradient(
+                gradient: Gradient(colors: [.green]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
         case _ where inYellowZone:
-            return .yellow
+            return LinearGradient(
+                gradient: Gradient(colors: [.yellow, .green]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
         case _ where inRedZone:
-            return .red
+            return LinearGradient(
+                gradient: Gradient(colors: [.red, .yellow, .green]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
         default:
-            return .blue
+            return LinearGradient(
+                gradient: Gradient(colors: [.blue]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
         }
     }
     
@@ -126,3 +147,4 @@ struct ChartView: View {
 //#Preview {
 //    ChartView()
 //}
+ 
