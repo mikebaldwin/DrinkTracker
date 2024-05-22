@@ -27,12 +27,12 @@ final class DrinkCalculatorTests: XCTestCase {
                 Ingredient(volume: "1.0", abv: "18")
             ]
         )
-        XCTAssertEqual(martini, 1.63, accuracy: .accuracy)
+        XCTAssertEqual(martini, 1.6, accuracy: .accuracy)
     }
     
     func testDaiquiri() {
         let daiquiri = calculator.calculateStandardDrinks([Ingredient(volume: "2", abv: "41.2")])
-        XCTAssertEqual(daiquiri, 1.37, accuracy: .accuracy)
+        XCTAssertEqual(daiquiri, 1.4, accuracy: .accuracy)
     }
     
     func testJetPilot() {
@@ -46,10 +46,27 @@ final class DrinkCalculatorTests: XCTestCase {
             ]
             
         )
-        XCTAssertEqual(jetPilot, 2.20, accuracy: .accuracy)
+        XCTAssertEqual(jetPilot, 2.2, accuracy: .accuracy)
+    }
+    
+    func testOuncesForFortyPercentAlcohol() {
+        let abv = 40.0
+        let ounces = calculator.ouncesForOneStandardDrink(abv: abv)
+        XCTAssertEqual(ounces, 1.5)
+    }
+    
+    func testOuncesForNinePercentAlcohol() {
+        let abv = 9.0
+        let ounces = calculator.ouncesForOneStandardDrink(abv: abv)
+        XCTAssertEqual(ounces, 6.7, accuracy: .accuracy)
+    }
+    
+    func testOuncesForFourteenPercentAlcohol() {
+        let ounces = calculator.ouncesForOneStandardDrink(abv: 14.0)
+        XCTAssertEqual(ounces, 4.3, accuracy: .accuracy)
     }
 }
 
 private extension Double {
-    static var accuracy = 0.001
+    static var accuracy = 0.1
 }

@@ -16,4 +16,9 @@ struct DrinkCalculator {
             return result += (standardDrinks * 100).rounded() / 100
         }
     }
+    
+    func ouncesForOneStandardDrink(abv: Double) -> Double {
+        let standardDrinkOunces = 0.6
+        return (standardDrinkOunces / abv) * 100
+    }
 }
