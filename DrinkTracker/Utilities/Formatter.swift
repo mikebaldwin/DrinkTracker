@@ -10,7 +10,7 @@ import Foundation
 struct Formatter {
     static func formatDecimal(_ number: Double) -> String {
         let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = 2
+        formatter.maximumFractionDigits = 1
         formatter.minimumFractionDigits = 0
         formatter.numberStyle = .decimal
 
