@@ -65,6 +65,33 @@ final class DrinkCalculatorTests: XCTestCase {
         let ounces = calculator.ouncesForOneStandardDrink(abv: 14.0)
         XCTAssertEqual(ounces, 4.3, accuracy: .accuracy)
     }
+    
+    func testFilteringOutEmptyIngredient() {
+        let validIngredient = Ingredient(volume: "2", abv: "40")
+        let emptyIngredient = Ingredient(volume: "", abv: "")
+        
+        let drink = calculator.calculateStandardDrinks(
+            [
+                validIngredient,
+                emptyIngredient
+            ]
+        )
+        XCTAssertEqual(drink, 1.3, accuracy: .accuracy)
+    }
+    
+    func testFilteringOutPartlyEmptyIngredient() {
+        let validIngredient = Ingredient(volume: "2", abv: "40")
+        let emptyIngredient = Ingredient(volume: "1", abv: "")
+        
+        let drink = calculator.calculateStandardDrinks(
+            [
+                validIngredient,
+                emptyIngredient
+            ]
+        )
+        XCTAssertEqual(drink, 1.3, accuracy: .accuracy)
+    }
+
 }
 
 private extension Double {

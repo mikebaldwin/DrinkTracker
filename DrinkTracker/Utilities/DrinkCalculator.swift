@@ -9,12 +9,14 @@ import Foundation
 
 struct DrinkCalculator {
     func calculateStandardDrinks(_ ingredients: [Ingredient]) -> Double {
-        ingredients.reduce(into: 0.0) { result, ingredient in
-            let volume = Double(ingredient.volume)!
-            let abv = Double(ingredient.abv)!
-            let standardDrinks = (volume * abv * 0.01) / 0.6
-            return result += (standardDrinks * 100).rounded() / 100
-        }
+        ingredients
+            .filter { $0.isValid }
+            .reduce(into: 0.0) { result, ingredient in
+                let volume = Double(ingredient.volume)!
+                let abv = Double(ingredient.abv)!
+                let standardDrinks = (volume * abv * 0.01) / 0.6
+                return result += (standardDrinks * 100).rounded() / 100
+            }
     }
     
     func ouncesForOneStandardDrink(abv: Double) -> Double {
