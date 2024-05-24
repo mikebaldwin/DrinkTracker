@@ -13,15 +13,7 @@ struct CreateCustomDrinkScreen: View {
     @Environment(\.dismiss) private var dismiss
     @State private var nameText = ""
     @State private var ingredients = [Ingredient]()
-    @State private var showDrinkEntryAlert = false
     @State private var totalStandardDrinks = 0.0
-    
-    @State private var newVolume = ""
-    @State private var newAbv = ""
-    
-    private var isValid: Bool {
-        !nameText.isEmpty && !ingredients.isEmpty
-    }
     
     var body: some View {
         NavigationStack {
@@ -29,22 +21,20 @@ struct CreateCustomDrinkScreen: View {
                 // Drink name section
                 Section {
                     TextField("Drink Name", text: $nameText)
-                    if totalStandardDrinks > 0 {
-                        Text("\(Formatter.formatDecimal(totalStandardDrinks)) standard drinks")
-                    }
+                    Text("\(Formatter.formatDecimal(totalStandardDrinks)) total standard drinks")
                 }
                 
                 // Ingredients entry section
                 if !ingredients.isEmpty {
-                    Section("Ingredients") {
-                        ForEach($ingredients) { ingredient in
-                            HStack {
-                                Text("Volume: \(ingredient.volume.wrappedValue)")
-                                Spacer()
-                                Text("ABV: \(ingredient.abv.wrappedValue)%")
+                    ForEach($ingredients) { ingredient in
+                        Section() {
+                            IngredientCell(ingredient: ingredient) {
+                                updateTotalStandardDrinks()
                             }
                         }
-                        .onDelete { offsets in
+                    }
+                    .onDelete { offsets in
+                        withAnimation {
                             if let first = offsets.first {
                                 ingredients.remove(at: first)
                                 updateTotalStandardDrinks()
@@ -57,7 +47,9 @@ struct CreateCustomDrinkScreen: View {
                 Section {
                     HStack {
                         Button {
-                            showDrinkEntryAlert = true
+                            withAnimation {
+                                ingredients.append(Ingredient(volume: "", abv: ""))
+                            }
                         } label: {
                             Text("Add Ingredient")
                                 .frame(maxWidth: .infinity)
@@ -89,24 +81,11 @@ struct CreateCustomDrinkScreen: View {
                     }) {
                         Text("Done")
                     }
-                    .disabled(!isValid)
+                    .disabled(!formIsValid())
                 }
             }
-        }
-        .alert("Enter drink details", isPresented: $showDrinkEntryAlert) {
-            TextField("", text: $newVolume, prompt: Text("Volume"))
-                .keyboardType(.decimalPad)
-            TextField("", text: $newAbv, prompt: Text("ABV"))
-                .keyboardType(.decimalPad)
-            
-            Button("Cancel", role: .cancel) {
-                showDrinkEntryAlert = false
-            }
-            Button("Done") {
-                addIngredient(Ingredient(volume: newVolume, abv: newAbv))
-                showDrinkEntryAlert = false
-                newVolume = ""
-                newAbv = ""
+            .onAppear {
+                ingredients.append(Ingredient(volume: "", abv: ""))
             }
         }
     }
@@ -120,6 +99,13 @@ struct CreateCustomDrinkScreen: View {
             ingredients.append(ingredient)
             updateTotalStandardDrinks()
         }
+    }
+    
+    private func formIsValid() -> Bool {
+        if ingredients.first(where: { $0.isValid }) != nil {
+            return true
+        }
+        return false
     }
 }
 
