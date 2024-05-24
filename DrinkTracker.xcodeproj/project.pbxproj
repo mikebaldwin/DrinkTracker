@@ -161,6 +161,7 @@
 				CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */,
 				CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
+				CE2638F92BED28CB000B7CDD /* HealthStoreManager.swift */,
 				CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */,
 				CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */,
 				CE3DACEC2BDFE62000BB52EA /* SettingsScreen.swift */,
@@ -169,7 +170,6 @@
 				CE4169C32BD981A10028D64A /* Models */,
 				CE41699C2BD97FB30028D64A /* Preview Content */,
 				CE3DACE72BDFD57A00BB52EA /* Utilities */,
-				CE2638F92BED28CB000B7CDD /* HealthStoreManager.swift */,
 			);
 			path = DrinkTracker;
 			sourceTree = "<group>";
