@@ -119,7 +119,7 @@ struct MainScreen: View {
                         Button {
                             showRecordCustomDrinkScreen = true
                         } label: {
-                            Text("Record drink from catalog")
+                            Text("Record a custom drink")
                         }
                         Spacer()
                     }
