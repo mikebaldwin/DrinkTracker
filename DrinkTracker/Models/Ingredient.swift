@@ -12,5 +12,17 @@ struct Ingredient: Identifiable {
     var volume: String
     var abv: String
 
-    var isEmpty: Bool { volume == "" && abv == "" }
+    var isEmpty: Bool {
+        if let volume = Double(volume), let abv = Double(abv) {
+            return volume <= 0 && abv <= 0
+        }
+        return true
+    }
+    
+    var isValid: Bool {
+        if let volume = Double(volume), let abv = Double(abv) {
+            return volume > 0 && abv > 0
+        }
+        return false
+    }
 }

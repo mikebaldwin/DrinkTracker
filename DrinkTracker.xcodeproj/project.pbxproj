@@ -26,6 +26,7 @@
 		CE4169B42BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169B32BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift */; };
 		CE4169C22BD9810C0028D64A /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CE4169C12BD9810C0028D64A /* Utilities */; };
 		CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169C42BD984C40028D64A /* CustomDrink.swift */; };
+		CE52A1F22C010DC800BAEBF3 /* IngredientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */; };
 		CEB911BB2BD98A7F00224660 /* CreateCustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CreateCustomDrinkScreen.swift */; };
 		CEB911BF2BDAA73300224660 /* RecordCustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */; };
 		CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CEB911C12BDAAD1E00224660 /* Utilities */; };
@@ -73,6 +74,7 @@
 		CE4169B12BD97FB30028D64A /* DrinkTrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerUITests.swift; sourceTree = "<group>"; };
 		CE4169B32BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CE4169C42BD984C40028D64A /* CustomDrink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrink.swift; sourceTree = "<group>"; };
+		CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTests.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* CreateCustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomDrinkScreen.swift; sourceTree = "<group>"; };
 		CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCustomDrinkScreen.swift; sourceTree = "<group>"; };
 		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 			children = (
 				CE4169A72BD97FB30028D64A /* DrinkTrackerTests.swift */,
 				CE3ECA2E2BE92BD30046E242 /* DrinkCalculatorTests.swift */,
+				CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */,
 			);
 			path = DrinkTrackerTests;
 			sourceTree = "<group>";
@@ -368,6 +371,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE52A1F22C010DC800BAEBF3 /* IngredientTests.swift in Sources */,
 				CE3ECA2F2BE92BD30046E242 /* DrinkCalculatorTests.swift in Sources */,
 				CE4169A82BD97FB30028D64A /* DrinkTrackerTests.swift in Sources */,
 			);
