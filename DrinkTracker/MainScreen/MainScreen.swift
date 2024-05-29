@@ -27,6 +27,8 @@ struct MainScreen: View {
     @State private var drinkCount = 0.0
     @State private var quickEntryValue = ""
     
+    private var chartView = ChartView()
+    
     private var todaysLog: DayLog {
         if let todaysLog = dayLogs.last, Calendar.current.isDateInToday(todaysLog.date) {
             return todaysLog
@@ -51,11 +53,7 @@ struct MainScreen: View {
         NavigationStack {
             Form {
                 Section("Drinks") {
-                    ChartView(
-                        dayLogs: thisWeeksLogs,
-                        totalStandardDrinksToday: totalStandardDrinksToday,
-                        totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
-                    )
+                    chartView
                 }
                 if dailyTarget != nil || weeklyTarget != nil {
                     Section("Targets") {
@@ -151,8 +149,7 @@ struct MainScreen: View {
             Button("Record Drink") {
                 recordDrink(
                     DrinkRecord(
-                        standardDrinks: Double(drinkCount),
-                        name: "Untitled Drink"
+                        standardDrinks: Double(drinkCount)
                     )
                 )
                 _ = dayLogs
@@ -182,6 +179,11 @@ struct MainScreen: View {
                 _ = dayLogs
             }
         }
+//        .onAppear {
+//            for dayLog in dayLogs where dayLog.drinks.isEmpty {
+//                modelContext.delete(dayLog)
+//            }
+//        }
     }
     
     private var recordDrinkView: some View {
@@ -237,6 +239,7 @@ struct MainScreen: View {
                     standardDrinks: drink.standardDrinks,
                     for: drink.timestamp
                 )
+                chartView.refresh()
                 debugPrint("✅ Drink saved to HealthKit on \(drink.timestamp)")
             } catch {
                 debugPrint("🛑 Failed to save drink to HealthKit: \(error.localizedDescription)")

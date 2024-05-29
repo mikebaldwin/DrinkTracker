@@ -11,10 +11,22 @@ import SwiftUI
 struct ChartView: View {
     @AppStorage("dailyTarget") private var dailyTarget: Double?
     @AppStorage("weeklyTarget") private var weeklyTarget: Double?
+    
+    @Environment(HealthStoreManager.self) private var healthStoreManager
 
-    private var dayLogs: [DayLog]
-    private var totalStandardDrinksToday: Double
-    private var totalStandardDrinksThisWeek: Double
+    @State private var dailyTotals = [DailyTotal]()
+    
+    private var totalStandardDrinksToday: Double {
+        guard let today = dailyTotals.first(where: { Calendar.current.isDateInToday($0.date) }) else {
+            return 0.0
+        }
+        return today.totalDrinks
+    }
+    private var totalStandardDrinksThisWeek: Double {
+        dailyTotals.reduce(into: 0) { partialResult, dailyTotal in
+            partialResult += dailyTotal.totalDrinks
+        }
+    }
     
     private let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
@@ -59,7 +71,7 @@ struct ChartView: View {
                     // the weekday numbering). If a matching entry is found, we
                     // use its totalDrinks value; otherwise, we use 0 as the
                     // default value.
-                    let totalDrinks = dayLogs.first(where: {
+                    let totalDrinks = dailyTotals.first(where: {
                         Calendar.current.component(.weekday, from: $0.date) ==
                         daysOfWeek.firstIndex(of: day)! + 1
                     })?.totalDrinks ?? 0
@@ -83,16 +95,9 @@ struct ChartView: View {
             }
             .padding()
         }
-    }
-    
-    init(
-        dayLogs: [DayLog],
-        totalStandardDrinksToday: Double,
-        totalStandardDrinksThisWeek: Double
-    ) {
-        self.dayLogs = dayLogs
-        self.totalStandardDrinksToday = totalStandardDrinksToday
-        self.totalStandardDrinksThisWeek = totalStandardDrinksThisWeek
+        .onAppear {
+            refresh()
+        }
     }
     
     private func gradientColorFor(totalDrinks: Double) -> LinearGradient {
@@ -135,9 +140,19 @@ struct ChartView: View {
         }
     }
     
+    func refresh() {
+        Task {
+            do {
+                dailyTotals = try await healthStoreManager.fetchDrinkDataForWeekOf(date: Date())
+            } catch {
+                debugPrint("🛑 Failed to get dailyTotals: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     private func shouldShowRuleMark() -> Bool {
         guard let dailyTarget else { return false }
-        for dayLog in dayLogs where dayLog.totalDrinks > dailyTarget {
+        for total in dailyTotals where total.totalDrinks > dailyTarget {
             return true
         }
         return false
