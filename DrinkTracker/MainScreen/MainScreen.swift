@@ -52,7 +52,6 @@ struct MainScreen: View {
             Form {
                 Section("Drinks") {
                     ChartView(
-                        dayLogs: thisWeeksLogs,
                         totalStandardDrinksToday: totalStandardDrinksToday,
                         totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
                     )

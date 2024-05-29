@@ -32,6 +32,7 @@
 		CEB911BF2BDAA73300224660 /* RecordCustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */; };
 		CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CEB911C12BDAAD1E00224660 /* Utilities */; };
 		CEB911C62BDC241100224660 /* DayLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911C52BDC241100224660 /* DayLog.swift */; };
+		CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
 		CEEDC17C2BEBAE420019DF65 /* DayLogHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */; };
 		CEEDC17E2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */; };
 /* End PBXBuildFile section */
@@ -82,6 +83,7 @@
 		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
 		CEB911C42BDBF9E300224660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CEB911C52BDC241100224660 /* DayLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLog.swift; sourceTree = "<group>"; };
+		CEC70BA02C07A35400273E1D /* DailyTotal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTotal.swift; sourceTree = "<group>"; };
 		CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLogHistoryScreen.swift; sourceTree = "<group>"; };
 		CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkRecordDetailScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -205,9 +207,10 @@
 		CE4169C32BD981A10028D64A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				CE4169982BD97FB10028D64A /* DrinkRecord.swift */,
 				CE4169C42BD984C40028D64A /* CustomDrink.swift */,
+				CEC70BA02C07A35400273E1D /* DailyTotal.swift */,
 				CEB911C52BDC241100224660 /* DayLog.swift */,
+				CE4169982BD97FB10028D64A /* DrinkRecord.swift */,
 				CE3ECA302BE956BB0046E242 /* Ingredient.swift */,
 			);
 			path = Models;
@@ -351,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */,
+				CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */,
 				CEB911C62BDC241100224660 /* DayLog.swift in Sources */,
 				CEEDC17E2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift in Sources */,
 				CE3ECA312BE956BB0046E242 /* Ingredient.swift in Sources */,

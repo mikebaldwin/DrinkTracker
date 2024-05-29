@@ -11,8 +11,10 @@ import SwiftUI
 struct ChartView: View {
     @AppStorage("dailyTarget") private var dailyTarget: Double?
     @AppStorage("weeklyTarget") private var weeklyTarget: Double?
+    
+    @Environment(HealthStoreManager.self) private var healthStoreManager
 
-    private var dayLogs: [DayLog]
+    @State private var dailyTotals = [DailyTotal]()
     private var totalStandardDrinksToday: Double
     private var totalStandardDrinksThisWeek: Double
     
@@ -59,7 +61,7 @@ struct ChartView: View {
                     // the weekday numbering). If a matching entry is found, we
                     // use its totalDrinks value; otherwise, we use 0 as the
                     // default value.
-                    let totalDrinks = dayLogs.first(where: {
+                    let totalDrinks = dailyTotals.first(where: {
                         Calendar.current.component(.weekday, from: $0.date) ==
                         daysOfWeek.firstIndex(of: day)! + 1
                     })?.totalDrinks ?? 0
@@ -83,14 +85,19 @@ struct ChartView: View {
             }
             .padding()
         }
+        .task {
+            do {
+                dailyTotals = try await healthStoreManager.fetchDrinkDataForWeekOf(date: Date())
+            } catch {
+                debugPrint("🛑 Failed to get dailyTotals: \(error.localizedDescription)")
+            }
+        }
     }
     
     init(
-        dayLogs: [DayLog],
         totalStandardDrinksToday: Double,
         totalStandardDrinksThisWeek: Double
     ) {
-        self.dayLogs = dayLogs
         self.totalStandardDrinksToday = totalStandardDrinksToday
         self.totalStandardDrinksThisWeek = totalStandardDrinksThisWeek
     }
@@ -137,7 +144,7 @@ struct ChartView: View {
     
     private func shouldShowRuleMark() -> Bool {
         guard let dailyTarget else { return false }
-        for dayLog in dayLogs where dayLog.totalDrinks > dailyTarget {
+        for total in dailyTotals where total.totalDrinks > dailyTarget {
             return true
         }
         return false
