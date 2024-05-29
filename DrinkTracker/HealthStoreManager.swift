@@ -13,6 +13,7 @@ enum HealthKitError: Error {
     case quantityTypeNotAvailable
     case quantityTypeResultsNotFound
     case authorizationFailed
+    case noStatisticsCollectionRetrieved
 }
 
 @Observable
@@ -145,5 +146,65 @@ final class HealthStoreManager {
         }
         
         return desiredSample
+    }
+    
+    func fetchDrinkDataForWeekOf(date: Date) async throws -> [DailyTotal] {
+        guard let alcoholicBeverageType else {
+            throw HealthKitError.quantityTypeNotAvailable
+        }
+        
+        guard try await requestAuthorization() == true else {
+            throw HealthKitError.authorizationFailed
+        }
+        
+        let calendar = Calendar.current
+        let startOfWeek = calendar.date(
+            from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)
+        )!
+        let endOfWeek = calendar.date(byAdding: .day, value: 7, to: startOfWeek)!
+        
+        let predicate = HKQuery.predicateForSamples(
+            withStart: startOfWeek,
+            end: endOfWeek,
+            options: []
+        )
+        
+        let interval = DateComponents(day: 1)
+        
+        let statisticsCollection = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<HKStatisticsCollection, Error>) in
+            let query = HKStatisticsCollectionQuery(
+                quantityType: alcoholicBeverageType,
+                quantitySamplePredicate: predicate,
+                options: .cumulativeSum,
+                anchorDate: startOfWeek,
+                intervalComponents: interval
+            )
+            
+            query.initialResultsHandler = { query, statisticsCollection, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let statisticsCollection = statisticsCollection {
+                    continuation.resume(returning: statisticsCollection)
+                } else {
+                    continuation.resume(throwing: HealthKitError.noStatisticsCollectionRetrieved)
+                }
+            }
+            
+            healthStore.execute(query)
+        }
+        
+        var dailyTotals: [DailyTotal] = []
+        
+        statisticsCollection.enumerateStatistics(from: startOfWeek, to: endOfWeek) { statistics, stop in
+            if let quantity = statistics.sumQuantity() {
+                let dailyTotal = DailyTotal(
+                    totalDrinks: quantity.doubleValue(for: .count()),
+                    date: statistics.startDate
+                )
+                dailyTotals.append(dailyTotal)
+            }
+        }
+        
+        return dailyTotals
     }
 }

@@ -21,7 +21,7 @@ struct CreateCustomDrinkScreen: View {
                 // Drink name section
                 Section {
                     TextField("Drink Name", text: $nameText)
-                    Text("\(Formatter.formatDecimal(totalStandardDrinks)) standard drinks")
+                    Text("\(Formatter.formatDecimal(totalStandardDrinks)) total standard drinks")
                 }
                 
                 // Ingredients entry section
