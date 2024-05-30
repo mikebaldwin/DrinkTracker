@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 final class DrinkRecord: Identifiable {
+final class DrinkRecord: Identifiable, Sendable {
     var dayLog: DayLog?
     let id = UUID().uuidString
     var name: String!

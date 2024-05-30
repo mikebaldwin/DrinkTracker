@@ -16,7 +16,6 @@ struct MainScreen: View {
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(HealthStoreManager.self) private var healthStoreManager
     
     @Query(sort: [SortDescriptor(\DayLog.date)]) private var dayLogs: [DayLog]
     
@@ -28,7 +27,8 @@ struct MainScreen: View {
     @State private var quickEntryValue = ""
     
     private var chartView = ChartView()
-    
+    private var healthStoreManager = HealthStoreManager.shared
+
     private var todaysLog: DayLog {
         if let todaysLog = dayLogs.last, Calendar.current.isDateInToday(todaysLog.date) {
             return todaysLog
@@ -231,6 +231,7 @@ struct MainScreen: View {
         modelContext.insert(catalogDrink)
     }
     
+    @MainActor
     private func recordDrink(_ drink: DrinkRecord) {
         todaysLog.addDrink(drink)
         Task {

@@ -12,9 +12,9 @@ struct ChartView: View {
     @AppStorage("dailyTarget") private var dailyTarget: Double?
     @AppStorage("weeklyTarget") private var weeklyTarget: Double?
     
-    @Environment(HealthStoreManager.self) private var healthStoreManager
-
     @State private var dailyTotals = [DailyTotal]()
+    
+    private var healthStoreManager = HealthStoreManager.shared
     
     private var totalStandardDrinksToday: Double {
         guard let today = dailyTotals.first(where: { Calendar.current.isDateInToday($0.date) }) else {
@@ -140,6 +140,7 @@ struct ChartView: View {
         }
     }
     
+    @MainActor
     func refresh() {
         Task {
             do {

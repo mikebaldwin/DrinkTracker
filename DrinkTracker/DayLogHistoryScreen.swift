@@ -9,9 +9,10 @@ import SwiftData
 import SwiftUI
 
 struct DayLogHistoryScreen: View {
-    @Environment(HealthStoreManager.self) private var healthStoreManager
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \DayLog.date, order: .reverse) var dayLogs: [DayLog]
+    
+    private var healthStoreManager = HealthStoreManager.shared
     
     var body: some View {
         NavigationStack {

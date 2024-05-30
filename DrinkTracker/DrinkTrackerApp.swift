@@ -45,7 +45,7 @@ struct DrinkTrackerApp: App {
                     }
                 }
                 .healthDataAccessRequest(
-                    store: healthStoreManager.healthStore,
+                    store: HealthStoreManager.shared.healthStore,
                     shareTypes: allTypes,
                     readTypes: allTypes,
                     trigger: trigger
@@ -61,9 +61,7 @@ struct DrinkTrackerApp: App {
                 }
         }
         .modelContainer(sharedModelContainer)
-        .environment(healthStoreManager)
     }
     
-    private let healthStoreManager = HealthStoreManager()
     private let allTypes: Set = [HKQuantityType(.numberOfAlcoholicBeverages)]
 }
