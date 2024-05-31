@@ -11,22 +11,10 @@ import SwiftUI
 struct ChartView: View {
     @AppStorage("dailyTarget") private var dailyTarget: Double?
     @AppStorage("weeklyTarget") private var weeklyTarget: Double?
-    
-    @State private var dailyTotals = [DailyTotal]()
-    
-    private var healthStoreManager = HealthStoreManager.shared
-    
-    private var totalStandardDrinksToday: Double {
-        guard let today = dailyTotals.first(where: { Calendar.current.isDateInToday($0.date) }) else {
-            return 0.0
-        }
-        return today.totalDrinks
-    }
-    private var totalStandardDrinksThisWeek: Double {
-        dailyTotals.reduce(into: 0) { partialResult, dailyTotal in
-            partialResult += dailyTotal.totalDrinks
-        }
-    }
+
+    private var drinkRecords: [DrinkRecord]
+    private var totalStandardDrinksToday: Double
+    private var totalStandardDrinksThisWeek: Double
     
     private let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
@@ -64,18 +52,12 @@ struct ChartView: View {
             
             Chart {
                 ForEach(daysOfWeek, id: \.self) { day in
-                    // use the first(where:) method to find the corresponding
-                    // dayLog entry for each day of the week. We compare the
-                    // weekday component of the date property with the index of
-                    // the current day in the daysOfWeek array (plus 1 to match
-                    // the weekday numbering). If a matching entry is found, we
-                    // use its totalDrinks value; otherwise, we use 0 as the
-                    // default value.
-                    let totalDrinks = dailyTotals.first(where: {
-                        Calendar.current.component(.weekday, from: $0.date) ==
-                        daysOfWeek.firstIndex(of: day)! + 1
-                    })?.totalDrinks ?? 0
-                    
+                    let totalDrinks = drinkRecords.reduce(into: 0.0) { partialResult, drinkRecord in
+                        if Calendar.current.component(.weekday, from: drinkRecord.timestamp) ==
+                            daysOfWeek.firstIndex(of: day)! + 1 {
+                            partialResult += drinkRecord.standardDrinks
+                        }
+                    }
                     BarMark(
                         x: .value("Day", day),
                         y: .value("Drinks", totalDrinks)
@@ -95,9 +77,16 @@ struct ChartView: View {
             }
             .padding()
         }
-        .onAppear {
-            refresh()
-        }
+    }
+    
+    init(
+        drinkRecords: [DrinkRecord],
+        totalStandardDrinksToday: Double,
+        totalStandardDrinksThisWeek: Double
+    ) {
+        self.drinkRecords = drinkRecords
+        self.totalStandardDrinksToday = totalStandardDrinksToday
+        self.totalStandardDrinksThisWeek = totalStandardDrinksThisWeek
     }
     
     private func gradientColorFor(totalDrinks: Double) -> LinearGradient {
@@ -140,22 +129,11 @@ struct ChartView: View {
         }
     }
     
-    @MainActor
-    func refresh() {
-        Task {
-            do {
-                dailyTotals = try await healthStoreManager.fetchDrinkDataForWeekOf(date: Date())
-            } catch {
-                debugPrint("🛑 Failed to get dailyTotals: \(error.localizedDescription)")
-            }
-        }
-    }
-    
     private func shouldShowRuleMark() -> Bool {
-        guard let dailyTarget else { return false }
-        for total in dailyTotals where total.totalDrinks > dailyTarget {
-            return true
-        }
+//        guard let dailyTarget else { return false }
+//        for dayLog in dayLogs where dayLog.totalDrinks > dailyTarget {
+//            return true
+//        }
         return false
     }
 }

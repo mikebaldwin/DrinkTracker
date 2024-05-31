@@ -17,7 +17,11 @@ struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
     
-    @Query(sort: [SortDescriptor(\DayLog.date)]) private var dayLogs: [DayLog]
+//    @Query(sort: [SortDescriptor(\DayLog.date)]) private var dayLogs: [DayLog]
+    @Query(
+        filter: DrinkRecord.thisWeeksDrinksPredicate(),
+        sort: [SortDescriptor(\DrinkRecord.timestamp)]
+    ) private var drinkRecords: [DrinkRecord]
     
     @State private var showRecordDrinksConfirmation = false
     @State private var showRecordCustomDrinkScreen = false
@@ -26,34 +30,26 @@ struct MainScreen: View {
     @State private var drinkCount = 0.0
     @State private var quickEntryValue = ""
     
-    private var chartView = ChartView()
     private var healthStoreManager = HealthStoreManager.shared
-
-    private var todaysLog: DayLog {
-        if let todaysLog = dayLogs.last, Calendar.current.isDateInToday(todaysLog.date) {
-            return todaysLog
-        } else {
-            let dayLog = DayLog()
-            modelContext.insert(dayLog)
-            try? modelContext.save()
-            return dayLog
-        }
+    
+    private var totalStandardDrinksToday: Double {
+        drinkRecords
+            .filter { Calendar.current.isDateInToday($0.timestamp) }
+            .reduce(into: 0.0) { $0 += $1.standardDrinks }
     }
-    private var thisWeeksLogs: [DayLog] {
-        dayLogs.filter { $0.date >= DateMath.startOfWeek && $0.date < DateMath.endOfWeek }
-    }
-    private var totalStandardDrinksToday: Double { todaysLog.totalDrinks }
     private var totalStandardDrinksThisWeek: Double {
-        thisWeeksLogs.reduce(into: 0.0) { partialResult, dayLog in
-            partialResult += dayLog.totalDrinks
-        }
+        drinkRecords.reduce(into: 0.0) { $0 += $1.standardDrinks }
     }
     
     var body: some View {
         NavigationStack {
             Form {
                 Section("Drinks") {
-                    chartView
+                    ChartView(
+                        drinkRecords: drinkRecords,
+                        totalStandardDrinksToday: totalStandardDrinksToday,
+                        totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
+                    )
                 }
                 if dailyTarget != nil || weeklyTarget != nil {
                     Section("Targets") {
@@ -147,12 +143,8 @@ struct MainScreen: View {
             titleVisibility: .visible
         ) {
             Button("Record Drink") {
-                recordDrink(
-                    DrinkRecord(
-                        standardDrinks: Double(drinkCount)
-                    )
-                )
-                _ = dayLogs
+                recordDrink(DrinkRecord(standardDrinks: Double(drinkCount)))
+                _ = drinkRecords
                 drinkCount = 0
             }
             Button("Cancel", role: .cancel) { drinkCount = 0 }
@@ -176,14 +168,9 @@ struct MainScreen: View {
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                _ = dayLogs
+                _ = drinkRecords
             }
         }
-//        .onAppear {
-//            for dayLog in dayLogs where dayLog.drinks.isEmpty {
-//                modelContext.delete(dayLog)
-//            }
-//        }
     }
     
     private var recordDrinkView: some View {
@@ -231,16 +218,14 @@ struct MainScreen: View {
         modelContext.insert(catalogDrink)
     }
     
-    @MainActor
     private func recordDrink(_ drink: DrinkRecord) {
-        todaysLog.addDrink(drink)
+        modelContext.insert(drink)
         Task {
             do {
                 try await healthStoreManager.save(
                     standardDrinks: drink.standardDrinks,
                     for: drink.timestamp
                 )
-                chartView.refresh()
                 debugPrint("✅ Drink saved to HealthKit on \(drink.timestamp)")
             } catch {
                 debugPrint("🛑 Failed to save drink to HealthKit: \(error.localizedDescription)")
@@ -250,7 +235,7 @@ struct MainScreen: View {
 
 }
 
-#Preview {
-    MainScreen()
-        .modelContainer(previewContainer)
-}
+//#Preview {
+//    MainScreen()
+//        .modelContainer(previewContainer)
+//}
