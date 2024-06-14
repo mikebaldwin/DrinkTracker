@@ -42,8 +42,8 @@ final actor HealthStoreManager {
         }
     }
     
-    func deleteAlcoholicBeverage(for date: Date) async throws {
-        guard let sample = try await fetchSample(for: date) else {
+    func deleteAlcoholicBeverage(withUUID uuid: UUID) async throws {
+        guard let sample = try await fetchSample(uuid: uuid) else {
             throw HealthKitError.quantityTypeResultsNotFound
         }
         
@@ -58,12 +58,12 @@ final actor HealthStoreManager {
         }
     }
     
-    func updateAlcoholicBeverageDate(forDate date: Date, newDate: Date) async throws {
+    func updateAlcoholicBeverageDate(_ newDate: Date, withUUID uuid: UUID) async throws {
         guard let alcoholicBeverageType else {
             throw HealthKitError.quantityTypeNotAvailable
         }
         
-        guard let sample = try await fetchSample(for: date) else {
+        guard let sample = try await fetchSample(uuid: uuid) else {
             throw HealthKitError.quantityTypeResultsNotFound
         }
         
@@ -100,7 +100,7 @@ final actor HealthStoreManager {
         return success
     }
     
-    private func fetchSample(for date: Date) async throws -> HKQuantitySample?  {
+    private func fetchSample(uuid: UUID) async throws -> HKQuantitySample?  {
         guard let alcoholicBeverageType else {
             throw HealthKitError.quantityTypeNotAvailable
         }
@@ -109,15 +109,7 @@ final actor HealthStoreManager {
             throw HealthKitError.authorizationFailed
         }
         
-        let calendar = Calendar.current
-        let startOfDay = calendar.startOfDay(for: date)
-        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
-        
-        let predicate = HKQuery.predicateForSamples(
-            withStart: startOfDay,
-            end: endOfDay,
-            options: []
-        )
+        let predicate = HKQuery.predicateForObject(with: uuid)
         
         let sortDescriptor = NSSortDescriptor(
             key: HKSampleSortIdentifierEndDate,
@@ -144,7 +136,7 @@ final actor HealthStoreManager {
         }
         
         let desiredSample = samples.first { sample in
-            return sample.startDate == date
+            return sample.uuid == uuid
         }
         
         return desiredSample

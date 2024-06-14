@@ -73,7 +73,7 @@ struct IngredientCell: View {
                 }
                 .pickerStyle(.segmented)
             }
-            Text("\(Formatter.formatDecimal(standardDrinks)) standard drinks")
+            Text("\(Formatter.formatDecimal(standardDrinks)) standard \(standardDrinks == 1 ? "drink" : "drinks")")
                 .font(.caption)
                 .padding(.top)
         }

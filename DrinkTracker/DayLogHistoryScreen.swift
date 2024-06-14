@@ -10,46 +10,42 @@ import SwiftUI
 
 struct DayLogHistoryScreen: View {
     @Environment(\.modelContext) private var modelContext
+    @Query(sort: \DrinkRecord.timestamp, order: .reverse) var drinkRecords: [DrinkRecord]
     
+    @State private var days: [Day] = []
     private var healthStoreManager = HealthStoreManager.shared
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(dayLogs) { dayLog in
-                    Section(formatDate(dayLog.date)) {
-                        if dayLog.drinks.isEmpty {
+                ForEach(days) { day in
+                    Section(formatDate(day.date)) {
+                        if day.drinks.isEmpty {
                             Text("Alcohol-free")
                         } else {
-                            if let drinks = dayLog.drinks?.sorted(by: { $0.timestamp < $1.timestamp }) {
-                                ForEach(drinks, id: \.timestamp) { drink in
-                                    NavigationLink {
-                                        DrinkRecordDetailScreen(drinkRecord: drink) { drinkRecord, newDate in
-                                            update(drinkRecord, with: newDate)
-                                        }
-                                    } label: {
-                                        HStack {
-                                            VStack(alignment: .leading) {
-                                                Text(drink.name)
-                                                    .font(.footnote)
-                                                Text(formatTimestamp(drink.timestamp))
-                                            }
-                                            Spacer()
-                                            Text(Formatter.formatDecimal(drink.standardDrinks))
-                                        }
+                            ForEach(day.drinks, id: \.id) { drink in
+                                NavigationLink {
+                                    DrinkRecordDetailScreen(drinkRecord: drink) { drinkRecord, newDate in
+                                        update(drinkRecord, with: newDate)
                                     }
-                                }
-                                .onDelete { offsets in
-                                    delete(from: drinks, at: offsets, in: dayLog)
-                                }
-                                if dayLog.drinks.count > 1 {
+                                } label: {
                                     HStack {
-                                        Text("Total")
-                                            .fontWeight(.semibold)
+                                        Text(formatTimestamp(drink.timestamp))
                                         Spacer()
-                                        Text(Formatter.formatDecimal(dayLog.totalDrinks))
+                                        Text(Formatter.formatDecimal(drink.standardDrinks))
                                     }
                                 }
+                            }
+                            .onDelete { offsets in
+                                delete(from: day.drinks, at: offsets)
+                            }
+                            if day.drinks.count > 1 {
+                                HStack {
+                                    Text("Total")
+                                    Spacer()
+                                    Text(Formatter.formatDecimal(day.totalDrinks))
+                                }
+                                .fontWeight(.semibold)
                             }
                         }
                     }
@@ -57,6 +53,9 @@ struct DayLogHistoryScreen: View {
             }
         }
         .navigationTitle("Drink History")
+        .onAppear {
+            buildDays()
+        }
     }
     
     private let dateFormatter = DateFormatter()
@@ -71,33 +70,74 @@ struct DayLogHistoryScreen: View {
         return dateFormatter.string(from: date)
     }
     
+    private func buildDays() {
+        days.removeAll()
+        
+        var dayDictionary = [Date: [DrinkRecord]]()
+
+        // Iterate through the drinkRecords and populate the dayDictionary
+        for record in drinkRecords {
+            let startOfDay = Calendar.current.startOfDay(for: record.timestamp)
+            dayDictionary[startOfDay, default: []].append(record)
+        }
+
+        // Generate a sequence of dates from the earliest record to today
+        let earliestDate = drinkRecords.min { $0.timestamp < $1.timestamp }?.timestamp ?? Date()
+
+        // Create an array of Day objects for all days in the sequence
+        var currentDate = earliestDate
+        while currentDate <= Date() {
+            let startOfDay = Calendar.current.startOfDay(for: currentDate)
+            let drinks = dayDictionary[startOfDay] ?? []
+            let day = Day(date: startOfDay, drinks: drinks)
+            days.append(day)
+            
+            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+
+        // Sort the days array by date
+        days.sort { $0.date > $1.date }
+    }
+    
     private func update(_ drinkRecord: DrinkRecord, with newDate: Date) {
+        let calendar = Calendar.current
+        
+        // This part is purely local to this view; no entity data is actually changed
         // grab the old date now for updating healthkit later
         let oldDate = drinkRecord.timestamp
-        // Remove drink from its original dayLog
-        if let oldDayLog = dayLogs.first(where: { oldDayLog in
-            Calendar.current.isDate(oldDayLog.date, inSameDayAs: oldDate)
+        
+        // Remove drink from its original day
+        if var oldDay = days.first(where: { oldDay in
+            calendar.isDate(oldDay.date, inSameDayAs: oldDate)
         }) {
-            oldDayLog.removeDrink(drinkRecord)
+            oldDay.removeDrink(drinkRecord)
         }
-        // Add drink to its new dayLog
-        if let newDayLog = dayLogs.first(where: { newDayLog in
-            Calendar.current.isDate(newDayLog.date, inSameDayAs: newDate)
+        
+        // Add drink to its new day
+        if var newDay = days.first(where: { newDay in
+            calendar.isDate(newDay.date, inSameDayAs: newDate)
         }) {
-            newDayLog.addDrink(drinkRecord)
+            newDay.addDrink(drinkRecord)
             drinkRecord.timestamp = newDate
         } else {
-            // Daylog wasn't found, so create it
-            let newDayLog = DayLog(date: Calendar.current.startOfDay(for: newDate))
-            newDayLog.addDrink(drinkRecord)
+            // Day wasn't found, so create it
+            var newDay = Day(date: calendar.startOfDay(for: newDate))
+            newDay.addDrink(drinkRecord)
             drinkRecord.timestamp = newDate
         }
+        
+        // Update the drink record
+        drinkRecord.timestamp = newDate
+        
+        // Rebuild the day models
+        buildDays()
+        
         // Update in healthkit
         Task {
             do {
                 try await healthStoreManager.updateAlcoholicBeverageDate(
-                    forDate: oldDate,
-                    newDate: newDate
+                    newDate,
+                    withUUID: UUID(uuidString: drinkRecord.id)!
                 )
                 debugPrint("✅ Date reassigned in HealthKit!")
             } catch {
@@ -106,15 +146,15 @@ struct DayLogHistoryScreen: View {
         }
     }
     
-    private func delete(from drinks: [DrinkRecord], at offsets: IndexSet, in dayLog: DayLog) {
+    private func delete(from drinks: [DrinkRecord], at offsets: IndexSet) {
         if let index = offsets.first {
             let drinkRecord = drinks[index]
-            dayLog.removeDrink(drinkRecord)
             modelContext.delete(drinkRecord)
+            buildDays()
             
             Task {
                 do {
-                    try await healthStoreManager.deleteAlcoholicBeverage(for: drinkRecord.timestamp)
+                    try await healthStoreManager.deleteAlcoholicBeverage(withUUID: UUID(uuidString: drinkRecord.id)!)
                     debugPrint("✅ Deleted from HealthKit!")
                 } catch {
                     debugPrint("🛑 Failed to delete from HealthKit: \(error.localizedDescription)")
