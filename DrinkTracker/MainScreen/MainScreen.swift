@@ -219,18 +219,27 @@ struct MainScreen: View {
     }
     
     private func recordDrink(_ drink: DrinkRecord) {
-        modelContext.insert(drink)
         Task {
             do {
-                try await healthStoreManager.save(
-                    standardDrinks: drink.standardDrinks,
-                    for: drink.timestamp
+                let sample = HKQuantitySample(
+                    type: HKQuantityType(.numberOfAlcoholicBeverages),
+                    quantity: HKQuantity(
+                        unit: HKUnit.count(),
+                        doubleValue: drink.standardDrinks
+                    ),
+                    start: drink.timestamp,
+                    end: drink.timestamp
                 )
+
+                try await healthStoreManager.save(sample)
                 debugPrint("✅ Drink saved to HealthKit on \(drink.timestamp)")
+                
+                drink.id = sample.uuid.uuidString
             } catch {
                 debugPrint("🛑 Failed to save drink to HealthKit: \(error.localizedDescription)")
             }
         }
+        modelContext.insert(drink)
     }
 
 }
