@@ -17,7 +17,6 @@ struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
     
-//    @Query(sort: [SortDescriptor(\DayLog.date)]) private var dayLogs: [DayLog]
     @Query(
         filter: DrinkRecord.thisWeeksDrinksPredicate(),
         sort: [SortDescriptor(\DrinkRecord.timestamp)]

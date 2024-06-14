@@ -10,7 +10,6 @@ import SwiftData
 
 @Model
 final class DrinkRecord: Identifiable, Sendable {
-    var dayLog: DayLog?
     var id = UUID().uuidString
     var standardDrinks: Double = 0.0
     var timestamp = Date()
