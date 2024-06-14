@@ -11,11 +11,8 @@ import HealthKitUI
 
 @main
 struct DrinkTrackerApp: App {
-    @State private var trigger = false
-
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            DayLog.self,
             DrinkRecord.self,
             CustomDrink.self
         ])
@@ -25,7 +22,7 @@ struct DrinkTrackerApp: App {
             isStoredInMemoryOnly: false,
             cloudKitDatabase: .private("iCloud.com.mikebaldwin.DrinkTracker")
         )
-
+        
         do {
             return try ModelContainer(
                 for: schema,
@@ -45,7 +42,7 @@ struct DrinkTrackerApp: App {
                     }
                 }
                 .healthDataAccessRequest(
-                    store: healthStoreManager.healthStore,
+                    store: HealthStoreManager.shared.healthStore,
                     shareTypes: allTypes,
                     readTypes: allTypes,
                     trigger: trigger
@@ -53,17 +50,33 @@ struct DrinkTrackerApp: App {
                     switch result {
                     case .success(_):
                         // authorized
-                        break
+                        if retrySync == true {
+                            Task {
+                                await syncData()
+                                retrySync = false
+                            }
+                        }
                     case .failure(let error):
-                        // Handle the error here.
                         fatalError("*** An error occurred while requesting authentication: \(error) ***")
+                    }
+                }
+                .task {
+                    if HKHealthStore.isHealthDataAvailable() {
+                        await syncData()
+                    } else {
+                        retrySync = true
                     }
                 }
         }
         .modelContainer(sharedModelContainer)
-        .environment(healthStoreManager)
     }
     
-    private let healthStoreManager = HealthStoreManager()
+    @State private var trigger = false
+    @State private var retrySync = false
     private let allTypes: Set = [HKQuantityType(.numberOfAlcoholicBeverages)]
+    
+    private func syncData() async {
+        await DataSynchronizer(container: sharedModelContainer)
+            .updateDrinkRecords()
+    }
 }

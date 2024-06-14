@@ -7,7 +7,6 @@
 
 import Foundation
 import HealthKit
-import Observation
 
 enum HealthKitError: Error {
     case quantityTypeNotAvailable
@@ -16,53 +15,55 @@ enum HealthKitError: Error {
     case noStatisticsCollectionRetrieved
 }
 
-@Observable
-final class HealthStoreManager {
-    private(set) var healthStore = HKHealthStore()
+extension HKQuantitySample: @unchecked @retroactive Sendable { }
+
+final actor HealthStoreManager {
+    static let shared = HealthStoreManager()
+    
+    let healthStore = HKHealthStore()
+    
     private var alcoholicBeverageType: HKQuantityType? {
         HKQuantityType.quantityType(forIdentifier: .numberOfAlcoholicBeverages)
     }
+    private let healthKitQueue = DispatchQueue(label: "com.DrinkTracker.healthkit", qos: .background)
     
-    func save(standardDrinks: Double, for date: Date) async throws {
-        let alcoholConsumptionType = HKQuantityType(.numberOfAlcoholicBeverages)
-        
-        guard try await requestAuthorization() == true else {
+    private init() { }
+    
+    func save(_ sample: HKQuantitySample) async throws {
+        guard try await isAuthorized() else {
             throw HealthKitError.authorizationFailed
         }
-        let beverageCount = HKQuantity(unit: HKUnit.count(), doubleValue: standardDrinks)
-        let beverageSample = HKQuantitySample(
-            type: alcoholConsumptionType,
-            quantity: beverageCount,
-            start: date,
-            end: date
-        )
-        
         do {
-            try await healthStore.save(beverageSample)
-            debugPrint("✅ HealhstoreManager saved beverageSample on startDate: \(beverageSample.startDate), endDate: \(beverageSample.endDate)")
+            try await self.healthStore.save(sample)
+            debugPrint("✅ HealhstoreManager saved beverageSample on startDate: \(sample.startDate), endDate: \(sample.endDate)")
         } catch {
-            throw error
+            // Handle the error appropriately
+            debugPrint("❌ Error saving beverage sample: \(error)")
         }
     }
     
-    func deleteAlcoholicBeverage(for date: Date) async throws {
-        guard let sample = try await fetchSample(for: date) else {
+    func deleteAlcoholicBeverage(withUUID uuid: UUID) async throws {
+        guard let sample = try await fetchSample(uuid: uuid) else {
             throw HealthKitError.quantityTypeResultsNotFound
         }
         
-        do {
-            try await healthStore.delete(sample)
-        } catch {
-            throw error
+        healthKitQueue.async {
+            Task {
+                do {
+                    try await self.healthStore.delete(sample)
+                } catch {
+                    throw error
+                }
+            }
         }
     }
     
-    func updateAlcoholicBeverageDate(forDate date: Date, newDate: Date) async throws {
+    func updateAlcoholicBeverageDate(_ newDate: Date, withUUID uuid: UUID) async throws {
         guard let alcoholicBeverageType else {
             throw HealthKitError.quantityTypeNotAvailable
         }
         
-        guard let sample = try await fetchSample(for: date) else {
+        guard let sample = try await fetchSample(uuid: uuid) else {
             throw HealthKitError.quantityTypeResultsNotFound
         }
         
@@ -75,13 +76,14 @@ final class HealthStoreManager {
         )
         
         // Save the updated sample to HealthKit
-        try await healthStore.save(updatedSample)
+        try await self.healthStore.save(updatedSample)
         
         // Delete the original sample from HealthKit
-        try await healthStore.delete(sample)
+        try await self.healthStore.delete(sample)
     }
     
-    private func requestAuthorization() async throws -> Bool {
+    @discardableResult
+    func isAuthorized() async throws -> Bool {
         guard let alcoholicBeverageType else {
             throw HealthKitError.quantityTypeNotAvailable
         }
@@ -98,24 +100,16 @@ final class HealthStoreManager {
         return success
     }
     
-    private func fetchSample(for date: Date) async throws -> HKQuantitySample?  {
+    private func fetchSample(uuid: UUID) async throws -> HKQuantitySample?  {
         guard let alcoholicBeverageType else {
             throw HealthKitError.quantityTypeNotAvailable
         }
         
-        guard try await requestAuthorization() == true else {
+        guard try await isAuthorized() else {
             throw HealthKitError.authorizationFailed
         }
         
-        let calendar = Calendar.current
-        let startOfDay = calendar.startOfDay(for: date)
-        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
-        
-        let predicate = HKQuery.predicateForSamples(
-            withStart: startOfDay,
-            end: endOfDay,
-            options: []
-        )
+        let predicate = HKQuery.predicateForObject(with: uuid)
         
         let sortDescriptor = NSSortDescriptor(
             key: HKSampleSortIdentifierEndDate,
@@ -142,7 +136,7 @@ final class HealthStoreManager {
         }
         
         let desiredSample = samples.first { sample in
-            return sample.startDate == date
+            return sample.uuid == uuid
         }
         
         return desiredSample
@@ -153,7 +147,7 @@ final class HealthStoreManager {
             throw HealthKitError.quantityTypeNotAvailable
         }
         
-        guard try await requestAuthorization() == true else {
+        guard try await isAuthorized() else {
             throw HealthKitError.authorizationFailed
         }
         
@@ -207,4 +201,58 @@ final class HealthStoreManager {
         
         return dailyTotals
     }
+    
+    func fetchAllDrinkSamples() async throws -> [HKQuantitySample] {
+        guard let alcoholicBeverageType else {
+            throw HealthKitError.quantityTypeNotAvailable
+        }
+        
+        guard try await isAuthorized() else {
+            throw HealthKitError.authorizationFailed
+        }
+        
+        let sortDescriptor = NSSortDescriptor(
+            key: HKSampleSortIdentifierEndDate,
+            ascending: false
+        )
+
+        let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKQuantitySample], Error>) in
+            let query = HKSampleQuery(
+                sampleType: alcoholicBeverageType,
+                predicate: HKQuery.predicateForSamples(
+                    withStart: nil,
+                    end: nil,
+                    options: .strictStartDate
+                ),
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: [sortDescriptor]
+            ) { query, samples, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let samples = samples as? [HKQuantitySample] {
+                    continuation.resume(returning: samples)
+                } else {
+                    continuation.resume(returning: [])
+                }
+            }
+            
+            healthStore.execute(query)
+        }
+        
+        return samples
+    }
+    
+    func fetchAllDrinkData() async throws -> [DrinkRecord] {
+        let samples = try await fetchAllDrinkSamples()
+        
+        let drinkRecords = samples.map { sample in
+            DrinkRecord(
+                standardDrinks: sample.quantity.doubleValue(for: .count()),
+                date: sample.startDate
+            )
+        }
+        
+        return drinkRecords
+    }
+
 }

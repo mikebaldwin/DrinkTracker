@@ -9,20 +9,30 @@ import Foundation
 import SwiftData
 
 @Model
-final class DrinkRecord: Identifiable {
-    var dayLog: DayLog?
-    let id = UUID().uuidString
-    var name: String!
+final class DrinkRecord: Identifiable, Sendable {
+    var id = UUID().uuidString
     var standardDrinks: Double = 0.0
     var timestamp = Date()
     
-    init(standardDrinks: Double, name: String) {
+    init(standardDrinks: Double, date: Date = Date()) {
         self.standardDrinks = standardDrinks
-        self.name = name
+        self.timestamp = date
     }
     
     init(_ catalogDrink: CustomDrink) {
-        self.name = catalogDrink.name
         self.standardDrinks = catalogDrink.standardDrinks
+    }
+    
+    static func thisWeeksDrinksPredicate() -> Predicate<DrinkRecord> {
+        let startOfCurrentWeek = Calendar.current.date(
+            from: Calendar.current.dateComponents(
+                [.yearForWeekOfYear, .weekOfYear],
+                from: Date()
+            )
+        )!
+        
+        return #Predicate<DrinkRecord> { drinkRecord in
+            drinkRecord.timestamp >= startOfCurrentWeek
+        }
     }
 }
