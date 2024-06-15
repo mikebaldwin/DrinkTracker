@@ -81,18 +81,33 @@ struct DayLogHistoryScreen: View {
             dayDictionary[startOfDay, default: []].append(record)
         }
 
-        // Generate a sequence of dates from the earliest record to today
-        let earliestDate = drinkRecords.min { $0.timestamp < $1.timestamp }?.timestamp ?? Date()
+        // Identify the earliest date in drinkRecords
+        let earliestDate = drinkRecords.min {
+            $0.timestamp < $1.timestamp
+        }?.timestamp ?? Date()
 
-        // Create an array of Day objects for all days in the sequence
+        // "current" as in current iteration, not current as in today
         var currentDate = earliestDate
-        while currentDate <= Date() {
+        let startOfTomorrow = Calendar.current.startOfDay(
+            for: Calendar.current.date(
+                byAdding: .day,
+                value: 1,
+                to: Date()
+            )!
+        )
+        
+        // Create an array of Day objects for all days in the sequence
+        while currentDate <= startOfTomorrow {
             let startOfDay = Calendar.current.startOfDay(for: currentDate)
             let drinks = dayDictionary[startOfDay] ?? []
             let day = Day(date: startOfDay, drinks: drinks)
             days.append(day)
             
-            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
+            currentDate = Calendar.current.date(
+                byAdding: .day,
+                value: 1,
+                to: currentDate
+            )!
         }
 
         // Sort the days array by date
@@ -118,19 +133,16 @@ struct DayLogHistoryScreen: View {
             calendar.isDate(newDay.date, inSameDayAs: newDate)
         }) {
             newDay.addDrink(drinkRecord)
-            drinkRecord.timestamp = newDate
         } else {
             // Day wasn't found, so create it
             var newDay = Day(date: calendar.startOfDay(for: newDate))
             newDay.addDrink(drinkRecord)
-            drinkRecord.timestamp = newDate
+            days.append(newDay)
+            days.sort { $0.date > $1.date }
         }
         
         // Update the drink record
         drinkRecord.timestamp = newDate
-        
-        // Rebuild the day models
-        buildDays()
         
         // Update in healthkit
         Task {
