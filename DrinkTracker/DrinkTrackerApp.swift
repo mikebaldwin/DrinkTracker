@@ -43,8 +43,8 @@ struct DrinkTrackerApp: App {
                 }
                 .healthDataAccessRequest(
                     store: HealthStoreManager.shared.healthStore,
-                    shareTypes: allTypes,
-                    readTypes: allTypes,
+                    shareTypes: [HKQuantityType(.numberOfAlcoholicBeverages)],
+                    readTypes: [HKQuantityType(.numberOfAlcoholicBeverages)],
                     trigger: trigger
                 ) { result in
                     switch result {
@@ -57,7 +57,7 @@ struct DrinkTrackerApp: App {
                             }
                         }
                     case .failure(let error):
-                        fatalError("*** An error occurred while requesting authentication: \(error) ***")
+                        debugPrint("*** An error occurred while requesting authentication: \(error) ***")
                     }
                 }
                 .task {
@@ -73,7 +73,6 @@ struct DrinkTrackerApp: App {
     
     @State private var trigger = false
     @State private var retrySync = false
-    private let allTypes: Set = [HKQuantityType(.numberOfAlcoholicBeverages)]
     
     private func syncData() async {
         await DataSynchronizer(container: sharedModelContainer)
