@@ -1,5 +1,5 @@
 //
-//  RecordCatalogDrinkScreen.swift
+//  RecordCustomDrinkScreen.swift
 //  DrinkTracker
 //
 //  Created by Mike Baldwin on 4/25/24.

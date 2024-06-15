@@ -19,8 +19,8 @@ final class DrinkRecord: Identifiable, Sendable {
         self.timestamp = date
     }
     
-    init(_ catalogDrink: CustomDrink) {
-        self.standardDrinks = catalogDrink.standardDrinks
+    init(_ customDrink: CustomDrink) {
+        self.standardDrinks = customDrink.standardDrinks
     }
     
     static func thisWeeksDrinksPredicate() -> Predicate<DrinkRecord> {

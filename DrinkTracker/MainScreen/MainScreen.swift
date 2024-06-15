@@ -213,8 +213,8 @@ struct MainScreen: View {
         .padding(.top)
     }
     
-    private func addCatalogDrink(_ catalogDrink: CustomDrink) {
-        modelContext.insert(catalogDrink)
+    private func addCustomDrink(_ customDrink: CustomDrink) {
+        modelContext.insert(customDrink)
     }
     
     private func recordDrink(_ drink: DrinkRecord) {
