@@ -52,6 +52,9 @@ actor DataSynchronizer {
                 if existingRecord.standardDrinks != count {
                     existingRecord.standardDrinks = count
                 }
+                if existingRecord.timestamp != sample.startDate {
+                    existingRecord.timestamp = sample.startDate
+                }
             } else {
                 // Create a new SwiftData record if it doesn't exist
                 let newRecord = DrinkRecord(sample)
