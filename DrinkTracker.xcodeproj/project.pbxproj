@@ -129,8 +129,11 @@
 		CE3DACE72BDFD57A00BB52EA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				CE866B672C1B354D00461411 /* DataSynchronizer.swift */,
+				CE3ECA262BE539E10046E242 /* DateMath.swift */,
 				CE3ECA2C2BE92BBF0046E242 /* DrinkCalculator.swift */,
 				CE3DACE82BDFD59100BB52EA /* Formatter.swift */,
+				CE2638F92BED28CB000B7CDD /* HealthStoreManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -161,12 +164,9 @@
 				CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */,
 				CEB911C42BDBF9E300224660 /* Info.plist */,
 				CEB911BA2BD98A7F00224660 /* CreateCustomDrinkScreen.swift */,
-				CE866B672C1B354D00461411 /* DataSynchronizer.swift */,
-				CE3ECA262BE539E10046E242 /* DateMath.swift */,
 				CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */,
 				CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
-				CE2638F92BED28CB000B7CDD /* HealthStoreManager.swift */,
 				CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */,
 				CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */,
 				CE3DACEC2BDFE62000BB52EA /* SettingsScreen.swift */,
