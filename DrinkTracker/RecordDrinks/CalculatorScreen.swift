@@ -1,5 +1,5 @@
 //
-//  CalculatorView.swift
+//  CalculatorScreen.swift
 //  DrinkTracker
 //
 //  Created by Mike Baldwin on 4/24/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CalculatorView: View {
+struct CalculatorScreen: View {
     var completion: ((CustomDrink) -> Void)?
     
     @Environment(\.dismiss) private var dismiss
@@ -108,5 +108,5 @@ struct CalculatorView: View {
 }
 
 #Preview {
-    CalculatorView()
+    CalculatorScreen()
 }

@@ -66,7 +66,7 @@ struct RecordCustomDrinkScreen: View {
                 }
             }
             .sheet(isPresented: $showCustomDrinksEditor) {
-                CalculatorView {
+                CalculatorScreen {
                     modelContext.insert($0)
                 }
             }

@@ -121,7 +121,7 @@ struct MainScreen: View {
                 .presentationDetents([.height(150)])
         }
         .sheet(isPresented: $showCalculatorView) {
-            CalculatorView()
+            CalculatorScreen()
                 .presentationDetents([.large])
         }
         .sheet(isPresented: $showCustomDrinksView) {
