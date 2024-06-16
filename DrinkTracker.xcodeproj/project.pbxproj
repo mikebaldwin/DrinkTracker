@@ -28,10 +28,9 @@
 		CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169C42BD984C40028D64A /* CustomDrink.swift */; };
 		CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */; };
 		CE52A1F22C010DC800BAEBF3 /* IngredientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */; };
-		CE55F3CF2C1F633E00E3982B /* RecordDrinksScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE55F3CE2C1F633E00E3982B /* RecordDrinksScreen.swift */; };
 		CE55F3D12C1F65CF00E3982B /* QuickEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE55F3D02C1F65CF00E3982B /* QuickEntryView.swift */; };
 		CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE866B672C1B354D00461411 /* DataSynchronizer.swift */; };
-		CEB911BB2BD98A7F00224660 /* CreateCustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CreateCustomDrinkScreen.swift */; };
+		CEB911BB2BD98A7F00224660 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CalculatorView.swift */; };
 		CEB911BF2BDAA73300224660 /* RecordCustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */; };
 		CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CEB911C12BDAAD1E00224660 /* Utilities */; };
 		CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
@@ -80,10 +79,9 @@
 		CE4169C42BD984C40028D64A /* CustomDrink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrink.swift; sourceTree = "<group>"; };
 		CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCell.swift; sourceTree = "<group>"; };
 		CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTests.swift; sourceTree = "<group>"; };
-		CE55F3CE2C1F633E00E3982B /* RecordDrinksScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDrinksScreen.swift; sourceTree = "<group>"; };
 		CE55F3D02C1F65CF00E3982B /* QuickEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryView.swift; sourceTree = "<group>"; };
 		CE866B672C1B354D00461411 /* DataSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSynchronizer.swift; sourceTree = "<group>"; };
-		CEB911BA2BD98A7F00224660 /* CreateCustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomDrinkScreen.swift; sourceTree = "<group>"; };
+		CEB911BA2BD98A7F00224660 /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
 		CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCustomDrinkScreen.swift; sourceTree = "<group>"; };
 		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
 		CEB911C42BDBF9E300224660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -165,7 +163,6 @@
 			children = (
 				CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */,
 				CEB911C42BDBF9E300224660 /* Info.plist */,
-				CEB911BA2BD98A7F00224660 /* CreateCustomDrinkScreen.swift */,
 				CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */,
 				CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
@@ -224,8 +221,8 @@
 		CE55F3CC2C1F62C400E3982B /* RecordDrinks */ = {
 			isa = PBXGroup;
 			children = (
+				CEB911BA2BD98A7F00224660 /* CalculatorView.swift */,
 				CE55F3D02C1F65CF00E3982B /* QuickEntryView.swift */,
-				CE55F3CE2C1F633E00E3982B /* RecordDrinksScreen.swift */,
 			);
 			path = RecordDrinks;
 			sourceTree = "<group>";
@@ -375,9 +372,8 @@
 				CE3DACE92BDFD59100BB52EA /* Formatter.swift in Sources */,
 				CE2638FA2BED28CB000B7CDD /* HealthStoreManager.swift in Sources */,
 				CE3ECA272BE539E10046E242 /* DateMath.swift in Sources */,
-				CEB911BB2BD98A7F00224660 /* CreateCustomDrinkScreen.swift in Sources */,
+				CEB911BB2BD98A7F00224660 /* CalculatorView.swift in Sources */,
 				CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */,
-				CE55F3CF2C1F633E00E3982B /* RecordDrinksScreen.swift in Sources */,
 				CE55F3D12C1F65CF00E3982B /* QuickEntryView.swift in Sources */,
 				CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */,
 				CEEDC17C2BEBAE420019DF65 /* DayLogHistoryScreen.swift in Sources */,

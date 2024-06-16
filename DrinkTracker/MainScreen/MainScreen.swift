@@ -22,8 +22,9 @@ struct MainScreen: View {
         sort: [SortDescriptor(\DrinkRecord.timestamp)]
     ) private var drinkRecords: [DrinkRecord]
     
-    @State private var showRecordDrinksScreen = false
-    @State private var showRecordCustomDrinkScreen = false
+    @State private var showQuickEntryView = false
+    @State private var showCalculatorView = false
+    @State private var showCustomDrinksView = false
     @State private var showSettingsScreen = false
     
     private var healthStoreManager = HealthStoreManager.shared
@@ -89,12 +90,17 @@ struct MainScreen: View {
                 }
                 Section {
                     Button {
-                        showRecordDrinksScreen = true
+                        showQuickEntryView = true
                     } label: {
-                        Text("Record a drink")
+                        Text("Quick Entry")
                     }
                     Button {
-                        showRecordCustomDrinkScreen = true
+                        showCalculatorView = true
+                    } label: {
+                        Text("Drink Calculator")
+                    }
+                    Button {
+                        showCustomDrinksView = true
                     } label: {
                         Text("Custom Drinks")
                     }
@@ -102,19 +108,23 @@ struct MainScreen: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
+                    Button {
                         showSettingsScreen = true
-                    }) {
+                    } label: {
                         Image(systemName: "gearshape")
                     }
                 }
             }
         }
-        .sheet(isPresented: $showRecordDrinksScreen) {
-            RecordDrinksScreen()
-                .presentationDetents([.height(200), .medium, .large])
+        .sheet(isPresented: $showQuickEntryView) {
+            QuickEntryView()
+                .presentationDetents([.height(150)])
         }
-        .sheet(isPresented: $showRecordCustomDrinkScreen) {
+        .sheet(isPresented: $showCalculatorView) {
+            CalculatorView()
+                .presentationDetents([.large])
+        }
+        .sheet(isPresented: $showCustomDrinksView) {
             RecordCustomDrinkScreen(modelContext: modelContext) {
                 recordDrink(DrinkRecord($0))
             }

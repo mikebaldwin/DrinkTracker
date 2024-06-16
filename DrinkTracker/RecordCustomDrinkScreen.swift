@@ -58,15 +58,15 @@ struct RecordCustomDrinkScreen: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
+                    Button {
                         showCustomDrinksEditor = true
-                    }) {
+                    } label: {
                         Image(systemName: "wineglass")
                     }
                 }
             }
             .sheet(isPresented: $showCustomDrinksEditor) {
-                CreateCustomDrinkScreen {
+                CalculatorView {
                     modelContext.insert($0)
                 }
             }

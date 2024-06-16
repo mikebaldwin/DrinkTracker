@@ -1,5 +1,5 @@
 //
-//  CreateCustomDrinkScreen.swift
+//  CalculatorView.swift
 //  DrinkTracker
 //
 //  Created by Mike Baldwin on 4/24/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CreateCustomDrinkScreen: View {
+struct CalculatorView: View {
     var completion: ((CustomDrink) -> Void)?
     
     @Environment(\.dismiss) private var dismiss
@@ -20,7 +20,6 @@ struct CreateCustomDrinkScreen: View {
             Form {
                 // Drink name section
                 Section {
-                    TextField("Drink Name", text: $nameText)
                     Text("\(Formatter.formatDecimal(totalStandardDrinks)) total standard \(totalStandardDrinks == 1 ? "drink" : "drinks")")
                 }
                 
@@ -58,17 +57,16 @@ struct CreateCustomDrinkScreen: View {
                     }
                 }
             }
-            .navigationTitle("Create a Drink")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
+                    Button {
                         dismiss()
-                    }) {
+                    } label: {
                         Text("Cancel")
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
+                    Button {
                         if let completion {
                             completion(
                                 CustomDrink(
@@ -78,7 +76,7 @@ struct CreateCustomDrinkScreen: View {
                             )
                         }
                         dismiss()
-                    }) {
+                    } label: {
                         Text("Done")
                     }
                     .disabled(!formIsValid())
@@ -110,5 +108,5 @@ struct CreateCustomDrinkScreen: View {
 }
 
 #Preview {
-    CreateCustomDrinkScreen()
+    CalculatorView()
 }
