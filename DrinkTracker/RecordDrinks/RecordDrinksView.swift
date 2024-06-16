@@ -7,9 +7,21 @@
 
 import SwiftUI
 
+private enum Segment {
+    case quickEntry, calculator
+}
+
 struct RecordDrinksView: View {
+    @State private var segment = Segment.quickEntry
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Picker("Record a drink", selection: $segment) {
+                Text("Quick Entry")
+                Text("Calculator")
+            }
+            .pickerStyle(.segmented)
+        }
     }
 }
 
