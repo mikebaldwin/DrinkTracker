@@ -1,5 +1,5 @@
 //
-//  RecordDrinksView.swift
+//  RecordDrinksScreen.swift
 //  DrinkTracker
 //
 //  Created by Mike Baldwin on 6/16/24.
@@ -11,7 +11,7 @@ private enum Segment {
     case quickEntry, calculator
 }
 
-struct RecordDrinksView: View {
+struct RecordDrinksScreen: View {
     @State private var segment = Segment.quickEntry
     
     var body: some View {
@@ -26,5 +26,5 @@ struct RecordDrinksView: View {
 }
 
 #Preview {
-    RecordDrinksView()
+    RecordDrinksScreen()
 }
