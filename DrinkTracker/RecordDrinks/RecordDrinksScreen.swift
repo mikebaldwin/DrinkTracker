@@ -18,9 +18,19 @@ struct RecordDrinksScreen: View {
         VStack {
             Picker("Record a drink", selection: $segment) {
                 Text("Quick Entry")
+                    .tag(Segment.quickEntry)
                 Text("Calculator")
+                    .tag(Segment.calculator)
             }
             .pickerStyle(.segmented)
+            .padding([.leading, .trailing])
+            
+            switch segment {
+            case .quickEntry:
+                QuickEntryView()
+            case .calculator:
+                Text("Calculator")
+            }
         }
     }
 }
