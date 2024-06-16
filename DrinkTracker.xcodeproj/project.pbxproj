@@ -28,6 +28,7 @@
 		CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169C42BD984C40028D64A /* CustomDrink.swift */; };
 		CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */; };
 		CE52A1F22C010DC800BAEBF3 /* IngredientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */; };
+		CE55F3CF2C1F633E00E3982B /* RecordDrinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE55F3CE2C1F633E00E3982B /* RecordDrinksView.swift */; };
 		CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE866B672C1B354D00461411 /* DataSynchronizer.swift */; };
 		CEB911BB2BD98A7F00224660 /* CreateCustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CreateCustomDrinkScreen.swift */; };
 		CEB911BF2BDAA73300224660 /* RecordCustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */; };
@@ -78,6 +79,7 @@
 		CE4169C42BD984C40028D64A /* CustomDrink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrink.swift; sourceTree = "<group>"; };
 		CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCell.swift; sourceTree = "<group>"; };
 		CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTests.swift; sourceTree = "<group>"; };
+		CE55F3CE2C1F633E00E3982B /* RecordDrinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDrinksView.swift; sourceTree = "<group>"; };
 		CE866B672C1B354D00461411 /* DataSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSynchronizer.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* CreateCustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomDrinkScreen.swift; sourceTree = "<group>"; };
 		CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCustomDrinkScreen.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				CE3DACE42BDFD48400BB52EA /* MainScreen */,
 				CE4169C32BD981A10028D64A /* Models */,
 				CE41699C2BD97FB30028D64A /* Preview Content */,
+				CE55F3CC2C1F62C400E3982B /* RecordDrinks */,
 				CE3DACE72BDFD57A00BB52EA /* Utilities */,
 			);
 			path = DrinkTracker;
@@ -214,6 +217,14 @@
 				CE05229C2C0F6A4200840AB9 /* Day.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		CE55F3CC2C1F62C400E3982B /* RecordDrinks */ = {
+			isa = PBXGroup;
+			children = (
+				CE55F3CE2C1F633E00E3982B /* RecordDrinksView.swift */,
+			);
+			path = RecordDrinks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -363,6 +374,7 @@
 				CE3ECA272BE539E10046E242 /* DateMath.swift in Sources */,
 				CEB911BB2BD98A7F00224660 /* CreateCustomDrinkScreen.swift in Sources */,
 				CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */,
+				CE55F3CF2C1F633E00E3982B /* RecordDrinksView.swift in Sources */,
 				CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */,
 				CEEDC17C2BEBAE420019DF65 /* DayLogHistoryScreen.swift in Sources */,
 				CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */,
