@@ -19,7 +19,6 @@ struct RecordCustomDrinkScreen: View {
     ) var customDrinks: [CustomDrink]
     
     @State private var showConfirmation = false
-    @State private var showCustomDrinksEditor = false
     @State private var selectedDrink: CustomDrink?
     
     private var modelContext: ModelContext
@@ -54,20 +53,6 @@ struct RecordCustomDrinkScreen: View {
                     } label: {
                         Text("Cancel")
                     }
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showCustomDrinksEditor = true
-                    } label: {
-                        Image(systemName: "wineglass")
-                    }
-                }
-            }
-            .sheet(isPresented: $showCustomDrinksEditor) {
-                CalculatorScreen {
-                    modelContext.insert($0)
                 }
             }
             .confirmationDialog(
