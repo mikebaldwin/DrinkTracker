@@ -58,8 +58,8 @@ struct IngredientCell: View {
                     }
                     .focused($volumeFieldFocus, equals: .volume)
                 Picker("Measurement System", selection: $measurement) {
-                    Text("Imperial").tag(Measurement.imperial)
-                    Text("Metric").tag(Measurement.metric)
+                    Text("oz").tag(Measurement.imperial)
+                    Text("ml").tag(Measurement.metric)
                 }
                 .pickerStyle(.segmented)
             }
