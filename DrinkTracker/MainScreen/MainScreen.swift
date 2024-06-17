@@ -90,19 +90,28 @@ struct MainScreen: View {
                 }
                 Section {
                     Button {
-                        showQuickEntryView = true
-                    } label: {
-                        Text("Quick Entry")
-                    }
-                    Button {
                         showCalculatorView = true
                     } label: {
-                        Text("Drink Calculator")
+                        HStack {
+                            Image(systemName: "plus.circle")
+                            Text("Drink Calculator")
+                        }
                     }
                     Button {
                         showCustomDrinksView = true
                     } label: {
-                        Text("Custom Drinks")
+                        HStack {
+                            Image(systemName: "wineglass")
+                            Text("Custom Drinks")
+                        }
+                    }
+                    Button {
+                        showQuickEntryView = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "bolt")
+                            Text("Quick Entry")
+                        }
                     }
                 }
             }
