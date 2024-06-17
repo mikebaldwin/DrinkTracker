@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct QuickEntryView: View {
+    var completion: ((DrinkRecord) -> Void)?
+    
     @State private var drinkCount = 0.0
-    @State private var quickEntryValue = ""
+    @State private var manualEntryValue = ""
     @State private var showDrinkEntryAlert = false
     @State private var showRecordDrinksConfirmation = false
     
@@ -70,29 +72,29 @@ struct QuickEntryView: View {
             titleVisibility: .visible
         ) {
             Button("Record Drink") {
-                // pass drink back to superview
+                if let completion {
+                    completion(DrinkRecord(standardDrinks: drinkCount))
+                }
                 drinkCount = 0
             }
             Button("Cancel", role: .cancel) { drinkCount = 0 }
         }
         .alert("Enter standard drinks", isPresented: $showDrinkEntryAlert) {
-            TextField("", text: $quickEntryValue)
+            TextField("", text: $manualEntryValue)
                 .keyboardType(.decimalPad)
             
             Button("Cancel", role: .cancel) {
                 showDrinkEntryAlert = false
-                quickEntryValue = ""
+                manualEntryValue = ""
             }
             Button("Done") {
-                if let value = Double(quickEntryValue) {
+                if let value = Double(manualEntryValue) {
                     drinkCount = value
                 }
-                showDrinkEntryAlert = false
                 showRecordDrinksConfirmation = true
-                quickEntryValue = ""
+                manualEntryValue = ""
             }
         }
-
     }
 }
 

@@ -117,8 +117,11 @@ struct MainScreen: View {
             }
         }
         .sheet(isPresented: $showQuickEntryView) {
-            QuickEntryView()
-                .presentationDetents([.fraction(0.2)])
+            QuickEntryView { drinkRecord in
+                recordDrink(drinkRecord)
+                showQuickEntryView = false
+            }
+            .presentationDetents([.fraction(0.2)])
         }
         .sheet(isPresented: $showCalculatorView) {
             CalculatorScreen(createCustomDrink: { customDrink in
