@@ -32,8 +32,13 @@ enum AlcoholMeasurement {
 }
 
 struct IngredientCell: View {
+    private enum Field: Hashable {
+        case volume, abv
+    }
+
     @Binding var ingredient: Ingredient
-    
+    @FocusState private var volumeFieldFocus: Field?
+
     var onUpdate: (() -> Void)
     
     @State private var abv = ""
@@ -51,6 +56,7 @@ struct IngredientCell: View {
                         ingredient.volume = volume
                         calculate()
                     }
+                    .focused($volumeFieldFocus, equals: .volume)
                 Picker("Measurement System", selection: $measurement) {
                     Text("Imperial").tag(Measurement.imperial)
                     Text("Metric").tag(Measurement.metric)
@@ -76,6 +82,9 @@ struct IngredientCell: View {
             Text("\(Formatter.formatDecimal(standardDrinks)) standard \(standardDrinks == 1 ? "drink" : "drinks")")
                 .font(.caption)
                 .padding(.top)
+        }
+        .onAppear {
+            volumeFieldFocus = .volume
         }
     }
     
