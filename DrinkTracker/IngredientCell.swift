@@ -46,17 +46,24 @@ struct IngredientCell: View {
     @State private var measurement: Measurement = .imperial
     @State private var standardDrinks = 0.0
     @State private var volume = ""
+    @State private var showCalcShortcut = false
+    @State private var calcShortcutTitle = ""
     
     var body: some View {
         VStack {
             HStack {
-                TextField(measurement.title, text: $volume)
-                    .keyboardType(.decimalPad)
-                    .onChange(of: volume) {
-                        ingredient.volume = volume
-                        calculate()
-                    }
-                    .focused($volumeFieldFocus, equals: .volume)
+                TextField(
+                    showCalcShortcut ? calcShortcutTitle : measurement.title,
+                    text: $volume
+                )
+                .keyboardType(.decimalPad)
+                .onChange(of: volume) {
+                    showCalcShortcut = false
+                    ingredient.volume = volume
+                    calculate()
+                }
+                .focused($volumeFieldFocus, equals: .volume)
+                
                 Picker("Measurement System", selection: $measurement) {
                     Text("oz").tag(Measurement.imperial)
                     Text("ml").tag(Measurement.metric)
@@ -71,6 +78,7 @@ struct IngredientCell: View {
                     .keyboardType(.decimalPad)
                     .onChange(of: abv) {
                         ingredient.abv = abv
+                        showCalcShortcut = !abv.isEmpty
                         calculate()
                     }
                 Picker("Alcohol Measurement", selection: $alcoholMeasurement) {
@@ -89,10 +97,18 @@ struct IngredientCell: View {
     }
     
     private func calculate() {
+        let calculator = DrinkCalculator()
+        
         if ingredient.isValid {
-            standardDrinks = DrinkCalculator().calculateStandardDrinks([ingredient])
-            onUpdate()
+            standardDrinks = calculator.calculateStandardDrinks([ingredient])
+        } else if ingredient.hasOnlyABV {
+            let volume = calculator.ouncesForOneStandardDrink(abv: Double(abv)!)
+            calcShortcutTitle = "\(Formatter.formatDecimal(volume))"
+            showCalcShortcut = true
+        } else {
+            standardDrinks = 0
         }
+        onUpdate()
     }
 }
 

@@ -25,4 +25,12 @@ struct Ingredient: Identifiable {
         }
         return false
     }
+    
+    var hasOnlyABV: Bool {
+        // TODO: unit test this
+        if volume.isEmpty, let _ = Double(abv) {
+            return true
+        }
+        return false
+    }
 }
