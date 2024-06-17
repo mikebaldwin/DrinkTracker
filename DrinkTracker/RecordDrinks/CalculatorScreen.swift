@@ -8,12 +8,18 @@
 import SwiftUI
 
 struct CalculatorScreen: View {
-    var completion: ((CustomDrink) -> Void)?
+    var createCustomDrink: ((CustomDrink) -> Void)?
+    var createDrinkRecord: ((DrinkRecord) -> Void)?
     
     @Environment(\.dismiss) private var dismiss
+
     @State private var nameText = ""
     @State private var ingredients = [Ingredient]()
     @State private var totalStandardDrinks = 0.0
+    @State private var showDoneConfirmation = false
+    @State private var showRecordDrinkConfirmation = false
+    @State private var showNameDrinkAlert = false
+    @State private var nameDrinkValue = ""
     
     var body: some View {
         NavigationStack {
@@ -67,15 +73,7 @@ struct CalculatorScreen: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        if let completion {
-                            completion(
-                                CustomDrink(
-                                    name: nameText,
-                                    standardDrinks: totalStandardDrinks
-                                )
-                            )
-                        }
-                        dismiss()
+                        showDoneConfirmation = true
                     } label: {
                         Text("Done")
                     }
@@ -84,6 +82,57 @@ struct CalculatorScreen: View {
             }
             .onAppear {
                 ingredients.append(Ingredient(volume: "", abv: ""))
+            }
+        }
+        .confirmationDialog(
+            "Choose what to do with this drink",
+            isPresented: $showDoneConfirmation,
+            titleVisibility: .hidden
+        ) {
+            Button("Record Drink") {
+                if let createDrinkRecord {
+                    createDrinkRecord(DrinkRecord(standardDrinks: totalStandardDrinks))
+                }
+                dismiss()
+            }
+            Button("Save Custom Drink") {
+                showNameDrinkAlert = true
+            }
+            Button("Cancel", role: .cancel) { }
+        }
+        .confirmationDialog(
+            "Are you drinking it now?",
+            isPresented: $showRecordDrinkConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Record Drink") {
+                if let createDrinkRecord {
+                    createDrinkRecord(DrinkRecord(standardDrinks: totalStandardDrinks))
+                }
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) {
+                dismiss()
+            }
+        }
+        .alert("Give this drink a name", isPresented: $showNameDrinkAlert) {
+            TextField("", text: $nameDrinkValue)
+                .keyboardType(.decimalPad)
+            
+            Button("Cancel", role: .cancel) {
+                nameDrinkValue = ""
+            }
+            Button("Done") {
+                if let createCustomDrink {
+                    createCustomDrink(
+                        CustomDrink(
+                            name: nameDrinkValue,
+                            standardDrinks: totalStandardDrinks
+                        )
+                    )
+                }
+                nameDrinkValue = ""
+                showRecordDrinkConfirmation = true
             }
         }
     }
