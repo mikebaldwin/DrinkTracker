@@ -6,36 +6,44 @@
 //
 
 @testable import DrinkTracker
-import XCTest
+import Testing
 
-final class DrinkCalculatorTests: XCTestCase {
-    private var calculator: DrinkCalculator!
-
-    override func setUp() {
+@Suite("DrinkCalculator tests") struct DrinkCalculatorTestss {
+    private var calculator: DrinkCalculator
+    
+    init() {
         calculator = DrinkCalculator()
     }
     
-    func testGenericDrinkCalculation() {
-        let genericDrink = calculator.calculateStandardDrinks([Ingredient(volume: "1.5", abv: "40")])
-        XCTAssertEqual(genericDrink, 1)
+    @Test(
+        "Calculate one standard drink",
+        arguments: [
+            Ingredient(volume: "1.5", abv: "40"),
+            Ingredient(volume: "5", abv: "12"),
+            Ingredient(volume: "12", abv: "5")
+        ]
+    )
+    func genericDrinkCalculation(_ ingredient: Ingredient) {
+        let genericDrink = calculator.calculateStandardDrinks([ingredient])
+        #expect(genericDrink == 1)
     }
     
-    func testMartiniCalculation() {
+    @Test("Calculate standard drinks for a martini") func calculateMartini() {
         let martini = calculator.calculateStandardDrinks(
             [
                 Ingredient(volume: "2.0", abv: "40"),
                 Ingredient(volume: "1.0", abv: "18")
             ]
         )
-        XCTAssertEqual(martini, 1.6, accuracy: .accuracy)
+        #expect(Formatter.formatDecimal(martini) == "1.6")
     }
     
-    func testDaiquiri() {
+    @Test("Calculate standard drinks for a daiquiri") func calculateDaiquiri() {
         let daiquiri = calculator.calculateStandardDrinks([Ingredient(volume: "2", abv: "41.2")])
-        XCTAssertEqual(daiquiri, 1.4, accuracy: .accuracy)
+        #expect(Formatter.formatDecimal(daiquiri) == "1.4")
     }
     
-    func testJetPilot() {
+    @Test("Calculate standard drinks for a Jet Pilot") func calculateJetPilot() {
         let jetPilot = calculator.calculateStandardDrinks(
             [
                 Ingredient(volume: "1", abv: "40"),
@@ -46,27 +54,31 @@ final class DrinkCalculatorTests: XCTestCase {
             ]
             
         )
-        XCTAssertEqual(jetPilot, 2.2, accuracy: .accuracy)
+        #expect(Formatter.formatDecimal(jetPilot) == "2.2")
     }
     
-    func testOuncesForFortyPercentAlcohol() {
+    @Test("Calculate volume of one standard drink for 40% ABV")
+    func calculateOuncesForFortyPercentAlcohol() {
         let abv = 40.0
         let ounces = calculator.ouncesForOneStandardDrink(abv: abv)
-        XCTAssertEqual(ounces, 1.5)
+        #expect(Formatter.formatDecimal(ounces) == "1.5")
     }
     
-    func testOuncesForNinePercentAlcohol() {
+    @Test("Calculate volume of one standard drink for 9% ABV")
+    func calculateOuncesForNinePercentAlcohol() {
         let abv = 9.0
         let ounces = calculator.ouncesForOneStandardDrink(abv: abv)
-        XCTAssertEqual(ounces, 6.7, accuracy: .accuracy)
+        #expect(Formatter.formatDecimal(ounces) == "6.7")
     }
     
-    func testOuncesForFourteenPercentAlcohol() {
+    @Test("Calculate volume of one standard drink for 14% ABV")
+    func calculateOuncesForFourteenPercentAlcohol() {
         let ounces = calculator.ouncesForOneStandardDrink(abv: 14.0)
-        XCTAssertEqual(ounces, 4.3, accuracy: .accuracy)
+        #expect(Formatter.formatDecimal(ounces) == "4.3")
     }
     
-    func testFilteringOutEmptyIngredient() {
+    @Test("Test filtering out empty ingredient")
+    func filterOutEmptyIngredient() {
         let validIngredient = Ingredient(volume: "2", abv: "40")
         let emptyIngredient = Ingredient(volume: "", abv: "")
         
@@ -76,10 +88,11 @@ final class DrinkCalculatorTests: XCTestCase {
                 emptyIngredient
             ]
         )
-        XCTAssertEqual(drink, 1.3, accuracy: .accuracy)
+        #expect(Formatter.formatDecimal(drink) == "1.3")
     }
     
-    func testFilteringOutPartlyEmptyIngredient() {
+    @Test("Test filtering out partly empty ingredient")
+    func filterOutPartlyEmptyIngredient() {
         let validIngredient = Ingredient(volume: "2", abv: "40")
         let emptyIngredient = Ingredient(volume: "1", abv: "")
         
@@ -89,11 +102,6 @@ final class DrinkCalculatorTests: XCTestCase {
                 emptyIngredient
             ]
         )
-        XCTAssertEqual(drink, 1.3, accuracy: .accuracy)
+        #expect(Formatter.formatDecimal(drink) == "1.3")
     }
-
-}
-
-private extension Double {
-    static var accuracy = 0.1
 }

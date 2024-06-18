@@ -6,57 +6,42 @@
 //
 
 @testable import DrinkTracker
-import XCTest
+import Testing
 
-final class IngredientTests: XCTestCase {
+@Suite("Ingredient Tests")
+struct IngredientTests {
     
-    func testIsEmptyWithEmptyStrings() {
-        let ingredient = Ingredient(volume: "", abv: "")
-        XCTAssertTrue(ingredient.isEmpty)
+    @Test(
+        "Test ingredient isEmpty success",
+        arguments: [
+            Ingredient(volume: "", abv: ""),
+            Ingredient(volume: "0", abv: "0"),
+            Ingredient(volume: "-1", abv: "-20")
+        ]
+    )
+    func isEmptyWithEmptyStrings(_ ingredient: Ingredient) {
+        #expect(ingredient.isEmpty)
     }
     
-    func testIsEmptyWithZeros() {
-        let ingredient = Ingredient(volume: "0", abv: "0")
-        XCTAssertTrue(ingredient.isEmpty)
-    }
-    
-    func testIsEmptyWithNegativeNumbers() {
-        let ingredient = Ingredient(volume: "-1", abv: "-20")
-        XCTAssertTrue(ingredient.isEmpty)
-    }
-    
-    func testIsValidSuccess() {
+    @Test("Test ingredient validation success")
+    func isValidSuccess() {
         let ingredient = Ingredient(volume: "2", abv: "40")
-        XCTAssertTrue(ingredient.isValid)
+        #expect(ingredient.isValid)
+        #expect(!ingredient.isEmpty)
     }
     
-    func testIsValidEmptyVolumeFailure() {
-        let ingredient = Ingredient(volume: "", abv: "40")
-        XCTAssertFalse(ingredient.isValid)
-    }
-    
-    func testIsValidZeroVolumeFailure() {
-        let ingredient = Ingredient(volume: "0", abv: "40")
-        XCTAssertFalse(ingredient.isValid)
-    }
-    
-    func testIsValidEmptyABVFailure() {
-        let ingredient = Ingredient(volume: "2", abv: "")
-        XCTAssertFalse(ingredient.isValid)
-    }
-    
-    func testIsValidZeroABVFailure() {
-        let ingredient = Ingredient(volume: "2", abv: "0")
-        XCTAssertFalse(ingredient.isValid)
-    }
-    
-    func testIsValidAllEmptyFailure() {
-        let ingredient = Ingredient(volume: "", abv: "")
-        XCTAssertFalse(ingredient.isValid)
-    }
-    
-    func testIsValidAllZerosFailure() {
-        let ingredient = Ingredient(volume: "0", abv: "0")
-        XCTAssertFalse(ingredient.isValid)
+    @Test(
+        "Test ingredient validation failures",
+        arguments: [
+            Ingredient(volume: "", abv: "40"),
+            Ingredient(volume: "0", abv: "40"),
+            Ingredient(volume: "2", abv: ""),
+            Ingredient(volume: "2", abv: "0"),
+            Ingredient(volume: "", abv: ""),
+            Ingredient(volume: "0", abv: "0")
+        ]
+    )
+    func isInvalidWithEmptyVolume(_ ingredient: Ingredient) {
+        #expect(!ingredient.isValid)
     }
 }
