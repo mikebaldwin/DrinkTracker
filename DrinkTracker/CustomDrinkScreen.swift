@@ -13,20 +13,25 @@ struct CustomDrinkScreen: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @Query(
-        sort: \CustomDrink.name,
-        order: .forward
-    ) var customDrinks: [CustomDrink]
+    @Query(sort: \CustomDrink.name, order: .forward) var customDrinks: [CustomDrink]
     
     @State private var showConfirmation = false
+    @State private var searchText = ""
     @State private var selectedDrink: CustomDrink?
     
     private var modelContext: ModelContext
     
+    private var searchResults: [CustomDrink] {
+        if searchText.isEmpty {
+            return customDrinks
+        }
+        return customDrinks.filter { $0.name.contains(searchText) }
+    }
+    
     var body: some View {
         NavigationStack {
             List {
-                ForEach(customDrinks) { drink in
+                ForEach(searchResults) { drink in
                     Button {
                         selectedDrink = drink
                         showConfirmation = true
@@ -69,6 +74,7 @@ struct CustomDrinkScreen: View {
                 Button("Cancel", role: .cancel) { dismiss() }
             }
         }
+        .searchable(text: $searchText)
     }
     
     init(modelContext: ModelContext, completion: ((CustomDrink) -> Void)?) {
