@@ -18,9 +18,14 @@ struct MainScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     
     @Query(
+        sort: \DrinkRecord.timestamp,
+        order: .reverse
+    ) private var allDrinks: [DrinkRecord]
+    
+    @Query(
         filter: DrinkRecord.thisWeeksDrinksPredicate(),
         sort: [SortDescriptor(\DrinkRecord.timestamp)]
-    ) private var drinkRecords: [DrinkRecord]
+    ) private var thisWeeksDrinks: [DrinkRecord]
     
     @State private var showQuickEntryView = false
     @State private var showCalculatorView = false
@@ -30,12 +35,12 @@ struct MainScreen: View {
     private var healthStoreManager = HealthStoreManager.shared
     
     private var totalStandardDrinksToday: Double {
-        drinkRecords
+        thisWeeksDrinks
             .filter { Calendar.current.isDateInToday($0.timestamp) }
             .reduce(into: 0.0) { $0 += $1.standardDrinks }
     }
     private var totalStandardDrinksThisWeek: Double {
-        drinkRecords.reduce(into: 0.0) { $0 += $1.standardDrinks }
+        thisWeeksDrinks.reduce(into: 0.0) { $0 += $1.standardDrinks }
     }
     
     var body: some View {
@@ -43,7 +48,7 @@ struct MainScreen: View {
             Form {
                 Section("Drinks") {
                     ChartView(
-                        drinkRecords: drinkRecords,
+                        drinkRecords: thisWeeksDrinks,
                         totalStandardDrinksToday: totalStandardDrinksToday,
                         totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
                     )
@@ -85,6 +90,12 @@ struct MainScreen: View {
                                         .fontWeight(.semibold)
                                 }
                             }
+                        }
+                        HStack {
+                            Text("Alcohol-free days")
+                                .fontWeight(.semibold)
+                            Spacer()
+                            Text("\(calculateCurrentStreak()) day streak")
                         }
                     }
                 }
@@ -150,7 +161,7 @@ struct MainScreen: View {
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                _ = drinkRecords
+                _ = thisWeeksDrinks
             }
         }
     }
@@ -171,7 +182,7 @@ struct MainScreen: View {
                     start: drink.timestamp,
                     end: drink.timestamp
                 )
-
+                
                 try await healthStoreManager.save(sample)
                 debugPrint("✅ Drink saved to HealthKit on \(drink.timestamp)")
                 
@@ -182,7 +193,50 @@ struct MainScreen: View {
         }
         modelContext.insert(drink)
     }
+    
+    private func calculateCurrentStreak() -> Int {
+        let calendar = Calendar.current
+        // grab the date of the most recent drink in drinkRecords
+        guard let mostRecentDrink = allDrinks.first else { return 0 }
+        
+        // if date is today, set streak number to zero
+        guard mostRecentDrink.timestamp < calendar.startOfDay(for: Date()) else {
+            return 0
+        }
+        
+        // otherwise...
+        // Use that date as the start date of your loop
+        // use Start of day tomorrow as the end date
+        var iteratorDate = calendar.startOfDay(
+            for: Calendar.current.date(
+                byAdding: .day,
+                value: 1,
+                to: mostRecentDrink.timestamp
+            )!
+        )
+        let startOfTomorrow = calendar.startOfDay(
+            for: Calendar.current.date(
+                byAdding: .day,
+                value: 1,
+                to: Date()
+            )!
+        )
 
+        // while loop through days between start and end
+        // increment streak number until you finish
+        var streak = 0
+        
+        while iteratorDate < startOfTomorrow {
+            iteratorDate = calendar.date(
+                byAdding: .day,
+                value: 1,
+                to: iteratorDate
+            )!
+            streak += 1
+        }
+        
+        return streak
+    }
 }
 
 //#Preview {
