@@ -74,10 +74,11 @@ struct DayLogHistoryScreen: View {
         days.removeAll()
         
         var dayDictionary = [Date: [DrinkRecord]]()
+        let calendar = Calendar.current
 
         // Iterate through the drinkRecords and populate the dayDictionary
         for record in drinkRecords {
-            let startOfDay = Calendar.current.startOfDay(for: record.timestamp)
+            let startOfDay = calendar.startOfDay(for: record.timestamp)
             dayDictionary[startOfDay, default: []].append(record)
         }
 
@@ -88,8 +89,8 @@ struct DayLogHistoryScreen: View {
 
         // "current" as in current iteration, not current as in today
         var currentDate = earliestDate
-        let startOfTomorrow = Calendar.current.startOfDay(
-            for: Calendar.current.date(
+        let startOfTomorrow = calendar.startOfDay(
+            for: calendar.date(
                 byAdding: .day,
                 value: 1,
                 to: Date()
@@ -98,12 +99,12 @@ struct DayLogHistoryScreen: View {
         
         // Create an array of Day objects for all days in the sequence
         while currentDate <= startOfTomorrow {
-            let startOfDay = Calendar.current.startOfDay(for: currentDate)
+            let startOfDay = calendar.startOfDay(for: currentDate)
             let drinks = dayDictionary[startOfDay] ?? []
             let day = Day(date: startOfDay, drinks: drinks)
             days.append(day)
             
-            currentDate = Calendar.current.date(
+            currentDate = calendar.date(
                 byAdding: .day,
                 value: 1,
                 to: currentDate
