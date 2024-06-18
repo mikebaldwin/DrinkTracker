@@ -31,7 +31,7 @@
 		CE55F3D12C1F65CF00E3982B /* QuickEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE55F3D02C1F65CF00E3982B /* QuickEntryView.swift */; };
 		CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE866B672C1B354D00461411 /* DataSynchronizer.swift */; };
 		CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */; };
-		CEB911BF2BDAA73300224660 /* RecordCustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */; };
+		CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */; };
 		CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CEB911C12BDAAD1E00224660 /* Utilities */; };
 		CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
 		CEEDC17C2BEBAE420019DF65 /* DayLogHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */; };
@@ -82,7 +82,7 @@
 		CE55F3D02C1F65CF00E3982B /* QuickEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryView.swift; sourceTree = "<group>"; };
 		CE866B672C1B354D00461411 /* DataSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSynchronizer.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorScreen.swift; sourceTree = "<group>"; };
-		CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCustomDrinkScreen.swift; sourceTree = "<group>"; };
+		CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrinkScreen.swift; sourceTree = "<group>"; };
 		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
 		CEB911C42BDBF9E300224660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CEC70BA02C07A35400273E1D /* DailyTotal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTotal.swift; sourceTree = "<group>"; };
@@ -167,7 +167,7 @@
 				CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
 				CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */,
-				CEB911BE2BDAA73300224660 /* RecordCustomDrinkScreen.swift */,
+				CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */,
 				CE3DACEC2BDFE62000BB52EA /* SettingsScreen.swift */,
 				CE41699A2BD97FB30028D64A /* Assets.xcassets */,
 				CE3DACE42BDFD48400BB52EA /* MainScreen */,
@@ -381,7 +381,7 @@
 				CE3DACED2BDFE62000BB52EA /* SettingsScreen.swift in Sources */,
 				CE3ECA2D2BE92BBF0046E242 /* DrinkCalculator.swift in Sources */,
 				CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */,
-				CEB911BF2BDAA73300224660 /* RecordCustomDrinkScreen.swift in Sources */,
+				CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */,
 				CE05229D2C0F6A4200840AB9 /* Day.swift in Sources */,
 				CE3DACE62BDFD49A00BB52EA /* ChartView.swift in Sources */,
 			);

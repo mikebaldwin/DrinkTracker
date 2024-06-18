@@ -141,7 +141,7 @@ struct MainScreen: View {
             .presentationDetents([.large])
         }
         .sheet(isPresented: $showCustomDrinksView) {
-            RecordCustomDrinkScreen(modelContext: modelContext) {
+            CustomDrinkScreen(modelContext: modelContext) {
                 recordDrink(DrinkRecord($0))
             }
         }

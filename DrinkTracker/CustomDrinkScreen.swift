@@ -1,5 +1,5 @@
 //
-//  RecordCustomDrinkScreen.swift
+//  CustomDrinkScreen.swift
 //  DrinkTracker
 //
 //  Created by Mike Baldwin on 4/25/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct RecordCustomDrinkScreen: View {
+struct CustomDrinkScreen: View {
     var completion: ((CustomDrink) -> Void)?
     
     @Environment(\.dismiss) private var dismiss
