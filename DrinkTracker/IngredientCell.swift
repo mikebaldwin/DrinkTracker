@@ -7,17 +7,6 @@
 
 import SwiftUI
 
-enum VolumeMeasurement {
-    case metric
-    case imperial
-    
-    var title: String {
-        switch self {
-        case .metric: return "mililiters"
-        case .imperial: return "ounces"
-        }
-    }
-}
 
 enum AlcoholMeasurement {
     case abv
