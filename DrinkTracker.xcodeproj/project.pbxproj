@@ -33,6 +33,8 @@
 		CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */; };
 		CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CEB911C12BDAAD1E00224660 /* Utilities */; };
 		CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
+		CED1BC532C2200EF004F45FC /* StreakCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC522C2200EF004F45FC /* StreakCalculator.swift */; };
+		CED1BC552C22015C004F45FC /* StreakCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC542C22015C004F45FC /* StreakCalculatorTests.swift */; };
 		CEEDC17C2BEBAE420019DF65 /* DayLogHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */; };
 		CEEDC17E2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */; };
 /* End PBXBuildFile section */
@@ -84,6 +86,8 @@
 		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
 		CEB911C42BDBF9E300224660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CEC70BA02C07A35400273E1D /* DailyTotal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTotal.swift; sourceTree = "<group>"; };
+		CED1BC522C2200EF004F45FC /* StreakCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalculator.swift; sourceTree = "<group>"; };
+		CED1BC542C22015C004F45FC /* StreakCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalculatorTests.swift; sourceTree = SOURCE_ROOT; };
 		CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLogHistoryScreen.swift; sourceTree = "<group>"; };
 		CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkRecordDetailScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,6 +136,7 @@
 				CE3ECA2C2BE92BBF0046E242 /* DrinkCalculator.swift */,
 				CE3DACE82BDFD59100BB52EA /* Formatter.swift */,
 				CE2638F92BED28CB000B7CDD /* HealthStoreManager.swift */,
+				CED1BC522C2200EF004F45FC /* StreakCalculator.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -190,6 +195,7 @@
 			children = (
 				CE3ECA2E2BE92BD30046E242 /* DrinkCalculatorTests.swift */,
 				CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */,
+				CED1BC542C22015C004F45FC /* StreakCalculatorTests.swift */,
 			);
 			path = DrinkTrackerTests;
 			sourceTree = "<group>";
@@ -370,6 +376,7 @@
 				CE2638FA2BED28CB000B7CDD /* HealthStoreManager.swift in Sources */,
 				CE3ECA272BE539E10046E242 /* DateMath.swift in Sources */,
 				CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */,
+				CED1BC532C2200EF004F45FC /* StreakCalculator.swift in Sources */,
 				CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */,
 				CE55F3D12C1F65CF00E3982B /* QuickEntryView.swift in Sources */,
 				CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */,
@@ -390,6 +397,7 @@
 			files = (
 				CE52A1F22C010DC800BAEBF3 /* IngredientTests.swift in Sources */,
 				CE3ECA2F2BE92BD30046E242 /* DrinkCalculatorTests.swift in Sources */,
+				CED1BC552C22015C004F45FC /* StreakCalculatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
