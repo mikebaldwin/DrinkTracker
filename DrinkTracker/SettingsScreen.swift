@@ -11,7 +11,8 @@ import SwiftUI
 struct SettingsScreen: View {
     @AppStorage("dailyTarget") private var dailyTarget = 0.0
     @AppStorage("weeklyTarget") private var weeklyTarget = 0.0
-    
+    @AppStorage("longestStreak") private var longestStreak = 0
+
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     
@@ -19,6 +20,7 @@ struct SettingsScreen: View {
     
     @State private var showDeleteAllDataConfirmation = false
     @State private var showSyncWithHealthKitConfirmation = false
+    @State private var showResetLongestStreakConfirmation = false
     
     var body: some View {
         NavigationStack {
@@ -42,6 +44,11 @@ struct SettingsScreen: View {
                             weeklyTarget -= 1
                         }
                     }
+                    Button {
+                        longestStreak = 0
+                    } label: {
+                        Text("Reset longest streak")
+                    }
                 }
                 Section("Developer") {
                     Button {
@@ -50,7 +57,7 @@ struct SettingsScreen: View {
                         Text("Delete all SwiftData")
                     }
                     Button {
-                        showSyncWithHealthKitConfirmation = true
+                        showResetLongestStreakConfirmation = true
                     } label: {
                         Text("Sync with HealthKit")
                     }
@@ -85,6 +92,16 @@ struct SettingsScreen: View {
             Button("Cancel", role: .cancel) { }
             Button("Sync") {
                 Task { await syncWithHealthKit() }
+            }
+        }
+        .confirmationDialog(
+            "Reset longest streak to zero?",
+            isPresented: $showResetLongestStreakConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Cancel", role: .cancel) { }
+            Button("Reset") {
+                longestStreak = 0
             }
         }
     }
