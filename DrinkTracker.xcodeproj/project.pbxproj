@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,7 +23,6 @@
 		CE41699E2BD97FB30028D64A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE41699D2BD97FB30028D64A /* Preview Assets.xcassets */; };
 		CE4169B22BD97FB30028D64A /* DrinkTrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169B12BD97FB30028D64A /* DrinkTrackerUITests.swift */; };
 		CE4169B42BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169B32BD97FB30028D64A /* DrinkTrackerUITestsLaunchTests.swift */; };
-		CE4169C22BD9810C0028D64A /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CE4169C12BD9810C0028D64A /* Utilities */; };
 		CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169C42BD984C40028D64A /* CustomDrink.swift */; };
 		CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */; };
 		CE52A1F22C010DC800BAEBF3 /* IngredientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */; };
@@ -31,7 +30,6 @@
 		CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE866B672C1B354D00461411 /* DataSynchronizer.swift */; };
 		CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */; };
 		CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */; };
-		CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = CEB911C12BDAAD1E00224660 /* Utilities */; };
 		CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
 		CED1BC532C2200EF004F45FC /* StreakCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC522C2200EF004F45FC /* StreakCalculator.swift */; };
 		CED1BC552C22015C004F45FC /* StreakCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC542C22015C004F45FC /* StreakCalculatorTests.swift */; };
@@ -97,8 +95,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE4169C22BD9810C0028D64A /* Utilities in Frameworks */,
-				CEB911C22BDAAD1E00224660 /* Utilities in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,8 +243,6 @@
 			);
 			name = DrinkTracker;
 			packageProductDependencies = (
-				CE4169C12BD9810C0028D64A /* Utilities */,
-				CEB911C12BDAAD1E00224660 /* Utilities */,
 			);
 			productName = DrinkTracker;
 			productReference = CE4169912BD97FB10028D64A /* DrinkTracker.app */;
@@ -323,7 +317,6 @@
 			);
 			mainGroup = CE4169882BD97FB10028D64A;
 			packageReferences = (
-				CEB911C02BDAAD1E00224660 /* XCLocalSwiftPackageReference "../Utilities" */,
 			);
 			productRefGroup = CE4169922BD97FB10028D64A /* Products */;
 			projectDirPath = "";
@@ -731,24 +724,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		CEB911C02BDAAD1E00224660 /* XCLocalSwiftPackageReference "../Utilities" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Utilities;
-		};
-/* End XCLocalSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		CE4169C12BD9810C0028D64A /* Utilities */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Utilities;
-		};
-		CEB911C12BDAAD1E00224660 /* Utilities */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Utilities;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CE4169892BD97FB10028D64A /* Project object */;
 }
