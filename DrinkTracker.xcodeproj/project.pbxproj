@@ -28,6 +28,7 @@
 		CE52A1F22C010DC800BAEBF3 /* IngredientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */; };
 		CE55F3D12C1F65CF00E3982B /* QuickEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE55F3D02C1F65CF00E3982B /* QuickEntryView.swift */; };
 		CE6610492C23676C006E824D /* VolumeMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6610482C23676C006E824D /* VolumeMeasurement.swift */; };
+		CE66104B2C236823006E824D /* AlcoholStrength.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE66104A2C236823006E824D /* AlcoholStrength.swift */; };
 		CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE866B672C1B354D00461411 /* DataSynchronizer.swift */; };
 		CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */; };
 		CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */; };
@@ -80,6 +81,7 @@
 		CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTests.swift; sourceTree = "<group>"; };
 		CE55F3D02C1F65CF00E3982B /* QuickEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryView.swift; sourceTree = "<group>"; };
 		CE6610482C23676C006E824D /* VolumeMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMeasurement.swift; sourceTree = "<group>"; };
+		CE66104A2C236823006E824D /* AlcoholStrength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlcoholStrength.swift; sourceTree = "<group>"; };
 		CE866B672C1B354D00461411 /* DataSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSynchronizer.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorScreen.swift; sourceTree = "<group>"; };
 		CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrinkScreen.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				CE4169982BD97FB10028D64A /* DrinkRecord.swift */,
 				CE3ECA302BE956BB0046E242 /* Ingredient.swift */,
 				CE6610482C23676C006E824D /* VolumeMeasurement.swift */,
+				CE66104A2C236823006E824D /* AlcoholStrength.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 			files = (
 				CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */,
 				CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */,
+				CE66104B2C236823006E824D /* AlcoholStrength.swift in Sources */,
 				CEEDC17E2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift in Sources */,
 				CE3ECA312BE956BB0046E242 /* Ingredient.swift in Sources */,
 				CE4169972BD97FB10028D64A /* MainScreen.swift in Sources */,

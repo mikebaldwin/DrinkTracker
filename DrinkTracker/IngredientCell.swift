@@ -7,19 +7,6 @@
 
 import SwiftUI
 
-
-enum AlcoholStrength {
-    case abv
-    case proof
-    
-    var title: String {
-        switch self {
-        case .abv: return "ABV %"
-        case .proof: return "Proof"
-        }
-    }
-}
-
 struct IngredientCell: View {
     private enum Field: Hashable {
         case volume, abv
