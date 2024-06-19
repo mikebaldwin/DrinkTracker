@@ -13,6 +13,7 @@ import SwiftUI
 struct MainScreen: View {
     @AppStorage("dailyTarget") private var dailyTarget: Double?
     @AppStorage("weeklyTarget") private var weeklyTarget: Double?
+    @AppStorage("longestStreak") private var longestStreak = 0
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
@@ -27,6 +28,7 @@ struct MainScreen: View {
         sort: [SortDescriptor(\DrinkRecord.timestamp)]
     ) private var thisWeeksDrinks: [DrinkRecord]
     
+    @State private var currentStreak = 0
     @State private var showQuickEntryView = false
     @State private var showCalculatorView = false
     @State private var showCustomDrinksView = false
@@ -91,12 +93,20 @@ struct MainScreen: View {
                                 }
                             }
                         }
-                        HStack {
-                            Text("Alcohol-free days")
-                                .fontWeight(.semibold)
-                            Spacer()
-                            Text("\(calculateCurrentStreak()) day streak")
-                        }
+                    }
+                }
+                Section("Alcohol-free Days") {
+                    HStack {
+                        Text("Current streak")
+                            .fontWeight(.semibold)
+                        Spacer()
+                        Text("\($currentStreak.wrappedValue) days")
+                    }
+                    HStack {
+                        Text("Longest streak")
+                            .fontWeight(.semibold)
+                        Spacer()
+                        Text("\(longestStreak) days")
                     }
                 }
                 Section {
@@ -164,6 +174,12 @@ struct MainScreen: View {
                 _ = thisWeeksDrinks
             }
         }
+        .onChange(of: allDrinks) {
+            refreshCurrentStreak()
+        }
+        .onAppear {
+            refreshCurrentStreak()
+        }
     }
     
     private func addCustomDrink(_ customDrink: CustomDrink) {
@@ -192,50 +208,21 @@ struct MainScreen: View {
             }
         }
         modelContext.insert(drink)
+        refreshCurrentStreak()
     }
     
-    private func calculateCurrentStreak() -> Int {
-        let calendar = Calendar.current
-        // grab the date of the most recent drink in drinkRecords
-        guard let mostRecentDrink = allDrinks.first else { return 0 }
+    private func refreshCurrentStreak() {
+        guard let drink = allDrinks.first else { return }
+                
+        currentStreak = StreakCalculator().calculateCurrentStreak(drink)
         
-        // if date is today, set streak number to zero
-        guard mostRecentDrink.timestamp < calendar.startOfDay(for: Date()) else {
-            return 0
+        if currentStreak == 0 && longestStreak == 1 {
+            // prevents giving streak credit user has gone zero days without alcohol
+            longestStreak = 0
         }
-        
-        // otherwise...
-        // Use that date as the start date of your loop
-        // use Start of day tomorrow as the end date
-        var iteratorDate = calendar.startOfDay(
-            for: Calendar.current.date(
-                byAdding: .day,
-                value: 1,
-                to: mostRecentDrink.timestamp
-            )!
-        )
-        let startOfTomorrow = calendar.startOfDay(
-            for: Calendar.current.date(
-                byAdding: .day,
-                value: 1,
-                to: Date()
-            )!
-        )
-
-        // while loop through days between start and end
-        // increment streak number until you finish
-        var streak = 0
-        
-        while iteratorDate < startOfTomorrow {
-            iteratorDate = calendar.date(
-                byAdding: .day,
-                value: 1,
-                to: iteratorDate
-            )!
-            streak += 1
+        if currentStreak > longestStreak {
+            longestStreak = currentStreak
         }
-        
-        return streak
     }
 }
 
