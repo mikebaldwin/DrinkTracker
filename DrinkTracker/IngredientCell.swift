@@ -19,7 +19,7 @@ struct IngredientCell: View {
     
     @State private var abv = ""
     // TODO: set to choice from userdefaults
-    @State private var alcoholMeasurement: AlcoholStrength = .abv
+    @State private var alcoholStrength: AlcoholStrength = .abv
     // TODO: set to choice from userdefaults
     @State private var measurement: VolumeMeasurement = .imperial
     @State private var standardDrinks = 0.0
@@ -66,11 +66,11 @@ struct IngredientCell: View {
             TextField("ABV %", text: $abv)
                 .keyboardType(.decimalPad)
                 .onChange(of: abv) {
-                    ingredient.abv = abv
+                    ingredient.strength = abv
                     showCalcShortcut = !abv.isEmpty
                     calculate()
                 }
-            Picker("Alcohol Strength", selection: $alcoholMeasurement) {
+            Picker("Alcohol Strength", selection: $alcoholStrength) {
                 Text("ABV %").tag(AlcoholStrength.abv)
                 Text("Proof").tag(AlcoholStrength.proof)
             }

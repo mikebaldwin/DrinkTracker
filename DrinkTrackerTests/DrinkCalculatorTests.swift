@@ -18,9 +18,9 @@ import Testing
     @Test(
         "Calculate one standard drink",
         arguments: [
-            Ingredient(volume: "1.5", abv: "40"),
-            Ingredient(volume: "5", abv: "12"),
-            Ingredient(volume: "12", abv: "5")
+            Ingredient(volume: "1.5", strength: "40"),
+            Ingredient(volume: "5", strength: "12"),
+            Ingredient(volume: "12", strength: "5")
         ]
     )
     func genericDrinkCalculation(_ ingredient: Ingredient) {
@@ -31,26 +31,26 @@ import Testing
     @Test("Calculate standard drinks for a martini") func calculateMartini() {
         let martini = calculator.calculateStandardDrinks(
             [
-                Ingredient(volume: "2.0", abv: "40"),
-                Ingredient(volume: "1.0", abv: "18")
+                Ingredient(volume: "2.0", strength: "40"),
+                Ingredient(volume: "1.0", strength: "18")
             ]
         )
         #expect(Formatter.formatDecimal(martini) == "1.6")
     }
     
     @Test("Calculate standard drinks for a daiquiri") func calculateDaiquiri() {
-        let daiquiri = calculator.calculateStandardDrinks([Ingredient(volume: "2", abv: "41.2")])
+        let daiquiri = calculator.calculateStandardDrinks([Ingredient(volume: "2", strength: "41.2")])
         #expect(Formatter.formatDecimal(daiquiri) == "1.4")
     }
     
     @Test("Calculate standard drinks for a Jet Pilot") func calculateJetPilot() {
         let jetPilot = calculator.calculateStandardDrinks(
             [
-                Ingredient(volume: "1", abv: "40"),
-                Ingredient(volume: "0.75", abv: "40"),
-                Ingredient(volume: "0.75", abv: "69"),
-                Ingredient(volume: "0.5", abv: "18"),
-                Ingredient(volume: "0.02", abv: "50")
+                Ingredient(volume: "1", strength: "40"),
+                Ingredient(volume: "0.75", strength: "40"),
+                Ingredient(volume: "0.75", strength: "69"),
+                Ingredient(volume: "0.5", strength: "18"),
+                Ingredient(volume: "0.02", strength: "50")
             ]
             
         )
@@ -79,8 +79,8 @@ import Testing
     
     @Test("Test filtering out empty ingredient")
     func filterOutEmptyIngredient() {
-        let validIngredient = Ingredient(volume: "2", abv: "40")
-        let emptyIngredient = Ingredient(volume: "", abv: "")
+        let validIngredient = Ingredient(volume: "2", strength: "40")
+        let emptyIngredient = Ingredient(volume: "", strength: "")
         
         let drink = calculator.calculateStandardDrinks(
             [
@@ -93,8 +93,8 @@ import Testing
     
     @Test("Test filtering out partly empty ingredient")
     func filterOutPartlyEmptyIngredient() {
-        let validIngredient = Ingredient(volume: "2", abv: "40")
-        let emptyIngredient = Ingredient(volume: "1", abv: "")
+        let validIngredient = Ingredient(volume: "2", strength: "40")
+        let emptyIngredient = Ingredient(volume: "1", strength: "")
         
         let drink = calculator.calculateStandardDrinks(
             [

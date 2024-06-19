@@ -10,24 +10,24 @@ import Foundation
 struct Ingredient: Identifiable {
     let id = UUID()
     var volume: String
-    var abv: String
+    var strength: String
 
     var isEmpty: Bool {
-        if let volume = Double(volume), let abv = Double(abv) {
+        if let volume = Double(volume), let abv = Double(strength) {
             return volume <= 0 && abv <= 0
         }
         return true
     }
     
     var isValid: Bool {
-        if let volume = Double(volume), let abv = Double(abv) {
+        if let volume = Double(volume), let abv = Double(strength) {
             return volume > 0 && abv > 0
         }
         return false
     }
     
     var hasOnlyABV: Bool {
-        if volume.isEmpty || volume == "0", let _ = Double(abv) {
+        if volume.isEmpty || volume == "0", let _ = Double(strength) {
             return true
         }
         return false

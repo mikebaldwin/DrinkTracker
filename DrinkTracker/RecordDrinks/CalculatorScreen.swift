@@ -50,7 +50,7 @@ struct CalculatorScreen: View {
                 }
             }
             .onAppear {
-                ingredients.append(Ingredient(volume: "", abv: ""))
+                ingredients.append(Ingredient(volume: "", strength: ""))
             }
         }
         .confirmationDialog(
@@ -135,7 +135,7 @@ struct CalculatorScreen: View {
             HStack {
                 Button {
                     withAnimation {
-                        ingredients.append(Ingredient(volume: "", abv: ""))
+                        ingredients.append(Ingredient(volume: "", strength: ""))
                     }
                 } label: {
                     Text("Add Ingredient")

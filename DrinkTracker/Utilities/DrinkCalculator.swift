@@ -13,7 +13,7 @@ struct DrinkCalculator {
             .filter { $0.isValid }
             .reduce(into: 0.0) { result, ingredient in
                 let volume = Double(ingredient.volume)!
-                let abv = Double(ingredient.abv)!
+                let abv = Double(ingredient.strength)!
                 let standardDrinks = (volume * abv * 0.01) / 0.6
                 return result += (standardDrinks * 100).rounded() / 100
             }
@@ -23,4 +23,6 @@ struct DrinkCalculator {
         let standardDrinkOunces = 0.6
         return (standardDrinkOunces / abv) * 100
     }
+    
+//    func mililitersForOneStandardDrink()
 }
