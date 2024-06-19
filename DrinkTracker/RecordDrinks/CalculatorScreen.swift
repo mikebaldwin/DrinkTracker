@@ -24,44 +24,13 @@ struct CalculatorScreen: View {
     var body: some View {
         NavigationStack {
             Form {
-                // Drink name section
-                Section {
-                    Text("\(Formatter.formatDecimal(totalStandardDrinks)) total standard \(totalStandardDrinks == 1 ? "drink" : "drinks")")
-                }
+                drinkTotalSection
                 
-                // Ingredients entry section
                 if !ingredients.isEmpty {
-                    ForEach($ingredients) { ingredient in
-                        Section() {
-                            IngredientCell(ingredient: ingredient) {
-                                updateTotalStandardDrinks()
-                            }
-                        }
-                    }
-                    .onDelete { offsets in
-                        withAnimation {
-                            if let first = offsets.first {
-                                ingredients.remove(at: first)
-                                updateTotalStandardDrinks()
-                            }
-                        }
-                    }
+                    ingredientEntrySection
                 }
                 
-                // Ingredient control section
-                Section {
-                    HStack {
-                        Button {
-                            withAnimation {
-                                ingredients.append(Ingredient(volume: "", abv: ""))
-                            }
-                        } label: {
-                            Text("Add Ingredient")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
-                }
+                addIngredientSection
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -133,6 +102,46 @@ struct CalculatorScreen: View {
                 }
                 nameDrinkValue = ""
                 showRecordDrinkConfirmation = true
+            }
+        }
+    }
+    
+    private var drinkTotalSection: some View {
+        Section {
+            Text("\(Formatter.formatDecimal(totalStandardDrinks)) total standard \(totalStandardDrinks == 1 ? "drink" : "drinks")")
+        }
+    }
+    
+    private var ingredientEntrySection: some View {
+        ForEach($ingredients) { ingredient in
+            Section() {
+                IngredientCell(ingredient: ingredient) {
+                    updateTotalStandardDrinks()
+                }
+            }
+        }
+        .onDelete { offsets in
+            withAnimation {
+                if let first = offsets.first {
+                    ingredients.remove(at: first)
+                    updateTotalStandardDrinks()
+                }
+            }
+        }
+    }
+    
+    private var addIngredientSection: some View {
+        Section {
+            HStack {
+                Button {
+                    withAnimation {
+                        ingredients.append(Ingredient(volume: "", abv: ""))
+                    }
+                } label: {
+                    Text("Add Ingredient")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(maxWidth: .infinity)
             }
         }
     }
