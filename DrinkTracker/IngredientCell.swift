@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-enum AlcoholMeasurement {
+enum AlcoholStrength {
     case abv
     case proof
     
@@ -31,7 +31,7 @@ struct IngredientCell: View {
     var onUpdate: (() -> Void)
     
     @State private var abv = ""
-    @State private var alcoholMeasurement: AlcoholMeasurement = .abv
+    @State private var alcoholMeasurement: AlcoholStrength = .abv
     @State private var measurement: VolumeMeasurement = .imperial
     @State private var standardDrinks = 0.0
     @State private var volume = ""
@@ -71,8 +71,8 @@ struct IngredientCell: View {
                         calculate()
                     }
                 Picker("Alcohol Measurement", selection: $alcoholMeasurement) {
-                    Text("ABV %").tag(AlcoholMeasurement.abv)
-                    Text("Proof").tag(AlcoholMeasurement.proof)
+                    Text("ABV %").tag(AlcoholStrength.abv)
+                    Text("Proof").tag(AlcoholStrength.proof)
                 }
                 .pickerStyle(.segmented)
             }
