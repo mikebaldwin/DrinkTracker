@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Measurement {
+enum VolumeMeasurement {
     case metric
     case imperial
     
@@ -43,7 +43,7 @@ struct IngredientCell: View {
     
     @State private var abv = ""
     @State private var alcoholMeasurement: AlcoholMeasurement = .abv
-    @State private var measurement: Measurement = .imperial
+    @State private var measurement: VolumeMeasurement = .imperial
     @State private var standardDrinks = 0.0
     @State private var volume = ""
     @State private var showCalcShortcut = false
@@ -65,8 +65,8 @@ struct IngredientCell: View {
                 .focused($volumeFieldFocus, equals: .volume)
                 
                 Picker("Measurement System", selection: $measurement) {
-                    Text("oz").tag(Measurement.imperial)
-                    Text("ml").tag(Measurement.metric)
+                    Text("oz").tag(VolumeMeasurement.imperial)
+                    Text("ml").tag(VolumeMeasurement.metric)
                 }
                 .pickerStyle(.segmented)
             }
