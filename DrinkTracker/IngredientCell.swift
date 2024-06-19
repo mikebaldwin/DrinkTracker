@@ -18,7 +18,9 @@ struct IngredientCell: View {
     var onUpdate: (() -> Void)
     
     @State private var abv = ""
+    // TODO: set to choice from userdefaults
     @State private var alcoholMeasurement: AlcoholStrength = .abv
+    // TODO: set to choice from userdefaults
     @State private var measurement: VolumeMeasurement = .imperial
     @State private var standardDrinks = 0.0
     @State private var volume = ""
@@ -27,49 +29,59 @@ struct IngredientCell: View {
     
     var body: some View {
         VStack {
-            HStack {
-                TextField(
-                    showCalcShortcut ? calcShortcutTitle : measurement.title,
-                    text: $volume
-                )
-                .keyboardType(.decimalPad)
-                .onChange(of: volume) {
-                    showCalcShortcut = false
-                    ingredient.volume = volume
-                    calculate()
-                }
-                .focused($volumeFieldFocus, equals: .volume)
-                
-                Picker("Measurement System", selection: $measurement) {
-                    Text("oz").tag(VolumeMeasurement.imperial)
-                    Text("ml").tag(VolumeMeasurement.metric)
-                }
-                .pickerStyle(.segmented)
-            }
-            
+            volumeCell
             Divider()
-            
-            HStack {
-                TextField("ABV %", text: $abv)
-                    .keyboardType(.decimalPad)
-                    .onChange(of: abv) {
-                        ingredient.abv = abv
-                        showCalcShortcut = !abv.isEmpty
-                        calculate()
-                    }
-                Picker("Alcohol Measurement", selection: $alcoholMeasurement) {
-                    Text("ABV %").tag(AlcoholStrength.abv)
-                    Text("Proof").tag(AlcoholStrength.proof)
-                }
-                .pickerStyle(.segmented)
-            }
-            Text("\(Formatter.formatDecimal(standardDrinks)) standard \(standardDrinks == 1 ? "drink" : "drinks")")
-                .font(.caption)
-                .padding(.top)
+            strengthCell
+            ingredientTotalView
         }
         .onAppear {
             volumeFieldFocus = .volume
         }
+    }
+    
+    private var volumeCell: some View {
+        HStack {
+            TextField(
+                showCalcShortcut ? calcShortcutTitle : measurement.title,
+                text: $volume
+            )
+            .keyboardType(.decimalPad)
+            .onChange(of: volume) {
+                showCalcShortcut = false
+                ingredient.volume = volume
+                calculate()
+            }
+            .focused($volumeFieldFocus, equals: .volume)
+            
+            Picker("Volume Measurement", selection: $measurement) {
+                Text("oz").tag(VolumeMeasurement.imperial)
+                Text("ml").tag(VolumeMeasurement.metric)
+            }
+            .pickerStyle(.segmented)
+        }
+    }
+    
+    private var strengthCell: some View {
+        HStack {
+            TextField("ABV %", text: $abv)
+                .keyboardType(.decimalPad)
+                .onChange(of: abv) {
+                    ingredient.abv = abv
+                    showCalcShortcut = !abv.isEmpty
+                    calculate()
+                }
+            Picker("Alcohol Strength", selection: $alcoholMeasurement) {
+                Text("ABV %").tag(AlcoholStrength.abv)
+                Text("Proof").tag(AlcoholStrength.proof)
+            }
+            .pickerStyle(.segmented)
+        }
+    }
+    
+    private var ingredientTotalView: some View {
+        Text("\(Formatter.formatDecimal(standardDrinks)) standard \(standardDrinks == 1 ? "drink" : "drinks")")
+            .font(.caption)
+            .padding(.top)
     }
     
     private func calculate() {
