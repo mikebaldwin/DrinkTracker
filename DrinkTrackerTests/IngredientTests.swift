@@ -19,7 +19,7 @@ struct IngredientTests {
             Ingredient(volume: "-1", abv: "-20")
         ]
     )
-    func isEmptyWithEmptyStrings(_ ingredient: Ingredient) {
+    func ingredientIsEmptyWithInvalidData(_ ingredient: Ingredient) {
         #expect(ingredient.isEmpty)
     }
     
@@ -41,7 +41,7 @@ struct IngredientTests {
             Ingredient(volume: "0", abv: "0")
         ]
     )
-    func isInvalidWithEmptyVolume(_ ingredient: Ingredient) {
+    func ingredientValidationFailure(_ ingredient: Ingredient) {
         #expect(!ingredient.isValid)
     }
 }
