@@ -44,4 +44,21 @@ struct IngredientTests {
     func ingredientValidationFailure(_ ingredient: Ingredient) {
         #expect(!ingredient.isValid)
     }
+    
+    @Test(
+        "Test ingredient has ABV and no volume",
+        arguments: [
+            Ingredient(volume: "", abv: "40"),
+            Ingredient(volume: "0", abv: "40")
+        ]
+    )
+    func ingredientHasOnlyABV(_ ingredient: Ingredient) {
+        #expect(ingredient.hasOnlyABV)
+    }
+    
+    @Test("Test ingredient hasOnlyABV failure")
+    func ingredientHasABV() {
+        let ingredient = Ingredient(volume: "2", abv: "40")
+        #expect(!ingredient.hasOnlyABV)
+    }
 }
