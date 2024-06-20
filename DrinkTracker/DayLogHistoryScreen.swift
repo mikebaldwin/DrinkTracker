@@ -61,7 +61,15 @@ struct DayLogHistoryScreen: View {
     private let dateFormatter = DateFormatter()
     
     private func formatDate(_ date: Date) -> String {
-        dateFormatter.dateFormat = "E, MMM d"
+        let calendar = Calendar.current
+        let now = Date()
+        
+        if calendar.component(.year, from: date) < calendar.component(.year, from: now) {
+            dateFormatter.dateFormat = "E, MMM d, yyyy"
+        } else {
+            dateFormatter.dateFormat = "E, MMM d"
+        }
+        
         return dateFormatter.string(from: date)
     }
     
