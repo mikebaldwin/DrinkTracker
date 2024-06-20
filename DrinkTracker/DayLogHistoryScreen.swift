@@ -97,13 +97,7 @@ struct DayLogHistoryScreen: View {
 
         // "current" as in current iteration, not current as in today
         var currentDate = earliestDate
-        let startOfTomorrow = calendar.startOfDay(
-            for: calendar.date(
-                byAdding: .day,
-                value: 1,
-                to: Date()
-            )!
-        )
+        let startOfTomorrow = Date.tomorrow
         
         // Create an array of Day objects for all days in the sequence
         while currentDate <= startOfTomorrow {

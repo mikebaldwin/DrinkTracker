@@ -151,11 +151,8 @@ final actor HealthStoreManager {
             throw HealthKitError.authorizationFailed
         }
         
-        let calendar = Calendar.current
-        let startOfWeek = calendar.date(
-            from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)
-        )!
-        let endOfWeek = calendar.date(byAdding: .day, value: 7, to: startOfWeek)!
+        let startOfWeek = Date.startOfWeek
+        let endOfWeek = Date.endOfWeek
         
         let predicate = HKQuery.predicateForSamples(
             withStart: startOfWeek,

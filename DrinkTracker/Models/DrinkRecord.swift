@@ -24,12 +24,7 @@ final class DrinkRecord: Identifiable, Sendable {
     }
     
     static func thisWeeksDrinksPredicate() -> Predicate<DrinkRecord> {
-        let startOfCurrentWeek = Calendar.current.date(
-            from: Calendar.current.dateComponents(
-                [.yearForWeekOfYear, .weekOfYear],
-                from: Date()
-            )
-        )!
+        let startOfCurrentWeek = Date.startOfWeek
         
         return #Predicate<DrinkRecord> { drinkRecord in
             drinkRecord.timestamp >= startOfCurrentWeek
@@ -39,7 +34,7 @@ final class DrinkRecord: Identifiable, Sendable {
     static func todaysDrinksPredicate() -> Predicate<DrinkRecord> {
         let calendar = Calendar.current
         let startOfToday = calendar.startOfDay(for: Date())
-        let tomorrow = calendar.date(byAdding: .day, value: 1, to: startOfToday)!
+        let tomorrow = Date.tomorrow
         return #Predicate<DrinkRecord> { drinkRecord in
             drinkRecord.timestamp < tomorrow && drinkRecord.timestamp >= startOfToday
         }

@@ -12,7 +12,7 @@ struct StreakCalculator {
         let calendar = Calendar.current
         
         // if date is today, set streak number to zero
-        guard drink.timestamp < calendar.startOfDay(for: Date()) else {
+        guard drink.timestamp < Date.startOfToday else {
             return 0
         }
         
@@ -26,13 +26,7 @@ struct StreakCalculator {
                 to: drink.timestamp
             )!
         )
-        let startOfTomorrow = calendar.startOfDay(
-            for: Calendar.current.date(
-                byAdding: .day,
-                value: 1,
-                to: Date()
-            )!
-        )
+        let startOfTomorrow = Date.tomorrow
 
         // while loop through days between start and end
         // increment streak number until you finish
