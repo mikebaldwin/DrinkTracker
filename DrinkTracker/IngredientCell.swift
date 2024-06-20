@@ -12,6 +12,9 @@ struct IngredientCell: View {
         case volume, abv
     }
 
+    @AppStorage("useMetricAsDefault") private var useMetricAsDefault = false
+    @AppStorage("useProofAsDefault") private var useProofAsDefault = false
+
     @Binding var ingredient: Ingredient
     @FocusState private var volumeFieldFocus: Field?
 
@@ -36,6 +39,13 @@ struct IngredientCell: View {
         }
         .onAppear {
             volumeFieldFocus = .volume
+            
+            if useMetricAsDefault {
+                volumeMeasurement = .metric
+            }
+            if useProofAsDefault {
+                alcoholStrength = .proof
+            }
         }
     }
     

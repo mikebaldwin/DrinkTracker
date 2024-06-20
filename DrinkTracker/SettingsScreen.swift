@@ -12,6 +12,8 @@ struct SettingsScreen: View {
     @AppStorage("dailyTarget") private var dailyTarget = 0.0
     @AppStorage("weeklyTarget") private var weeklyTarget = 0.0
     @AppStorage("longestStreak") private var longestStreak = 0
+    @AppStorage("useMetricAsDefault") private var useMetricAsDefault = false
+    @AppStorage("useProofAsDefault") private var useProofAsDefault = false
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -49,6 +51,19 @@ struct SettingsScreen: View {
                     } label: {
                         Text("Reset longest streak")
                     }
+                }
+                Section("Measurement defaults") {
+                    Picker("Volume Measurement", selection: $useMetricAsDefault) {
+                        Text("oz").tag(false)
+                        Text("ml").tag(true)
+                    }
+                    .pickerStyle(.segmented)
+                    
+                    Picker("Alcohol Strength", selection: $useProofAsDefault) {
+                        Text("ABV %").tag(false)
+                        Text("Proof").tag(true)
+                    }
+                    .pickerStyle(.segmented)
                 }
                 Section("Developer") {
                     Button {
