@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class DrinkRecord: Identifiable, Sendable {
+final class DrinkRecord: Identifiable {
     var id = UUID().uuidString
     var standardDrinks: Double = 0.0
     var timestamp = Date()
