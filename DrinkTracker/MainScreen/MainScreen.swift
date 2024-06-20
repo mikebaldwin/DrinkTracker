@@ -48,93 +48,15 @@ struct MainScreen: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Drinks") {
-                    ChartView(
-                        drinkRecords: thisWeeksDrinks,
-                        totalStandardDrinksToday: totalStandardDrinksToday,
-                        totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
-                    )
-                }
+                chartSection
+                
                 if dailyTarget != nil || weeklyTarget != nil {
-                    Section("Targets") {
-                        if let dailyTarget {
-                            HStack {
-                                Text("Today")
-                                    .fontWeight(.semibold)
-                                Spacer()
-                                if totalStandardDrinksToday < dailyTarget {
-                                    let drinksRemaining = dailyTarget - totalStandardDrinksToday
-                                    let noun = drinksRemaining > 1 ? "drinks" : "drink"
-                                    Text("\(Formatter.formatDecimal(drinksRemaining)) \(noun) below target")
-                                } else if totalStandardDrinksToday == dailyTarget {
-                                    Text("Daily target reached!")
-                                } else {
-                                    let drinksOverTarget = totalStandardDrinksToday - dailyTarget
-                                    let noun = drinksOverTarget > 1 ? "drinks" : "drink"
-                                    Text("\(Formatter.formatDecimal(drinksOverTarget)) \(noun) above target")
-                                        .foregroundStyle(Color(.red))
-                                        .fontWeight(.semibold)
-                                }
-                            }
-                        }
-                        if let weeklyTarget {
-                            HStack {
-                                Text("This week")
-                                    .fontWeight(.semibold)
-                                Spacer()
-                                if totalStandardDrinksThisWeek < weeklyTarget {
-                                    Text("\(Formatter.formatDecimal(weeklyTarget - totalStandardDrinksThisWeek)) drinks below target")
-                                } else if totalStandardDrinksThisWeek == weeklyTarget {
-                                    Text("Daily target reached!")
-                                } else {
-                                    Text("\(Formatter.formatDecimal(totalStandardDrinksThisWeek - weeklyTarget)) drinks above target")
-                                        .foregroundStyle(Color(.red))
-                                        .fontWeight(.semibold)
-                                }
-                            }
-                        }
-                    }
+                    targetsSection
                 }
-                Section("Alcohol-free Days") {
-                    HStack {
-                        Text("Current streak")
-                            .fontWeight(.semibold)
-                        Spacer()
-                        Text("\($currentStreak.wrappedValue) days")
-                    }
-                    HStack {
-                        Text("Longest streak")
-                            .fontWeight(.semibold)
-                        Spacer()
-                        Text("\(longestStreak) days")
-                    }
-                }
-                Section {
-                    Button {
-                        showCalculatorView = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "plus.circle")
-                            Text("Drink Calculator")
-                        }
-                    }
-                    Button {
-                        showCustomDrinksView = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "wineglass")
-                            Text("Custom Drinks")
-                        }
-                    }
-                    Button {
-                        showQuickEntryView = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "bolt")
-                            Text("Quick Entry")
-                        }
-                    }
-                }
+                
+                streaksSection
+                
+                actionsSection
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -180,6 +102,103 @@ struct MainScreen: View {
         }
         .onAppear {
             refreshCurrentStreak()
+        }
+    }
+    
+    private var chartSection: some View {
+        Section("Drinks") {
+            ChartView(
+                drinkRecords: thisWeeksDrinks,
+                totalStandardDrinksToday: totalStandardDrinksToday,
+                totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
+            )
+        }
+    }
+    
+    private var targetsSection: some View {
+        Section("Targets") {
+            if let dailyTarget {
+                HStack {
+                    Text("Today")
+                        .fontWeight(.semibold)
+                    Spacer()
+                    if totalStandardDrinksToday < dailyTarget {
+                        let drinksRemaining = dailyTarget - totalStandardDrinksToday
+                        let noun = drinksRemaining > 1 ? "drinks" : "drink"
+                        Text("\(Formatter.formatDecimal(drinksRemaining)) \(noun) below target")
+                    } else if totalStandardDrinksToday == dailyTarget {
+                        Text("Daily target reached!")
+                    } else {
+                        let drinksOverTarget = totalStandardDrinksToday - dailyTarget
+                        let noun = drinksOverTarget > 1 ? "drinks" : "drink"
+                        Text("\(Formatter.formatDecimal(drinksOverTarget)) \(noun) above target")
+                            .foregroundStyle(Color(.red))
+                            .fontWeight(.semibold)
+                    }
+                }
+            }
+            if let weeklyTarget {
+                HStack {
+                    Text("This week")
+                        .fontWeight(.semibold)
+                    Spacer()
+                    if totalStandardDrinksThisWeek < weeklyTarget {
+                        Text("\(Formatter.formatDecimal(weeklyTarget - totalStandardDrinksThisWeek)) drinks below target")
+                    } else if totalStandardDrinksThisWeek == weeklyTarget {
+                        Text("Daily target reached!")
+                    } else {
+                        Text("\(Formatter.formatDecimal(totalStandardDrinksThisWeek - weeklyTarget)) drinks above target")
+                            .foregroundStyle(Color(.red))
+                            .fontWeight(.semibold)
+                    }
+                }
+            }
+        }
+    }
+    
+    private var streaksSection: some View {
+        Section("Alcohol-free Days") {
+            HStack {
+                Text("Current streak")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text("\($currentStreak.wrappedValue) days")
+            }
+            HStack {
+                Text("Longest streak")
+                    .fontWeight(.semibold)
+                Spacer()
+                Text("\(longestStreak) days")
+            }
+        }
+    }
+    
+    private var actionsSection: some View {
+        Section {
+            Button {
+                showCalculatorView = true
+            } label: {
+                HStack {
+                    Image(systemName: "plus.circle")
+                    Text("Drink Calculator")
+                }
+            }
+            Button {
+                showCustomDrinksView = true
+            } label: {
+                HStack {
+                    Image(systemName: "wineglass")
+                    Text("Custom Drinks")
+                }
+            }
+            Button {
+                showQuickEntryView = true
+            } label: {
+                HStack {
+                    Image(systemName: "bolt")
+                    Text("Quick Entry")
+                }
+            }
         }
     }
     
