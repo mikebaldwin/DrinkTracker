@@ -17,14 +17,22 @@ struct DrinkCalculator {
                     // convert to oz
                     volume *= .metricToImperial
                 }
-                let strength = Double(ingredient.strength)!
+                
+                var strength = Double(ingredient.strength)!
+                if ingredient.isProof {
+                    strength /= 2
+                }
+                
                 let standardDrinks = (volume * strength * 0.01) / 0.6
                 return result += (standardDrinks * 100).rounded() / 100
             }
     }
     
     func volumeForOneStandardDrink(_ ingredient: Ingredient) -> Double {
-        let strength = Double(ingredient.strength)!
+        var strength = Double(ingredient.strength)!
+        if ingredient.isProof {
+            strength /= 2
+        }
         
         if ingredient.isMetric {
             let standardDrinkGrams = 14.0

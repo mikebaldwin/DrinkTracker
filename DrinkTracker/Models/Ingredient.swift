@@ -12,6 +12,7 @@ struct Ingredient: Identifiable {
     var volume: String
     var strength: String
     var isMetric = false
+    var isProof = false
 
     var isEmpty: Bool {
         if let volume = Double(volume), let abv = Double(strength) {

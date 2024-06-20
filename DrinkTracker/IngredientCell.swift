@@ -17,7 +17,7 @@ struct IngredientCell: View {
 
     var onUpdate: (() -> Void)
     
-    @State private var abv = ""
+    @State private var strength = ""
     // TODO: set to choice from userdefaults
     @State private var alcoholStrength: AlcoholStrength = .abv
     // TODO: set to choice from userdefaults
@@ -67,11 +67,18 @@ struct IngredientCell: View {
     
     private var strengthCell: some View {
         HStack {
-            TextField("ABV %", text: $abv)
+            TextField(
+                alcoholStrength.title,
+                text: $strength
+            )
                 .keyboardType(.decimalPad)
-                .onChange(of: abv) {
-                    ingredient.strength = abv
-                    showCalcShortcut = !abv.isEmpty
+                .onChange(of: strength) {
+                    ingredient.strength = strength
+                    showCalcShortcut = !strength.isEmpty
+                    calculate()
+                }
+                .onChange(of: alcoholStrength) {
+                    ingredient.isProof = (alcoholStrength == .proof)
                     calculate()
                 }
             Picker("Alcohol Strength", selection: $alcoholStrength) {

@@ -28,13 +28,21 @@ import Testing
         #expect(genericDrink == 1)
     }
     
-    @Test("Calculate standard drinks for a martini") func calculateMartini() {
-        let martini = calculator.calculateStandardDrinks(
+    @Test(
+        "Calculate standard drinks for a martini",
+        arguments: [
             [
                 Ingredient(volume: "2.0", strength: "40"),
                 Ingredient(volume: "1.0", strength: "18")
+            ],
+            [
+                Ingredient(volume: "2.0", strength: "80", isProof: true),
+                Ingredient(volume: "1.0", strength: "36", isProof: true)
             ]
-        )
+        ]
+    )
+    func calculateMartini(_ ingredients: [Ingredient]) {
+        let martini = calculator.calculateStandardDrinks(ingredients)
         #expect(Formatter.formatDecimal(martini) == "1.6")
     }
     
@@ -57,16 +65,26 @@ import Testing
         #expect(Formatter.formatDecimal(jetPilot) == "2.2")
     }
     
-    @Test("Calculate ounces of one standard drink for 40% ABV")
-    func calculateOuncesForFortyPercentAlcohol() {
-        let ingredient = Ingredient(volume: "", strength: "40.0")
+    @Test(
+        "Calculate ounces of one standard drink for 40% ABV",
+        arguments: [
+            Ingredient(volume: "", strength: "40.0"),
+            Ingredient(volume: "", strength: "80.0", isProof: true)
+        ]
+    )
+    func calculateOuncesForFortyPercentAlcohol(_ ingredient: Ingredient) {
         let volume = calculator.volumeForOneStandardDrink(ingredient)
         #expect(Formatter.formatDecimal(volume) == "1.5")
     }
     
-    @Test("Calculate mililiters of one standard drink for 40% ABV")
-    func calculateMililitersForFortyPercentAlcohol() {
-        let ingredient = Ingredient(volume: "", strength: "40.0", isMetric: true)
+    @Test(
+        "Calculate mililiters of one standard drink for 40% ABV",
+        arguments: [
+            Ingredient(volume: "", strength: "40.0", isMetric: true),
+            Ingredient(volume: "", strength: "80.0", isMetric: true, isProof: true)
+        ]
+    )
+    func calculateMililitersForFortyPercentAlcohol(_ ingredient: Ingredient) {
         let mililiters = calculator.volumeForOneStandardDrink(ingredient)
         #expect(Formatter.formatDecimal(mililiters) == "44.4")
     }
