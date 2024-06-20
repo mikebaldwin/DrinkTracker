@@ -22,24 +22,25 @@ struct MainScreen: View {
         sort: \DrinkRecord.timestamp,
         order: .reverse
     ) private var allDrinks: [DrinkRecord]
-    
     @Query(
         filter: DrinkRecord.thisWeeksDrinksPredicate(),
         sort: [SortDescriptor(\DrinkRecord.timestamp)]
     ) private var thisWeeksDrinks: [DrinkRecord]
+    @Query(
+        filter: DrinkRecord.todaysDrinksPredicate(),
+        sort: [SortDescriptor(\DrinkRecord.timestamp)]
+    ) private var todaysDrinks: [DrinkRecord]
     
     @State private var currentStreak = 0
-    @State private var showQuickEntryView = false
     @State private var showCalculatorView = false
     @State private var showCustomDrinksView = false
+    @State private var showQuickEntryView = false
     @State private var showSettingsScreen = false
     
     private var healthStoreManager = HealthStoreManager.shared
     
     private var totalStandardDrinksToday: Double {
-        thisWeeksDrinks
-            .filter { Calendar.current.isDateInToday($0.timestamp) }
-            .reduce(into: 0.0) { $0 += $1.standardDrinks }
+        todaysDrinks.reduce(into: 0.0) { $0 += $1.standardDrinks }
     }
     private var totalStandardDrinksThisWeek: Double {
         thisWeeksDrinks.reduce(into: 0.0) { $0 += $1.standardDrinks }
