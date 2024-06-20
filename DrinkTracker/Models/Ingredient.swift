@@ -11,6 +11,7 @@ struct Ingredient: Identifiable {
     let id = UUID()
     var volume: String
     var strength: String
+    var isMetric = false
 
     var isEmpty: Bool {
         if let volume = Double(volume), let abv = Double(strength) {

@@ -12,17 +12,32 @@ struct DrinkCalculator {
         ingredients
             .filter { $0.isValid }
             .reduce(into: 0.0) { result, ingredient in
-                let volume = Double(ingredient.volume)!
-                let abv = Double(ingredient.strength)!
-                let standardDrinks = (volume * abv * 0.01) / 0.6
+                var volume = Double(ingredient.volume)!
+                if ingredient.isMetric {
+                    // convert to oz
+                    volume *= .metricToImperial
+                }
+                let strength = Double(ingredient.strength)!
+                let standardDrinks = (volume * strength * 0.01) / 0.6
                 return result += (standardDrinks * 100).rounded() / 100
             }
     }
     
-    func ouncesForOneStandardDrink(abv: Double) -> Double {
-        let standardDrinkOunces = 0.6
-        return (standardDrinkOunces / abv) * 100
+    func volumeForOneStandardDrink(_ ingredient: Ingredient) -> Double {
+        let strength = Double(ingredient.strength)!
+        
+        if ingredient.isMetric {
+            let standardDrinkGrams = 14.0
+            let ethanolDensity = 0.789
+            return (standardDrinkGrams / (strength * ethanolDensity)) * 100
+        } else {
+            let standardDrinkOunces = 0.6
+            return (standardDrinkOunces / strength) * 100
+        }
     }
-    
-//    func mililitersForOneStandardDrink()
+}
+
+private extension Double {
+    static let metricToImperial = 0.033814
+    static let imperialToMetric = 29.57353
 }

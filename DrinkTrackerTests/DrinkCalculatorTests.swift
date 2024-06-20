@@ -57,23 +57,31 @@ import Testing
         #expect(Formatter.formatDecimal(jetPilot) == "2.2")
     }
     
-    @Test("Calculate volume of one standard drink for 40% ABV")
+    @Test("Calculate ounces of one standard drink for 40% ABV")
     func calculateOuncesForFortyPercentAlcohol() {
-        let abv = 40.0
-        let ounces = calculator.ouncesForOneStandardDrink(abv: abv)
-        #expect(Formatter.formatDecimal(ounces) == "1.5")
+        let ingredient = Ingredient(volume: "", strength: "40.0")
+        let volume = calculator.volumeForOneStandardDrink(ingredient)
+        #expect(Formatter.formatDecimal(volume) == "1.5")
+    }
+    
+    @Test("Calculate mililiters of one standard drink for 40% ABV")
+    func calculateMililitersForFortyPercentAlcohol() {
+        let ingredient = Ingredient(volume: "", strength: "40.0", isMetric: true)
+        let mililiters = calculator.volumeForOneStandardDrink(ingredient)
+        #expect(Formatter.formatDecimal(mililiters) == "44.4")
     }
     
     @Test("Calculate volume of one standard drink for 9% ABV")
     func calculateOuncesForNinePercentAlcohol() {
-        let abv = 9.0
-        let ounces = calculator.ouncesForOneStandardDrink(abv: abv)
+        let ingredient = Ingredient(volume: "", strength: "9.0")
+        let ounces = calculator.volumeForOneStandardDrink(ingredient)
         #expect(Formatter.formatDecimal(ounces) == "6.7")
     }
     
     @Test("Calculate volume of one standard drink for 14% ABV")
     func calculateOuncesForFourteenPercentAlcohol() {
-        let ounces = calculator.ouncesForOneStandardDrink(abv: 14.0)
+        let ingredient = Ingredient(volume: "", strength: "14.0")
+        let ounces = calculator.volumeForOneStandardDrink(ingredient)
         #expect(Formatter.formatDecimal(ounces) == "4.3")
     }
     
@@ -103,5 +111,16 @@ import Testing
             ]
         )
         #expect(Formatter.formatDecimal(drink) == "1.3")
+    }
+    
+    @Test("Test conversion of ingredient volume from metric to imperial")
+    func convertFromMetric() {
+        let martini = calculator.calculateStandardDrinks(
+            [
+                Ingredient(volume: "60", strength: "40", isMetric: true),
+                Ingredient(volume: "30", strength: "18", isMetric: true)
+            ]
+        )
+        #expect(Formatter.formatDecimal(martini) == "1.7")
     }
 }

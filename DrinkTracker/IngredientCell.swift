@@ -21,7 +21,7 @@ struct IngredientCell: View {
     // TODO: set to choice from userdefaults
     @State private var alcoholStrength: AlcoholStrength = .abv
     // TODO: set to choice from userdefaults
-    @State private var measurement: VolumeMeasurement = .imperial
+    @State private var volumeMeasurement: VolumeMeasurement = .imperial
     @State private var standardDrinks = 0.0
     @State private var volume = ""
     @State private var showCalcShortcut = false
@@ -42,7 +42,7 @@ struct IngredientCell: View {
     private var volumeCell: some View {
         HStack {
             TextField(
-                showCalcShortcut ? calcShortcutTitle : measurement.title,
+                showCalcShortcut ? calcShortcutTitle : volumeMeasurement.title,
                 text: $volume
             )
             .keyboardType(.decimalPad)
@@ -51,9 +51,13 @@ struct IngredientCell: View {
                 ingredient.volume = volume
                 calculate()
             }
+            .onChange(of: volumeMeasurement) {
+                ingredient.isMetric = (volumeMeasurement == .metric)
+                calculate()
+            }
             .focused($volumeFieldFocus, equals: .volume)
             
-            Picker("Volume Measurement", selection: $measurement) {
+            Picker("Volume Measurement", selection: $volumeMeasurement) {
                 Text("oz").tag(VolumeMeasurement.imperial)
                 Text("ml").tag(VolumeMeasurement.metric)
             }
@@ -90,7 +94,7 @@ struct IngredientCell: View {
         if ingredient.isValid {
             standardDrinks = calculator.calculateStandardDrinks([ingredient])
         } else if ingredient.hasOnlyABV {
-            let volume = calculator.ouncesForOneStandardDrink(abv: Double(abv)!)
+            let volume = calculator.volumeForOneStandardDrink(ingredient)
             calcShortcutTitle = "\(Formatter.formatDecimal(volume))"
             showCalcShortcut = true
         } else {
