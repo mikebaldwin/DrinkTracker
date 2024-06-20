@@ -172,6 +172,7 @@ struct MainScreen: View {
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 _ = thisWeeksDrinks
+                refreshCurrentStreak()
             }
         }
         .onChange(of: allDrinks) {
