@@ -94,8 +94,7 @@ struct MainScreen: View {
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                _ = thisWeeksDrinks
-                refreshCurrentStreak()
+                refreshQueries()
             }
         }
         .onChange(of: allDrinks) {
@@ -230,6 +229,12 @@ struct MainScreen: View {
         }
         modelContext.insert(drink)
         refreshCurrentStreak()
+    }
+    
+    private func refreshQueries() {
+        _ = thisWeeksDrinks
+        _ = todaysDrinks
+        _ = allDrinks
     }
     
     private func refreshCurrentStreak() {
