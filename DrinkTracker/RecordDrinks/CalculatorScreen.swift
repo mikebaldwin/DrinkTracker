@@ -86,7 +86,6 @@ struct CalculatorScreen: View {
         }
         .alert("Give this drink a name", isPresented: $showNameDrinkAlert) {
             TextField("", text: $nameDrinkValue)
-                .keyboardType(.decimalPad)
             
             Button("Cancel", role: .cancel) {
                 nameDrinkValue = ""
