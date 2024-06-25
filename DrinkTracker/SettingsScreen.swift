@@ -133,6 +133,13 @@ struct SettingsScreen: View {
     }
 }
 
-//#Preview {
-//    SettingsScreen()
-//}
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(
+        for: DrinkRecord.self,
+        configurations: config
+    )
+
+    SettingsScreen()
+        .modelContainer(container)
+}

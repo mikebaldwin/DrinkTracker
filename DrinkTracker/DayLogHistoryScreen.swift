@@ -179,6 +179,13 @@ struct DayLogHistoryScreen: View {
     }
 }
 
-//#Preview {
-//    DayLogHistoryScreen()
-//}
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(
+        for: DrinkRecord.self,
+        configurations: config
+    )
+
+    DayLogHistoryScreen()
+        .modelContainer(container)
+}

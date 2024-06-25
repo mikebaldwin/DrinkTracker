@@ -240,7 +240,13 @@ struct MainScreen: View {
     }
 }
 
-//#Preview {
-//    MainScreen()
-//        .modelContainer(previewContainer)
-//}
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(
+        for: DrinkRecord.self,
+        configurations: config
+    )
+
+    MainScreen()
+        .modelContainer(container)
+}

@@ -138,7 +138,11 @@ struct ChartView: View {
     }
 }
 
-//#Preview {
-//    ChartView()
-//}
+#Preview {
+    ChartView(
+        drinkRecords: [DrinkRecord](),
+        totalStandardDrinksToday: 0.0,
+        totalStandardDrinksThisWeek:  0.0
+    )
+}
  
