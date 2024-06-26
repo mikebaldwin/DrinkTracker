@@ -181,7 +181,7 @@
 			children = (
 				CE4169932BD97FB10028D64A /* Multiplatform */,
 				CE4169A62BD97FB30028D64A /* DrinkTrackerTests */,
-				CEF32C392C25F81500E40213 /* DrinkTrackerWatch Watch App */,
+				CEF32C392C25F81500E40213 /* Watch */,
 				CEF32C4A2C25F81700E40213 /* DrinkTrackerWatch Watch AppTests */,
 				CE4169922BD97FB10028D64A /* Products */,
 			);
@@ -269,7 +269,7 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		CEF32C392C25F81500E40213 /* DrinkTrackerWatch Watch App */ = {
+		CEF32C392C25F81500E40213 /* Watch */ = {
 			isa = PBXGroup;
 			children = (
 				CEF32C3A2C25F81500E40213 /* DrinkTrackerWatchApp.swift */,
@@ -277,7 +277,7 @@
 				CEF32C3E2C25F81700E40213 /* Assets.xcassets */,
 				CEF32C402C25F81700E40213 /* Preview Content */,
 			);
-			path = "DrinkTrackerWatch Watch App";
+			path = Watch;
 			sourceTree = "<group>";
 		};
 		CEF32C402C25F81700E40213 /* Preview Content */ = {
