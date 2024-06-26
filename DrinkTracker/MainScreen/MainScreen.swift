@@ -16,6 +16,7 @@ struct MainScreen: View {
     @AppStorage("longestStreak") private var longestStreak = 0
     
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
     
     @Query(
         sort: \DrinkRecord.timestamp,
@@ -88,6 +89,11 @@ struct MainScreen: View {
         }
         .sheet(isPresented: $showSettingsScreen) {
             SettingsScreen()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                _ = allDrinks
+            }
         }
         .onChange(of: allDrinks) {
             refreshCurrentStreak()
