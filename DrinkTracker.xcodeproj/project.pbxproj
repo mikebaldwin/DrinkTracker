@@ -203,7 +203,6 @@
 			children = (
 				CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */,
 				CEB911C42BDBF9E300224660 /* Info.plist */,
-				CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */,
 				CEEDC17B2BEBAE420019DF65 /* DayLogHistoryScreen.swift */,
 				CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
@@ -256,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */,
+				CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */,
 				CE55F3D02C1F65CF00E3982B /* QuickEntryView.swift */,
 			);
 			path = RecordDrinks;

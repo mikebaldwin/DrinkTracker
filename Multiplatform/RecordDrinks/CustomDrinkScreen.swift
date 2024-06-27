@@ -78,10 +78,6 @@ struct CustomDrinkScreen: View {
         }
         .searchable(text: $searchText)
     }
-    
-    init(completion: ((CustomDrink) -> Void)?) {
-        self.completion = completion
-    }
 }
 
 #Preview {
