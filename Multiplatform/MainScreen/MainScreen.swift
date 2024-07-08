@@ -93,12 +93,10 @@ struct MainScreen: View {
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 _ = allDrinks
+                refreshCurrentStreak()
             }
         }
         .onChange(of: allDrinks) {
-            refreshCurrentStreak()
-        }
-        .onAppear {
             refreshCurrentStreak()
         }
     }
