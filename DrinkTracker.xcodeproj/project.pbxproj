@@ -21,12 +21,25 @@
 		CE41699B2BD97FB30028D64A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE41699A2BD97FB30028D64A /* Assets.xcassets */; };
 		CE41699E2BD97FB30028D64A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE41699D2BD97FB30028D64A /* Preview Assets.xcassets */; };
 		CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169C42BD984C40028D64A /* CustomDrink.swift */; };
+		CE461A182C2D9919008E6E1B /* DataSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE866B672C1B354D00461411 /* DataSynchronizer.swift */; };
+		CE461A1B2C2DA191008E6E1B /* CustomDrinkScreenWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE461A1A2C2DA191008E6E1B /* CustomDrinkScreenWatch.swift */; };
 		CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */; };
 		CE52A1F22C010DC800BAEBF3 /* IngredientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */; };
 		CE55F3D12C1F65CF00E3982B /* QuickEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE55F3D02C1F65CF00E3982B /* QuickEntryView.swift */; };
+		CE59F00A2C3C6E43000C8630 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE05229C2C0F6A4200840AB9 /* Day.swift */; };
+		CE59F00D2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE59F00C2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift */; };
+		CE59F00F2C3D5DB1000C8630 /* SettingsScreenWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE59F00E2C3D5DB1000C8630 /* SettingsScreenWatch.swift */; };
 		CE6610492C23676C006E824D /* VolumeMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6610482C23676C006E824D /* VolumeMeasurement.swift */; };
 		CE66104B2C236823006E824D /* AlcoholStrength.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE66104A2C236823006E824D /* AlcoholStrength.swift */; };
 		CE66104E2C24C7A2006E824D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE66104D2C24C7A2006E824D /* Date+Extensions.swift */; };
+		CE7BDF2D2C2C817700D260F1 /* CustomDrink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169C42BD984C40028D64A /* CustomDrink.swift */; };
+		CE7BDF2E2C2C818E00D260F1 /* DrinkRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169982BD97FB10028D64A /* DrinkRecord.swift */; };
+		CE7BDF2F2C2C81A300D260F1 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE66104D2C24C7A2006E824D /* Date+Extensions.swift */; };
+		CE7BDF302C2C83EA00D260F1 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DACE82BDFD59100BB52EA /* Formatter.swift */; };
+		CE7BDF332C2C850100D260F1 /* QuickEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7BDF322C2C850100D260F1 /* QuickEntryView.swift */; };
+		CE7BDF342C2C87A900D260F1 /* HealthStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2638F92BED28CB000B7CDD /* HealthStoreManager.swift */; };
+		CE7BDF352C2C87FC00D260F1 /* StreakCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC522C2200EF004F45FC /* StreakCalculator.swift */; };
+		CE7BDF362C2C883B00D260F1 /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
 		CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE866B672C1B354D00461411 /* DataSynchronizer.swift */; };
 		CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */; };
 		CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */; };
@@ -98,12 +111,18 @@
 		CE41699D2BD97FB30028D64A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CE4169A32BD97FB30028D64A /* DrinkTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinkTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4169C42BD984C40028D64A /* CustomDrink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrink.swift; sourceTree = "<group>"; };
+		CE461A1A2C2DA191008E6E1B /* CustomDrinkScreenWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrinkScreenWatch.swift; sourceTree = "<group>"; };
 		CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCell.swift; sourceTree = "<group>"; };
 		CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTests.swift; sourceTree = "<group>"; };
 		CE55F3D02C1F65CF00E3982B /* QuickEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryView.swift; sourceTree = "<group>"; };
+		CE59F00C2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksHistoryScreenWatch.swift; sourceTree = "<group>"; };
+		CE59F00E2C3D5DB1000C8630 /* SettingsScreenWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenWatch.swift; sourceTree = "<group>"; };
+		CE5F44272C2DADC10023B8DA /* Watch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Watch.entitlements; sourceTree = "<group>"; };
+		CE5F44282C2DADD20023B8DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CE6610482C23676C006E824D /* VolumeMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMeasurement.swift; sourceTree = "<group>"; };
 		CE66104A2C236823006E824D /* AlcoholStrength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlcoholStrength.swift; sourceTree = "<group>"; };
 		CE66104D2C24C7A2006E824D /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		CE7BDF322C2C850100D260F1 /* QuickEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryView.swift; sourceTree = "<group>"; };
 		CE866B672C1B354D00461411 /* DataSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSynchronizer.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorScreen.swift; sourceTree = "<group>"; };
 		CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrinkScreen.swift; sourceTree = "<group>"; };
@@ -272,8 +291,14 @@
 		CEF32C392C25F81500E40213 /* Watch */ = {
 			isa = PBXGroup;
 			children = (
-				CEF32C3A2C25F81500E40213 /* DrinkTrackerWatchApp.swift */,
+				CE5F44272C2DADC10023B8DA /* Watch.entitlements */,
+				CE5F44282C2DADD20023B8DA /* Info.plist */,
 				CEF32C3C2C25F81500E40213 /* ContentView.swift */,
+				CE461A1A2C2DA191008E6E1B /* CustomDrinkScreenWatch.swift */,
+				CE59F00C2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift */,
+				CEF32C3A2C25F81500E40213 /* DrinkTrackerWatchApp.swift */,
+				CE7BDF322C2C850100D260F1 /* QuickEntryView.swift */,
+				CE59F00E2C3D5DB1000C8630 /* SettingsScreenWatch.swift */,
 				CEF32C3E2C25F81700E40213 /* Assets.xcassets */,
 				CEF32C402C25F81700E40213 /* Preview Content */,
 			);
@@ -502,8 +527,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE59F00A2C3C6E43000C8630 /* Day.swift in Sources */,
+				CE7BDF362C2C883B00D260F1 /* DailyTotal.swift in Sources */,
+				CE461A1B2C2DA191008E6E1B /* CustomDrinkScreenWatch.swift in Sources */,
+				CE59F00D2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift in Sources */,
+				CE7BDF352C2C87FC00D260F1 /* StreakCalculator.swift in Sources */,
+				CE7BDF302C2C83EA00D260F1 /* Formatter.swift in Sources */,
+				CE59F00F2C3D5DB1000C8630 /* SettingsScreenWatch.swift in Sources */,
+				CE7BDF342C2C87A900D260F1 /* HealthStoreManager.swift in Sources */,
 				CEF32C3D2C25F81500E40213 /* ContentView.swift in Sources */,
 				CEF32C3B2C25F81500E40213 /* DrinkTrackerWatchApp.swift in Sources */,
+				CE7BDF2D2C2C817700D260F1 /* CustomDrink.swift in Sources */,
+				CE7BDF332C2C850100D260F1 /* QuickEntryView.swift in Sources */,
+				CE7BDF2F2C2C81A300D260F1 /* Date+Extensions.swift in Sources */,
+				CE461A182C2D9919008E6E1B /* DataSynchronizer.swift in Sources */,
+				CE7BDF2E2C2C818E00D260F1 /* DrinkRecord.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -768,13 +806,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Watch/Watch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Watch/Preview Content\"";
 				DEVELOPMENT_TEAM = 84MPEV8978;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Watch/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DrinkTrackerWatch;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your alcoholic beverage consumption is used to update your drinks in Drink Tracker";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Drink Tracker will write your alcoholic beverage consumption to HealthKit";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.mikebaldwin.DrinkTracker;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -789,7 +831,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.2;
 			};
 			name = Debug;
 		};
@@ -798,13 +840,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Watch/Watch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Watch/Preview Content\"";
 				DEVELOPMENT_TEAM = 84MPEV8978;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Watch/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DrinkTrackerWatch;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your alcoholic beverage consumption is used to update your drinks in Drink Tracker";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Drink Tracker will write your alcoholic beverage consumption to HealthKit";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.mikebaldwin.DrinkTracker;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -819,7 +865,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.2;
 			};
 			name = Release;
 		};
