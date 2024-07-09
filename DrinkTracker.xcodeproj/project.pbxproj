@@ -222,12 +222,11 @@
 			children = (
 				CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */,
 				CEB911C42BDBF9E300224660 /* Info.plist */,
-				CEEDC17B2BEBAE420019DF65 /* DrinksHistoryScreen.swift */,
-				CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
 				CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */,
 				CE3DACEC2BDFE62000BB52EA /* SettingsScreen.swift */,
 				CE41699A2BD97FB30028D64A /* Assets.xcassets */,
+				CEFE3E622C3D7D5800B0D96A /* DrinksHistory */,
 				CE66104C2C24C78C006E824D /* Extensions */,
 				CE3DACE42BDFD48400BB52EA /* MainScreen */,
 				CE4169C32BD981A10028D64A /* Models */,
@@ -319,6 +318,15 @@
 				CEF32C4B2C25F81700E40213 /* DrinkTrackerWatch_Watch_AppTests.swift */,
 			);
 			path = "DrinkTrackerWatch Watch AppTests";
+			sourceTree = "<group>";
+		};
+		CEFE3E622C3D7D5800B0D96A /* DrinksHistory */ = {
+			isa = PBXGroup;
+			children = (
+				CEEDC17B2BEBAE420019DF65 /* DrinksHistoryScreen.swift */,
+				CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */,
+			);
+			path = DrinksHistory;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
