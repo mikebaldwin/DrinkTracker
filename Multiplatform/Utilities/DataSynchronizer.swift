@@ -27,22 +27,48 @@ actor DataSynchronizer {
         }
         
         let drinkRecords = fetchDrinks()
-        
-        // create dictionary of existing drink records for faster lookup
-        let existingRecords = Dictionary(uniqueKeysWithValues: drinkRecords.map { ($0.id, $0) })
-        
-        // fetch healthkit records
-        var samples: [HKQuantitySample]?
+        let existingRecords = convertToDictionary(drinkRecords)
+        let samples = await fetchHealthkitRecords()
+
+        reconcile(existingRecords, with: samples)
+        delete(existingRecords, absentFrom: samples)
+    }
+    
+    private func convertToDictionary(_ drinkRecords: [DrinkRecord]) -> [String: DrinkRecord] {
+        var existingRecords = [String: DrinkRecord]()
+        for drinkRecord in drinkRecords where existingRecords[drinkRecord.id] == nil {
+            existingRecords[drinkRecord.id] = drinkRecord
+        }
+        return existingRecords
+    }
+    
+    private func fetchDrinks() -> [DrinkRecord] {
+        let drinkRecords = FetchDescriptor<DrinkRecord>()
+        do {
+            let results = try context.fetch(drinkRecords)
+            return results
+        } catch {
+            debugPrint("❌ Failed to fetch drink records")
+        }
+        return []
+    }
+    
+    private func fetchHealthkitRecords() async -> [HKQuantitySample] {
+        var samples = [HKQuantitySample]()
         
         do {
             samples = try await healthStoreManager.fetchAllDrinkSamples()
         } catch {
             debugPrint("❌ Failed to retrieve healthkit samples")
         }
-        
-        guard let samples else { return }
-        
-        // iterate through healthkit records
+
+        return samples
+    }
+    
+    private func reconcile(
+        _ existingRecords: [String: DrinkRecord],
+        with samples: [HKQuantitySample]
+    ) {
         for sample in samples {
             let count = sample.quantity.doubleValue(for: .count())
             
@@ -62,29 +88,20 @@ actor DataSynchronizer {
                 debugPrint("✅ Insert new record in model context")
             }
         }
-        
-        // delete any SwiftData records that don't exist in healthkit
-        let healthKitDates = Set(samples.map { $0.uuid.uuidString })
+    }
+    
+    private func delete(
+        _ existingRecords: [String: DrinkRecord],
+        absentFrom samples: [HKQuantitySample]
+    ) {
+        let healthKitIDs = Set(samples.map { $0.uuid.uuidString })
         
         for record in existingRecords {
-            // NOTE: if the user declines healthkit access, this will continually
-            // delete all their saved data
-            if let record = existingRecords[record.key], !healthKitDates.contains(record.id) {
+            if let record = existingRecords[record.key], !healthKitIDs.contains(record.id) {
                 debugPrint("✅ Delete record from model context")
                 context.delete(record)
             }
         }
-    }
-    
-    private func fetchDrinks() -> [DrinkRecord] {
-        let drinkRecords = FetchDescriptor<DrinkRecord>()
-        do {
-            let results = try context.fetch(drinkRecords)
-            return results
-        } catch {
-            debugPrint("❌ Failed to fetch drink records")
-        }
-        return []
     }
 }
 
