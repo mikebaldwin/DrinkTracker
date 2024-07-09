@@ -1,5 +1,5 @@
 //
-//  DayLogHistoryScreen.swift
+//  DrinksHistoryScreen.swift
 //  DrinkTracker
 //
 //  Created by Mike Baldwin on 5/8/24.
@@ -8,7 +8,7 @@
 import SwiftData
 import SwiftUI
 
-struct DayLogHistoryScreen: View {
+struct DrinksHistoryScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \DrinkRecord.timestamp, order: .reverse) var drinkRecords: [DrinkRecord]
     
@@ -186,6 +186,6 @@ struct DayLogHistoryScreen: View {
         configurations: config
     )
 
-    DayLogHistoryScreen()
+    DrinksHistoryScreen()
         .modelContainer(container)
 }
