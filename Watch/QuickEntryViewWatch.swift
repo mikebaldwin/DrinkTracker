@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QuickEntryView: View {
+struct QuickEntryViewWatch: View {
     var completion: ((DrinkRecord) -> Void)?
     
     @State private var drinkCount = 0.0
@@ -89,5 +89,5 @@ struct QuickEntryView: View {
 }
 
 #Preview {
-    QuickEntryView(completion: { _ in })
+    QuickEntryViewWatch(completion: { _ in })
 }

@@ -36,7 +36,7 @@
 		CE7BDF2E2C2C818E00D260F1 /* DrinkRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4169982BD97FB10028D64A /* DrinkRecord.swift */; };
 		CE7BDF2F2C2C81A300D260F1 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE66104D2C24C7A2006E824D /* Date+Extensions.swift */; };
 		CE7BDF302C2C83EA00D260F1 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3DACE82BDFD59100BB52EA /* Formatter.swift */; };
-		CE7BDF332C2C850100D260F1 /* QuickEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7BDF322C2C850100D260F1 /* QuickEntryView.swift */; };
+		CE7BDF332C2C850100D260F1 /* QuickEntryViewWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7BDF322C2C850100D260F1 /* QuickEntryViewWatch.swift */; };
 		CE7BDF342C2C87A900D260F1 /* HealthStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2638F92BED28CB000B7CDD /* HealthStoreManager.swift */; };
 		CE7BDF352C2C87FC00D260F1 /* StreakCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC522C2200EF004F45FC /* StreakCalculator.swift */; };
 		CE7BDF362C2C883B00D260F1 /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
@@ -122,7 +122,7 @@
 		CE6610482C23676C006E824D /* VolumeMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMeasurement.swift; sourceTree = "<group>"; };
 		CE66104A2C236823006E824D /* AlcoholStrength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlcoholStrength.swift; sourceTree = "<group>"; };
 		CE66104D2C24C7A2006E824D /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
-		CE7BDF322C2C850100D260F1 /* QuickEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryView.swift; sourceTree = "<group>"; };
+		CE7BDF322C2C850100D260F1 /* QuickEntryViewWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryViewWatch.swift; sourceTree = "<group>"; };
 		CE866B672C1B354D00461411 /* DataSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSynchronizer.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorScreen.swift; sourceTree = "<group>"; };
 		CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrinkScreen.swift; sourceTree = "<group>"; };
@@ -296,7 +296,7 @@
 				CE461A1A2C2DA191008E6E1B /* CustomDrinkScreenWatch.swift */,
 				CE59F00C2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift */,
 				CEF32C3A2C25F81500E40213 /* DrinkTrackerWatchApp.swift */,
-				CE7BDF322C2C850100D260F1 /* QuickEntryView.swift */,
+				CE7BDF322C2C850100D260F1 /* QuickEntryViewWatch.swift */,
 				CE59F00E2C3D5DB1000C8630 /* SettingsScreenWatch.swift */,
 				CEF32C3E2C25F81700E40213 /* Assets.xcassets */,
 				CEF32C402C25F81700E40213 /* Preview Content */,
@@ -546,7 +546,7 @@
 				CEF32C3D2C25F81500E40213 /* ContentView.swift in Sources */,
 				CEF32C3B2C25F81500E40213 /* DrinkTrackerWatchApp.swift in Sources */,
 				CE7BDF2D2C2C817700D260F1 /* CustomDrink.swift in Sources */,
-				CE7BDF332C2C850100D260F1 /* QuickEntryView.swift in Sources */,
+				CE7BDF332C2C850100D260F1 /* QuickEntryViewWatch.swift in Sources */,
 				CE7BDF2F2C2C81A300D260F1 /* Date+Extensions.swift in Sources */,
 				CE461A182C2D9919008E6E1B /* DataSynchronizer.swift in Sources */,
 				CE7BDF2E2C2C818E00D260F1 /* DrinkRecord.swift in Sources */,

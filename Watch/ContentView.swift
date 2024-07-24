@@ -56,7 +56,7 @@ struct ContentView: View {
             }
             .padding()
             .sheet(isPresented: $showQuickEntryView) {
-                QuickEntryView { drinkRecord in
+                QuickEntryViewWatch { drinkRecord in
                     recordDrink(drinkRecord)
                     showQuickEntryView = false
                 }

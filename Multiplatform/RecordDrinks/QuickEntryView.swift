@@ -1,5 +1,5 @@
 //
-//  QuickEntryView.swift
+//  QuickEntryViewWatch.swift
 //  DrinkTracker
 //
 //  Created by Mike Baldwin on 6/16/24.
