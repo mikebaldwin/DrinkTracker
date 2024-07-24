@@ -62,7 +62,7 @@ struct QuickEntryView: View {
                 } label: {
                     Text("Record Drink")
                 }
-                .disabled(drinkCount < 1)
+                .disabled(drinkCount < 0.1)
                 Spacer()
             }
         }

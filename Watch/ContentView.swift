@@ -58,7 +58,6 @@ struct ContentView: View {
             .sheet(isPresented: $showQuickEntryView) {
                 QuickEntryViewWatch { drinkRecord in
                     recordDrink(drinkRecord)
-                    showQuickEntryView = false
                 }
             }
             .sheet(isPresented: $showCustomDrinksView) {

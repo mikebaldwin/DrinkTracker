@@ -10,6 +10,8 @@ import SwiftUI
 struct QuickEntryViewWatch: View {
     var completion: ((DrinkRecord) -> Void)?
     
+    @Environment(\.dismiss) private var dismiss
+
     @State private var drinkCount = 0.0
     @State private var manualEntryValue = ""
     @State private var showDrinkEntryAlert = false
@@ -68,7 +70,7 @@ struct QuickEntryViewWatch: View {
                 } label: {
                     Text("Record Drink")
                 }
-                .disabled(drinkCount < 1)
+                .disabled(drinkCount < 0.1)
                 Spacer()
             }
         }
@@ -82,6 +84,7 @@ struct QuickEntryViewWatch: View {
                     completion(DrinkRecord(standardDrinks: drinkCount))
                 }
                 drinkCount = 0
+                dismiss()
             }
             Button("Cancel", role: .cancel) { drinkCount = 0 }
         }
