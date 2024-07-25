@@ -29,7 +29,7 @@ struct SettingsScreen: View {
             Form {
                 Section {
                     Stepper {
-                        Text("Daily target: \(Formatter.formatDecimal(dailyTarget))")
+                        Text("Daily limit: \(Formatter.formatDecimal(dailyTarget))")
                     } onIncrement: {
                         dailyTarget += 1
                     } onDecrement: {
@@ -38,7 +38,7 @@ struct SettingsScreen: View {
                         }
                     }
                     Stepper {
-                        Text("Weekly target: \(Formatter.formatDecimal(weeklyTarget))")
+                        Text("Weekly limit: \(Formatter.formatDecimal(weeklyTarget))")
                     } onIncrement: {
                         weeklyTarget += 1
                     } onDecrement: {

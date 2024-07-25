@@ -112,7 +112,7 @@ struct MainScreen: View {
     }
     
     private var targetsSection: some View {
-        Section("Targets") {
+        Section("Limits") {
             if let dailyTarget {
                 HStack {
                     Text("Today")
@@ -121,13 +121,13 @@ struct MainScreen: View {
                     if totalStandardDrinksToday < dailyTarget {
                         let drinksRemaining = dailyTarget - totalStandardDrinksToday
                         let noun = drinksRemaining > 1 ? "drinks" : "drink"
-                        Text("\(Formatter.formatDecimal(drinksRemaining)) \(noun) below target")
+                        Text("\(Formatter.formatDecimal(drinksRemaining)) \(noun) below limit")
                     } else if totalStandardDrinksToday == dailyTarget {
-                        Text("Daily target reached!")
+                        Text("Daily limit reached!")
                     } else {
                         let drinksOverTarget = totalStandardDrinksToday - dailyTarget
                         let noun = drinksOverTarget > 1 ? "drinks" : "drink"
-                        Text("\(Formatter.formatDecimal(drinksOverTarget)) \(noun) above target")
+                        Text("\(Formatter.formatDecimal(drinksOverTarget)) \(noun) above limit")
                             .foregroundStyle(Color(.red))
                             .fontWeight(.semibold)
                     }
@@ -139,11 +139,11 @@ struct MainScreen: View {
                         .fontWeight(.semibold)
                     Spacer()
                     if totalStandardDrinksThisWeek < weeklyTarget {
-                        Text("\(Formatter.formatDecimal(weeklyTarget - totalStandardDrinksThisWeek)) drinks below target")
+                        Text("\(Formatter.formatDecimal(weeklyTarget - totalStandardDrinksThisWeek)) drinks below limit")
                     } else if totalStandardDrinksThisWeek == weeklyTarget {
-                        Text("Daily target reached!")
+                        Text("Daily limit reached!")
                     } else {
-                        Text("\(Formatter.formatDecimal(totalStandardDrinksThisWeek - weeklyTarget)) drinks above target")
+                        Text("\(Formatter.formatDecimal(totalStandardDrinksThisWeek - weeklyTarget)) drinks above limit")
                             .foregroundStyle(Color(.red))
                             .fontWeight(.semibold)
                     }

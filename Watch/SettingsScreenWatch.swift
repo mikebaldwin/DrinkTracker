@@ -20,7 +20,7 @@ struct SettingsScreenWatch: View {
             Form {
                 Section {
                     Stepper {
-                        Text("Daily target: \(Formatter.formatDecimal(dailyTarget))")
+                        Text("Daily limit: \(Formatter.formatDecimal(dailyTarget))")
                             .font(.body)
                     } onIncrement: {
                         dailyTarget += 1
@@ -30,7 +30,7 @@ struct SettingsScreenWatch: View {
                         }
                     }
                     Stepper {
-                        Text("Weekly target: \(Formatter.formatDecimal(weeklyTarget))")
+                        Text("Weekly limit: \(Formatter.formatDecimal(weeklyTarget))")
                             .font(.body)
                     } onIncrement: {
                         weeklyTarget += 1

@@ -65,7 +65,7 @@ struct ChartView: View {
                     .foregroundStyle(gradientColorFor(totalDrinks: totalDrinks))
 
                     if let dailyTarget, shouldShowRuleMark() {
-                        RuleMark(y: .value("Daily Target", dailyTarget))
+                        RuleMark(y: .value("Daily Limit", dailyTarget))
                             .foregroundStyle(.red)
                     }
                 }
