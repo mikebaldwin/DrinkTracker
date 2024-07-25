@@ -43,6 +43,20 @@ struct MainScreen: View {
     private var totalStandardDrinksThisWeek: Double {
         thisWeeksDrinks.reduce(into: 0.0) { $0 += $1.standardDrinks }
     }
+    private var remainingDrinksToday: Double {
+        guard let dailyTarget else { return 0 }
+        
+        var remaining = dailyTarget - totalStandardDrinksToday
+        
+        if let weeklyTarget {
+            let remainingForWeek = weeklyTarget - totalStandardDrinksThisWeek
+            if remaining >= remainingForWeek {
+                remaining = remainingForWeek
+            }
+        }
+        
+        return remaining
+    }
     
     var body: some View {
         NavigationStack {
@@ -113,21 +127,22 @@ struct MainScreen: View {
     
     private var targetsSection: some View {
         Section("Limits") {
-            if let dailyTarget {
+            if dailyTarget != nil {
                 HStack {
                     Text("Today")
                         .fontWeight(.semibold)
+                    
                     Spacer()
-                    if totalStandardDrinksToday < dailyTarget {
-                        let drinksRemaining = dailyTarget - totalStandardDrinksToday
-                        let noun = drinksRemaining > 1 ? "drinks" : "drink"
-                        Text("\(Formatter.formatDecimal(drinksRemaining)) \(noun) below limit")
-                    } else if totalStandardDrinksToday == dailyTarget {
+                    
+                    if remainingDrinksToday > 0 {
+                        let noun = remainingDrinksToday == 1 ? "drink" : "drinks"
+                        Text("\(Formatter.formatDecimal(remainingDrinksToday)) \(noun) below limit")
+                    } else if remainingDrinksToday == 0 {
                         Text("Daily limit reached!")
                     } else {
-                        let drinksOverTarget = totalStandardDrinksToday - dailyTarget
-                        let noun = drinksOverTarget > 1 ? "drinks" : "drink"
-                        Text("\(Formatter.formatDecimal(drinksOverTarget)) \(noun) above limit")
+                        let drinksOverTarget = remainingDrinksToday * -1
+                        let noun = drinksOverTarget == 1 ? "drink" : "drinks"
+                        Text("\(Formatter.formatDecimal(drinksOverTarget)) \(noun) over limit")
                             .foregroundStyle(Color(.red))
                             .fontWeight(.semibold)
                     }
@@ -137,13 +152,19 @@ struct MainScreen: View {
                 HStack {
                     Text("This week")
                         .fontWeight(.semibold)
+                    
                     Spacer()
-                    if totalStandardDrinksThisWeek < weeklyTarget {
-                        Text("\(Formatter.formatDecimal(weeklyTarget - totalStandardDrinksThisWeek)) drinks below limit")
-                    } else if totalStandardDrinksThisWeek == weeklyTarget {
-                        Text("Daily limit reached!")
+                    
+                    let remainingDrinks = weeklyTarget - totalStandardDrinksThisWeek
+                    if remainingDrinks > 0 {
+                        let noun = remainingDrinks == 1 ? "drink" : "drinks"
+                        Text("\(Formatter.formatDecimal(remainingDrinks)) \(noun) below limit")
+                    } else if remainingDrinks == weeklyTarget {
+                        Text("Weekly limit reached!")
                     } else {
-                        Text("\(Formatter.formatDecimal(totalStandardDrinksThisWeek - weeklyTarget)) drinks above limit")
+                        let drinksOverTarget = remainingDrinks * -1
+                        let noun = drinksOverTarget == 1 ? "drink" : "drinks"
+                        Text("\(Formatter.formatDecimal(drinksOverTarget)) \(noun) over limit")
                             .foregroundStyle(Color(.red))
                             .fontWeight(.semibold)
                     }
