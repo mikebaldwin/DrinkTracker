@@ -26,13 +26,12 @@ struct StreakCalculator {
                 to: drink.timestamp
             )!
         )
-        let startOfTomorrow = Date.tomorrow
 
         // while loop through days between start and end
         // increment streak number until you finish
         var streak = 0
         
-        while iteratorDate < startOfTomorrow {
+        while iteratorDate < Date.startOfToday {
             iteratorDate = calendar.date(
                 byAdding: .day,
                 value: 1,

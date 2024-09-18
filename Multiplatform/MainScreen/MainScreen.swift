@@ -51,7 +51,7 @@ struct MainScreen: View {
         if let weeklyTarget {
             let remainingForWeek = weeklyTarget - totalStandardDrinksThisWeek
             if remaining >= remainingForWeek {
-                remaining = remainingForWeek
+                remaining = totalStandardDrinksToday == 0 ? 0 : remainingForWeek
             }
         }
         
@@ -257,6 +257,7 @@ struct MainScreen: View {
             // prevents giving streak credit user has gone zero days without alcohol
             longestStreak = 0
         }
+        
         if currentStreak > longestStreak {
             longestStreak = currentStreak
         }

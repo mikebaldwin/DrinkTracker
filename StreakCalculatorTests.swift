@@ -33,7 +33,7 @@ struct StreakCalculatorTests {
         
         let streak = calculator.calculateCurrentStreak(drink)
         
-        #expect(streak == 5)
+        #expect(streak == 4)
     }
 
     @Test("Test streak calculator with most recent drink today")
@@ -61,7 +61,7 @@ struct StreakCalculatorTests {
         
         let streak = calculator.calculateCurrentStreak(drink)
         
-        #expect(streak == 1)
+        #expect(streak == 0)
     }
 
 }
