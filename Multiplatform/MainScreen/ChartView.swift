@@ -71,8 +71,13 @@ struct ChartView: View {
                 }
             }
             .chartXAxis {
-                AxisMarks(values: daysOfWeek) { _ in
-                    AxisValueLabel()
+                AxisMarks(values: daysOfWeek) { value in
+                    if daysOfWeek[value.index].isToday {
+                        AxisValueLabel()
+                            .foregroundStyle(.blue)
+                    } else {
+                        AxisValueLabel()
+                    }
                 }
             }
             .padding()
@@ -145,4 +150,15 @@ struct ChartView: View {
         totalStandardDrinksThisWeek:  0.0
     )
 }
- 
+
+extension String {
+    var isToday: Bool {
+        // Get the current date and extract the day of the week
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEE" // Format for abbreviated weekday
+        let currentDay = dateFormatter.string(from: Date())
+        
+        // Compare the current day with the string value
+        return self == currentDay
+    }
+}
