@@ -23,7 +23,7 @@ struct QuickEntryView: View {
                 Button {
                     if drinkCount > 0 {
                         withAnimation {
-                            drinkCount -= 1.0
+                            drinkCount -= 0.5
                         }
                     }
                 } label: {
@@ -44,7 +44,7 @@ struct QuickEntryView: View {
                 
                 Button {
                     withAnimation {
-                        drinkCount += 1.0
+                        drinkCount += 0.5
                     }
                 } label: {
                     Image(systemName: "plus.circle")
@@ -55,6 +55,7 @@ struct QuickEntryView: View {
                 Spacer()
             }
             .padding([.top, .bottom])
+            
             HStack {
                 Spacer()
                 Button {
