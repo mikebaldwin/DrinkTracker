@@ -9,8 +9,8 @@ import SwiftData
 import SwiftUI
 
 struct SettingsScreen: View {
-    @AppStorage("dailyTarget") private var dailyTarget = 0.0
-    @AppStorage("weeklyTarget") private var weeklyTarget = 0.0
+    @AppStorage("dailyTarget") private var dailyLimit = 0.0
+    @AppStorage("weeklyTarget") private var weeklyLimit = 0.0
     @AppStorage("longestStreak") private var longestStreak = 0
     @AppStorage("useMetricAsDefault") private var useMetricAsDefault = false
     @AppStorage("useProofAsDefault") private var useProofAsDefault = false
@@ -29,21 +29,21 @@ struct SettingsScreen: View {
             Form {
                 Section {
                     Stepper {
-                        Text("Daily limit: \(Formatter.formatDecimal(dailyTarget))")
+                        Text("Daily limit: \(Formatter.formatDecimal(dailyLimit))")
                     } onIncrement: {
-                        dailyTarget += 1
+                        dailyLimit += 1
                     } onDecrement: {
-                        if dailyTarget > 0 {
-                            dailyTarget -= 1
+                        if dailyLimit > 0 {
+                            dailyLimit -= 1
                         }
                     }
                     Stepper {
-                        Text("Weekly limit: \(Formatter.formatDecimal(weeklyTarget))")
+                        Text("Weekly limit: \(Formatter.formatDecimal(weeklyLimit))")
                     } onIncrement: {
-                        weeklyTarget += 1
+                        weeklyLimit += 1
                     } onDecrement: {
-                        if weeklyTarget > 0 {
-                            weeklyTarget -= 1
+                        if weeklyLimit > 0 {
+                            weeklyLimit -= 1
                         }
                     }
                     Button {

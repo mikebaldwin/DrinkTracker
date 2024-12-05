@@ -9,9 +9,9 @@ import Charts
 import SwiftUI
 
 struct ChartView: View {
-    @AppStorage("dailyTarget") private var dailyTarget: Double?
-    @AppStorage("weeklyTarget") private var weeklyTarget: Double?
-
+    @AppStorage("dailyTarget") private var dailyLimit: Double?
+    @AppStorage("weeklyTarget") private var weeklyLimit: Double?
+    
     private var drinkRecords: [DrinkRecord]
     private var totalStandardDrinksToday: Double
     private var totalStandardDrinksThisWeek: Double
@@ -63,9 +63,9 @@ struct ChartView: View {
                         y: .value("Drinks", totalDrinks)
                     )
                     .foregroundStyle(gradientColorFor(totalDrinks: totalDrinks))
-
-                    if let dailyTarget, shouldShowRuleMark() {
-                        RuleMark(y: .value("Daily Limit", dailyTarget))
+                    
+                    if let dailyLimit, shouldShowRuleMark() {
+                        RuleMark(y: .value("Daily Limit", dailyLimit))
                             .foregroundStyle(.red)
                     }
                 }
@@ -95,16 +95,16 @@ struct ChartView: View {
     }
     
     private func gradientColorFor(totalDrinks: Double) -> LinearGradient {
-        guard let dailyTarget else {
+        guard let dailyLimit else {
             return LinearGradient(
                 gradient: Gradient(colors: [.blue, .blue]),
                 startPoint: .top,
                 endPoint: .bottom
             )
         }
-        let inGreenZone = totalDrinks < dailyTarget - 0.6
-        let inYellowZone = totalDrinks > dailyTarget - 0.6 && totalDrinks < dailyTarget
-        let inRedZone = totalDrinks >= dailyTarget
+        let inGreenZone = totalDrinks < dailyLimit - 0.6
+        let inYellowZone = totalDrinks > dailyLimit - 0.6 && totalDrinks < dailyLimit
+        let inRedZone = totalDrinks >= dailyLimit
         
         switch totalDrinks {
         case _ where inGreenZone:

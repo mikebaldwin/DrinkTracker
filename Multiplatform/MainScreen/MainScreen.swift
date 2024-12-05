@@ -11,8 +11,8 @@ import SwiftData
 import SwiftUI
 
 struct MainScreen: View {
-    @AppStorage("dailyTarget") private var dailyTarget: Double?
-    @AppStorage("weeklyTarget") private var weeklyTarget: Double?
+    @AppStorage("dailyTarget") private var dailyLimit: Double?
+    @AppStorage("weeklyTarget") private var weeklyLimit: Double?
     @AppStorage("longestStreak") private var longestStreak = 0
     
     @Environment(\.modelContext) private var modelContext
@@ -44,12 +44,12 @@ struct MainScreen: View {
         thisWeeksDrinks.reduce(into: 0.0) { $0 += $1.standardDrinks }
     }
     private var remainingDrinksToday: Double {
-        guard let dailyTarget else { return 0 }
+        guard let dailyLimit else { return 0 }
         
-        var remaining = dailyTarget - totalStandardDrinksToday
+        var remaining = dailyLimit - totalStandardDrinksToday
         
-        if let weeklyTarget {
-            let remainingForWeek = weeklyTarget - totalStandardDrinksThisWeek
+        if let weeklyLimit {
+            let remainingForWeek = weeklyLimit - totalStandardDrinksThisWeek
             if remaining >= remainingForWeek {
                 remaining = totalStandardDrinksToday == 0 ? 0 : remainingForWeek
             }
@@ -63,8 +63,8 @@ struct MainScreen: View {
             Form {
                 chartSection
                 
-                if dailyTarget != nil || weeklyTarget != nil {
-                    targetsSection
+                if dailyLimit != nil || weeklyLimit != nil {
+                    limitsSection
                 }
                 
                 streaksSection
@@ -125,9 +125,9 @@ struct MainScreen: View {
         }
     }
     
-    private var targetsSection: some View {
+    private var limitsSection: some View {
         Section("Limits") {
-            if dailyTarget != nil {
+            if dailyLimit != nil {
                 HStack {
                     Text("Today")
                         .fontWeight(.semibold)
@@ -140,31 +140,31 @@ struct MainScreen: View {
                     } else if remainingDrinksToday == 0 {
                         Text("Daily limit reached!")
                     } else {
-                        let drinksOverTarget = remainingDrinksToday * -1
-                        let noun = drinksOverTarget == 1 ? "drink" : "drinks"
-                        Text("\(Formatter.formatDecimal(drinksOverTarget)) \(noun) over limit")
+                        let drinksOverLimit = remainingDrinksToday * -1
+                        let noun = drinksOverLimit == 1 ? "drink" : "drinks"
+                        Text("\(Formatter.formatDecimal(drinksOverLimit)) \(noun) over limit")
                             .foregroundStyle(Color(.red))
                             .fontWeight(.semibold)
                     }
                 }
             }
-            if let weeklyTarget {
+            if let weeklyLimit {
                 HStack {
                     Text("This week")
                         .fontWeight(.semibold)
                     
                     Spacer()
                     
-                    let remainingDrinks = weeklyTarget - totalStandardDrinksThisWeek
+                    let remainingDrinks = weeklyLimit - totalStandardDrinksThisWeek
                     if remainingDrinks > 0 {
                         let noun = remainingDrinks == 1 ? "drink" : "drinks"
                         Text("\(Formatter.formatDecimal(remainingDrinks)) \(noun) below limit")
-                    } else if remainingDrinks == weeklyTarget {
+                    } else if remainingDrinks == weeklyLimit {
                         Text("Weekly limit reached!")
                     } else {
-                        let drinksOverTarget = remainingDrinks * -1
-                        let noun = drinksOverTarget == 1 ? "drink" : "drinks"
-                        Text("\(Formatter.formatDecimal(drinksOverTarget)) \(noun) over limit")
+                        let drinksOverLimit = remainingDrinks * -1
+                        let noun = drinksOverLimit == 1 ? "drink" : "drinks"
+                        Text("\(Formatter.formatDecimal(drinksOverLimit)) \(noun) over limit")
                             .foregroundStyle(Color(.red))
                             .fontWeight(.semibold)
                     }
