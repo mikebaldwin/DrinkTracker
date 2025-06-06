@@ -72,7 +72,7 @@ struct SettingsScreen: View {
                         Text("Delete all SwiftData")
                     }
                     Button {
-                        showResetLongestStreakConfirmation = true
+                        showSyncWithHealthKitConfirmation = true
                     } label: {
                         Text("Sync with HealthKit")
                     }

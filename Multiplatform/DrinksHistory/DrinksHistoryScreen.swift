@@ -79,6 +79,7 @@ struct DrinksHistoryScreen: View {
     }
     
     private func buildDays() {
+        debugPrint("### 📊 Building days from \(drinkRecords.count) records")
         days.removeAll()
         
         var dayDictionary = [Date: [DrinkRecord]]()
@@ -87,6 +88,7 @@ struct DrinksHistoryScreen: View {
         // Iterate through the drinkRecords and populate the dayDictionary
         for record in drinkRecords {
             let startOfDay = calendar.startOfDay(for: record.timestamp)
+            debugPrint("### 📅 Processing record from \(record.timestamp) with \(record.standardDrinks) drinks")
             dayDictionary[startOfDay, default: []].append(record)
         }
 
@@ -115,6 +117,7 @@ struct DrinksHistoryScreen: View {
 
         // Sort the days array by date
         days.sort { $0.date > $1.date }
+        debugPrint("### 📊 Built \(days.count) days")
     }
     
     private func update(_ drinkRecord: DrinkRecord, with newDate: Date) {

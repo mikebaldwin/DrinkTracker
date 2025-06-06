@@ -20,25 +20,44 @@ actor DataSynchronizer {
     
     func updateDrinkRecords() async {
         do {
-            guard try await healthStoreManager.isAuthorized() else { return }
-        } catch {
-            debugPrint("❌ HealthKit is not authorized. Aborting sync.")
-            return
-        }
-        
-        let drinkRecords = fetchDrinks()
-        let existingRecords = convertToDictionary(drinkRecords)
-        let samples = await fetchHealthkitRecords()
+            guard try await healthStoreManager.isAuthorized() else {
+                debugPrint("%%% ❌ HealthKit is not authorized. Aborting sync.")
+                return
+            }
+            
+            let drinkRecords = fetchDrinks()
+            debugPrint("%%% 📊 Found \(drinkRecords.count) existing drink records in SwiftData")
+            
+            let existingRecords = convertToDictionary(drinkRecords)
+            let samples = await fetchHealthkitRecords()
+            debugPrint("%%% 📊 Found \(samples.count) drink samples in HealthKit")
 
-        reconcile(existingRecords, with: samples)
-        delete(existingRecords, absentFrom: samples)
+            reconcile(existingRecords, with: samples)
+            delete(existingRecords, absentFrom: samples)
+            
+            debugPrint("%%% ✅ Sync completed successfully")
+        } catch {
+            debugPrint("%%% ❌ Error during sync: \(error)")
+        }
     }
     
     private func convertToDictionary(_ drinkRecords: [DrinkRecord]) -> [String: DrinkRecord] {
+        debugPrint("%%% 📊 Converting \(drinkRecords.count) existing records to dictionary")
         var existingRecords = [String: DrinkRecord]()
-        for drinkRecord in drinkRecords where existingRecords[drinkRecord.id] == nil {
-            existingRecords[drinkRecord.id] = drinkRecord
+        
+        for drinkRecord in drinkRecords {
+            if existingRecords[drinkRecord.id] != nil {
+                debugPrint("%%% ⚠️ Found duplicate record with ID: \(drinkRecord.id)")
+                // If we find a duplicate, delete it
+                context.delete(drinkRecord)
+                debugPrint("%%% 🗑️ Deleted duplicate record")
+            } else {
+                existingRecords[drinkRecord.id] = drinkRecord
+                debugPrint("%%% ✅ Added record to dictionary: \(drinkRecord.id) from \(drinkRecord.timestamp)")
+            }
         }
+        
+        debugPrint("%%% 📊 Dictionary contains \(existingRecords.count) unique records")
         return existingRecords
     }
     
@@ -58,8 +77,14 @@ actor DataSynchronizer {
         
         do {
             samples = try await healthStoreManager.fetchAllDrinkSamples()
+            debugPrint("%%% 📊 Retrieved \(samples.count) samples from HealthKit")
+            
+            // Log the dates of the samples to help debug
+            for sample in samples {
+                debugPrint("%%% 📅 Sample from \(sample.startDate) with \(sample.quantity.doubleValue(for: .count())) drinks")
+            }
         } catch {
-            debugPrint("❌ Failed to retrieve healthkit samples")
+            debugPrint("%%% ❌ Failed to retrieve healthkit samples: \(error)")
         }
 
         return samples
@@ -69,24 +94,51 @@ actor DataSynchronizer {
         _ existingRecords: [String: DrinkRecord],
         with samples: [HKQuantitySample]
     ) {
+        var newRecords: [DrinkRecord] = []
+        var updatedRecords: [DrinkRecord] = []
+        
         for sample in samples {
             let count = sample.quantity.doubleValue(for: .count())
             
-            // Check if a record with the same uuid exists in SwiftData
-            // and update the existing record if the values are different
+            // Only check for records with matching UUID
             if let existingRecord = existingRecords[sample.uuid.uuidString] {
+                debugPrint("%%% 🔄 Found existing record with matching UUID: \(sample.uuid.uuidString)")
+                var needsUpdate = false
+                
                 if existingRecord.standardDrinks != count {
                     existingRecord.standardDrinks = count
+                    needsUpdate = true
+                    debugPrint("%%% 📝 Updated drink count for existing record")
                 }
                 if existingRecord.timestamp != sample.startDate {
                     existingRecord.timestamp = sample.startDate
+                    needsUpdate = true
+                    debugPrint("%%% 📝 Updated timestamp for existing record")
+                }
+                
+                if needsUpdate {
+                    updatedRecords.append(existingRecord)
                 }
             } else {
-                // Create a new SwiftData record if it doesn't exist
+                // Create a new record for any sample without a matching UUID
+                debugPrint("%%% ➕ Creating new record for sample from \(sample.startDate)")
                 let newRecord = DrinkRecord(sample)
-                context.insert(newRecord)
-                debugPrint("✅ Insert new record in model context")
+                newRecords.append(newRecord)
+                debugPrint("%%% ✅ Added new record to batch")
             }
+        }
+        
+        // Batch insert all new records
+        if !newRecords.isEmpty {
+            for record in newRecords {
+                context.insert(record)
+            }
+            debugPrint("%%% 📦 Batch inserted \(newRecords.count) new records")
+        }
+        
+        // Log any updated records
+        if !updatedRecords.isEmpty {
+            debugPrint("%%% 📝 Updated \(updatedRecords.count) existing records")
         }
     }
     
@@ -95,12 +147,20 @@ actor DataSynchronizer {
         absentFrom samples: [HKQuantitySample]
     ) {
         let healthKitIDs = Set(samples.map { $0.uuid.uuidString })
+        var recordsToDelete: [DrinkRecord] = []
         
-        for record in existingRecords {
-            if let record = existingRecords[record.key], !healthKitIDs.contains(record.id) {
-                debugPrint("✅ Delete record from model context")
+        for (_, record) in existingRecords {
+            if !healthKitIDs.contains(record.id) {
+                debugPrint("%%% 🗑️ Found record to delete: \(record.id) from \(record.timestamp)")
+                recordsToDelete.append(record)
+            }
+        }
+        
+        if !recordsToDelete.isEmpty {
+            for record in recordsToDelete {
                 context.delete(record)
             }
+            debugPrint("%%% 📦 Batch deleted \(recordsToDelete.count) records")
         }
     }
 }

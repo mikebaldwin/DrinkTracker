@@ -88,7 +88,7 @@ final actor HealthStoreManager {
             throw HealthKitError.quantityTypeNotAvailable
         }
         let success = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Bool, Error>) in
-            healthStore.requestAuthorization(toShare: [alcoholicBeverageType], read: nil) { success, error in
+            healthStore.requestAuthorization(toShare: [alcoholicBeverageType], read: [alcoholicBeverageType]) { success, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else {
@@ -213,22 +213,33 @@ final actor HealthStoreManager {
             ascending: false
         )
 
+        // Create a predicate that includes all time
+        let predicate = HKQuery.predicateForSamples(
+            withStart: nil,
+            end: nil,
+            options: []
+        )
+
+        debugPrint("$$$ 🔍 Fetching HealthKit samples with predicate: \(predicate)")
+
         let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKQuantitySample], Error>) in
             let query = HKSampleQuery(
                 sampleType: alcoholicBeverageType,
-                predicate: HKQuery.predicateForSamples(
-                    withStart: nil,
-                    end: nil,
-                    options: .strictStartDate
-                ),
+                predicate: predicate,
                 limit: HKObjectQueryNoLimit,
                 sortDescriptors: [sortDescriptor]
             ) { query, samples, error in
                 if let error {
+                    debugPrint("$$$ ❌ Error fetching samples: \(error)")
                     continuation.resume(throwing: error)
                 } else if let samples = samples as? [HKQuantitySample] {
+                    debugPrint("$$$ ✅ Successfully fetched \(samples.count) samples")
+                    for sample in samples {
+                        debugPrint("$$$ 📅 Sample: \(sample.startDate) - \(sample.quantity.doubleValue(for: .count())) drinks")
+                    }
                     continuation.resume(returning: samples)
                 } else {
+                    debugPrint("$$$ ⚠️ No samples found")
                     continuation.resume(returning: [])
                 }
             }
