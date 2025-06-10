@@ -133,6 +133,11 @@ actor DataSynchronizer {
             for record in newRecords {
                 context.insert(record)
             }
+            do {
+                try context.save()
+            } catch {
+                fatalError("Failed to save context: \(error)")
+            }
             debugPrint("%%% 📦 Batch inserted \(newRecords.count) new records")
         }
         
