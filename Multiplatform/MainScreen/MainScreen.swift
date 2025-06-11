@@ -28,6 +28,7 @@ struct MainScreen: View {
     @State private var showCustomDrinksView = false
     @State private var showQuickEntryView = false
     @State private var showSettingsScreen = false
+    @State private var recordingDrinkComplete = false
     
     private var healthStoreManager = HealthStoreManager.shared
     
@@ -62,7 +63,7 @@ struct MainScreen: View {
         NavigationStack {
             Form {
                 chartSection
-                
+
                 if dailyLimit != nil || weeklyLimit != nil {
                     limitsSection
                 }
@@ -81,6 +82,7 @@ struct MainScreen: View {
                 }
             }
         }
+        .sensoryFeedback(.success, trigger: recordingDrinkComplete)
         .sheet(isPresented: $showQuickEntryView) {
             QuickEntryView { drinkRecord in
                 recordDrink(drinkRecord)
@@ -240,11 +242,13 @@ struct MainScreen: View {
                 debugPrint("✅ Drink saved to HealthKit on \(drink.timestamp)")
                 
                 drink.id = sample.uuid.uuidString
+                
             } catch {
                 debugPrint("🛑 Failed to save drink to HealthKit: \(error.localizedDescription)")
             }
         }
         modelContext.insert(drink)
+        recordingDrinkComplete.toggle()
         refreshCurrentStreak()
     }
     
