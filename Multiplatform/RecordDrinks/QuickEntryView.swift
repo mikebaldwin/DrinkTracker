@@ -22,9 +22,7 @@ struct QuickEntryView: View {
                 
                 Button {
                     if drinkCount > 0 {
-                        withAnimation {
-                            drinkCount -= 0.5
-                        }
+                        drinkCount -= 0.5
                     }
                 } label: {
                     Image(systemName: "minus.circle")
@@ -43,9 +41,7 @@ struct QuickEntryView: View {
                 .buttonStyle(PlainButtonStyle())
                 
                 Button {
-                    withAnimation {
-                        drinkCount += 0.5
-                    }
+                    drinkCount += 0.5
                 } label: {
                     Image(systemName: "plus.circle")
                         .font(.largeTitle)
