@@ -1,10 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>remote-notification</string>
-	</array>
+    <key>UIApplicationShortcutItems</key>
+    <array>
+        <dict>
+            <key>UIApplicationShortcutItemType</key>
+            <string>com.mikebaldwin.DrinkTracker.quickEntry</string>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>Quick Entry</string>
+            <key>UIApplicationShortcutItemSubtitle</key>
+            <string>Record a standard drink</string>
+            <key>UIApplicationShortcutItemIconType</key>
+            <string>UIApplicationShortcutIconTypeCompose</string>
+        </dict>
+        <dict>
+            <key>UIApplicationShortcutItemType</key>
+            <string>com.mikebaldwin.DrinkTracker.customDrink</string>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>Add Custom Drink</string>
+            <key>UIApplicationShortcutItemSubtitle</key>
+            <string>Select from saved drinks</string>
+            <key>UIApplicationShortcutItemIconType</key>
+            <string>UIApplicationShortcutIconTypeFavorite</string>
+        </dict>
+        <dict>
+            <key>UIApplicationShortcutItemType</key>
+            <string>com.mikebaldwin.DrinkTracker.drinkCalculator</string>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>Drink Calculator</string>
+            <key>UIApplicationShortcutItemSubtitle</key>
+            <string>Calculate alcohol content</string>
+            <key>UIApplicationShortcutItemIconType</key>
+            <string>UIApplicationShortcutIconTypeAdd</string>
+        </dict>
+    </array>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>remote-notification</string>
+    </array>
+    <key>UISceneConfigurations</key>
+    <dict>
+        <key>UIWindowSceneSessionRoleApplication</key>
+        <array>
+            <dict>
+                <key>UISceneConfigurationName</key>
+                <string>Default Configuration</string>
+                <key>UISceneDelegateClassName</key>
+                <string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+            </dict>
+        </array>
+    </dict>
 </dict>
 </plist>

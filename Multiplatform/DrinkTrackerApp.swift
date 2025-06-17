@@ -8,9 +8,17 @@
 import SwiftUI
 import SwiftData
 import HealthKitUI
+import UIKit
 
 @main
 struct DrinkTrackerApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
+    @State private var trigger = false
+    @State private var retrySync = false
+    
+    private let quickActionHandler = QuickActionHandler.shared
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             DrinkRecord.self,
@@ -36,6 +44,13 @@ struct DrinkTrackerApp: App {
     var body: some Scene {
         WindowGroup {
             MainScreen()
+                .environment(quickActionHandler)
+                .onChange(of: quickActionHandler.activeAction) { action, _ in
+                    if action != nil {
+                        // The action will be handled by MainScreen's environment observation
+                        quickActionHandler.clearAction()
+                    }
+                }
                 .onAppear() {
                     if HKHealthStore.isHealthDataAvailable() {
                         trigger.toggle()
@@ -61,6 +76,12 @@ struct DrinkTrackerApp: App {
                     }
                 }
                 .task {
+                    // Clear any existing dynamic quick actions to prevent duplicates
+                    Task { @MainActor in
+                        UIApplication.shared.shortcutItems = nil
+                        print("🎯 Cleared any existing dynamic Quick Actions")
+                    }
+                    
                     if HKHealthStore.isHealthDataAvailable() {
                         await syncData()
                     } else {
@@ -70,9 +91,6 @@ struct DrinkTrackerApp: App {
         }
         .modelContainer(sharedModelContainer)
     }
-    
-    @State private var trigger = false
-    @State private var retrySync = false
     
     private func syncData() async {
         await DataSynchronizer(container: sharedModelContainer)

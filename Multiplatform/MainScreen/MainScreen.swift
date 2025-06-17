@@ -17,12 +17,14 @@ struct MainScreen: View {
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(QuickActionHandler.self) private var quickActionHandler
     
     @Query(
         sort: \DrinkRecord.timestamp,
         order: .reverse
     ) private var allDrinks: [DrinkRecord]
     
+    @State private var path = NavigationPath()
     @State private var currentStreak = 0
     @State private var showCalculatorView = false
     @State private var showCustomDrinksView = false
@@ -60,9 +62,20 @@ struct MainScreen: View {
     }
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             Form {
-                chartSection
+                ChartView(
+                    drinkRecords: thisWeeksDrinks,
+                    totalStandardDrinksToday: totalStandardDrinksToday,
+                    totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
+                )
+                .navigationDestination(for: Destination.self) { destination in
+                    switch destination {
+                    case .drinksHistory:
+                        DrinksHistoryScreen()
+                    }
+                }
+
 
                 if dailyLimit != nil || weeklyLimit != nil {
                     limitsSection
@@ -115,6 +128,12 @@ struct MainScreen: View {
         .onChange(of: allDrinks) {
             refreshCurrentStreak()
         }
+        .onChange(of: quickActionHandler.activeAction) { _, activeAction in
+            if let activeAction {
+                handleQuickAction(activeAction)
+                quickActionHandler.clearAction()
+            }
+        }
     }
     
     private var chartSection: some View {
@@ -124,6 +143,12 @@ struct MainScreen: View {
                 totalStandardDrinksToday: totalStandardDrinksToday,
                 totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
             )
+            .navigationDestination(for: Destination.self) { destination in
+                switch destination {
+                case .drinksHistory:
+                    DrinksHistoryScreen()
+                }
+            }
         }
     }
     
@@ -266,15 +291,29 @@ struct MainScreen: View {
             longestStreak = currentStreak
         }
     }
+    
+    private func handleQuickAction(_ action: QuickActionType) {
+        if !path.isEmpty {
+            path = NavigationPath()
+        }
+        switch action {
+        case .drinkCalculator:
+            showCalculatorView = true
+        case .customDrink:
+            showCustomDrinksView = true
+        case .quickEntry:
+            showQuickEntryView = true
+        }
+    }
 }
 
-#Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(
-        for: DrinkRecord.self,
-        configurations: config
-    )
-
-    MainScreen()
-        .modelContainer(container)
-}
+//#Preview {
+//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+//    let container = try! ModelContainer(
+//        for: DrinkRecord.self,
+//        configurations: config
+//    )
+//
+//    MainScreen()
+//        .modelContainer(container)
+//}

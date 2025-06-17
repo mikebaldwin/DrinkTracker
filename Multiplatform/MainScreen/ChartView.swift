@@ -20,9 +20,10 @@ struct ChartView: View {
     
     var body: some View {
         VStack {
-            NavigationLink {
-                DrinksHistoryScreen()
-            } label: {
+//            NavigationLink {
+//                DrinksHistoryScreen()
+//            } label: {
+            NavigationLink(value: Destination.drinksHistory) {
                 HStack(alignment: .firstTextBaseline) {
                     Image(systemName: "wineglass.fill")
                         .fontWeight(.bold)
@@ -143,13 +144,13 @@ struct ChartView: View {
     }
 }
 
-#Preview {
-    ChartView(
-        drinkRecords: [DrinkRecord](),
-        totalStandardDrinksToday: 0.0,
-        totalStandardDrinksThisWeek:  0.0
-    )
-}
+//#Preview {
+//    ChartView(
+//        drinkRecords: [DrinkRecord](),
+//        totalStandardDrinksToday: 0.0,
+//        totalStandardDrinksThisWeek:  0.0
+//    )
+//}
 
 extension String {
     var isToday: Bool {
