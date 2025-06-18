@@ -17,6 +17,7 @@ struct MainScreen: View {
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(AppRouter.self) private var router
     @Environment(QuickActionHandler.self) private var quickActionHandler
     
     @Query(
@@ -24,12 +25,7 @@ struct MainScreen: View {
         order: .reverse
     ) private var allDrinks: [DrinkRecord]
     
-    @State private var path = NavigationPath()
     @State private var currentStreak = 0
-    @State private var showCalculatorView = false
-    @State private var showCustomDrinksView = false
-    @State private var showQuickEntryView = false
-    @State private var showSettingsScreen = false
     @State private var recordingDrinkComplete = false
     
     private var healthStoreManager = HealthStoreManager.shared
@@ -62,21 +58,15 @@ struct MainScreen: View {
     }
     
     var body: some View {
-        NavigationStack(path: $path) {
+        NavigationStack(path: Bindable(router).navigationPath) {
             Form {
                 ChartView(
                     drinkRecords: thisWeeksDrinks,
                     totalStandardDrinksToday: totalStandardDrinksToday,
                     totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
                 )
-                .navigationDestination(for: Destination.self) { destination in
-                    switch destination {
-                    case .drinksHistory:
-                        DrinksHistoryScreen()
-                    }
-                }
-
-
+                
+                
                 if dailyLimit != nil || weeklyLimit != nil {
                     limitsSection
                 }
@@ -88,36 +78,19 @@ struct MainScreen: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        showSettingsScreen = true
+                        router.presentSettings()
                     } label: {
                         Image(systemName: "gearshape")
                     }
                 }
             }
+            .navigationDestination(for: Destination.self) { destination in
+                viewFor(destination: destination)
+            }
         }
         .sensoryFeedback(.success, trigger: recordingDrinkComplete)
-        .sheet(isPresented: $showQuickEntryView) {
-            QuickEntryView { drinkRecord in
-                recordDrink(drinkRecord)
-                showQuickEntryView = false
-            }
-            .presentationDetents([.fraction(0.2)])
-        }
-        .sheet(isPresented: $showCalculatorView) {
-            CalculatorScreen(createCustomDrink: { customDrink in
-                addCustomDrink(customDrink)
-            }, createDrinkRecord: { drinkRecord in
-                recordDrink(drinkRecord)
-            })
-            .presentationDetents([.large])
-        }
-        .sheet(isPresented: $showCustomDrinksView) {
-            CustomDrinkScreen() {
-                recordDrink(DrinkRecord($0))
-            }
-        }
-        .sheet(isPresented: $showSettingsScreen) {
-            SettingsScreen()
+        .sheet(item: Bindable(router).presentedSheet) { sheet in
+            viewFor(sheet: sheet)
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
@@ -130,25 +103,15 @@ struct MainScreen: View {
         }
         .onChange(of: quickActionHandler.activeAction) { _, activeAction in
             if let activeAction {
-                handleQuickAction(activeAction)
+                router.handleQuickAction(activeAction)
                 quickActionHandler.clearAction()
             }
         }
-    }
-    
-    private var chartSection: some View {
-        Section("Drinks") {
-            ChartView(
-                drinkRecords: thisWeeksDrinks,
-                totalStandardDrinksToday: totalStandardDrinksToday,
-                totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
+        .onAppear {
+            router.setQuickActionHandlers(
+                addCustomDrink: addCustomDrink,
+                recordDrink: recordDrink
             )
-            .navigationDestination(for: Destination.self) { destination in
-                switch destination {
-                case .drinksHistory:
-                    DrinksHistoryScreen()
-                }
-            }
         }
     }
     
@@ -220,7 +183,10 @@ struct MainScreen: View {
     private var actionsSection: some View {
         Section {
             Button {
-                showCalculatorView = true
+                router.presentCalculator(
+                    createCustomDrink: addCustomDrink,
+                    createDrinkRecord: recordDrink
+                )
             } label: {
                 HStack {
                     Image(systemName: "plus.circle")
@@ -228,7 +194,9 @@ struct MainScreen: View {
                 }
             }
             Button {
-                showCustomDrinksView = true
+                router.presentCustomDrink { customDrink in
+                    recordDrink(DrinkRecord(customDrink))
+                }
             } label: {
                 HStack {
                     Image(systemName: "wineglass")
@@ -236,7 +204,7 @@ struct MainScreen: View {
                 }
             }
             Button {
-                showQuickEntryView = true
+                router.presentSheet(.quickEntry)
             } label: {
                 HStack {
                     Image(systemName: "bolt")
@@ -279,7 +247,7 @@ struct MainScreen: View {
     
     private func refreshCurrentStreak() {
         guard let drink = allDrinks.first else { return }
-                
+        
         currentStreak = StreakCalculator().calculateCurrentStreak(drink)
         
         if currentStreak == 0 && longestStreak == 1 {
@@ -292,17 +260,37 @@ struct MainScreen: View {
         }
     }
     
-    private func handleQuickAction(_ action: QuickActionType) {
-        if !path.isEmpty {
-            path = NavigationPath()
+    // MARK: - Navigation Helpers
+
+    private func viewFor(destination: Destination) -> some View {
+        switch destination {
+        case .drinksHistory:
+            return AnyView(DrinksHistoryScreen().environment(router))
+        case .drinkDetail(let drinkRecord):
+            return AnyView(DrinkRecordDetailScreen(drinkRecord: drinkRecord, completion: router.didFinishUpdatingDrinkRecord))
+        default:
+            return AnyView(EmptyView())
         }
-        switch action {
-        case .drinkCalculator:
-            showCalculatorView = true
-        case .customDrink:
-            showCustomDrinksView = true
+    }
+
+    private func viewFor(sheet: SheetDestination) -> some View {
+        switch sheet {
         case .quickEntry:
-            showQuickEntryView = true
+            return AnyView(QuickEntryView { drinkRecord in
+                recordDrink(drinkRecord)
+                router.dismiss()
+            }
+            .presentationDetents([.fraction(0.2)]))
+        case .calculator(let createCustomDrink, let createDrinkRecord):
+            return AnyView(CalculatorScreen(
+                createCustomDrink: createCustomDrink,
+                createDrinkRecord: createDrinkRecord
+            )
+            .presentationDetents([.large]))
+        case .customDrink(let completion):
+            return AnyView(CustomDrinkScreen(completion: completion))
+        case .settings:
+            return AnyView(SettingsScreen())
         }
     }
 }

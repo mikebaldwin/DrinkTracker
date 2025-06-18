@@ -20,9 +20,6 @@ struct ChartView: View {
     
     var body: some View {
         VStack {
-//            NavigationLink {
-//                DrinksHistoryScreen()
-//            } label: {
             NavigationLink(value: Destination.drinksHistory) {
                 HStack(alignment: .firstTextBaseline) {
                     Image(systemName: "wineglass.fill")

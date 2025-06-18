@@ -10,43 +10,38 @@ import SwiftUI
 
 struct DrinksHistoryScreen: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppRouter.self) private var router
     @Query(sort: \DrinkRecord.timestamp, order: .reverse) var drinkRecords: [DrinkRecord]
     
     @State private var days: [Day] = []
     private var healthStoreManager = HealthStoreManager.shared
     
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(days) { day in
-                    Section(formatDate(day.date)) {
-                        if day.drinks.isEmpty {
-                            Text("Alcohol-free")
-                        } else {
-                            ForEach(day.drinks, id: \.id) { drink in
-                                NavigationLink {
-                                    DrinkRecordDetailScreen(drinkRecord: drink) { drinkRecord, newDate in
-                                        update(drinkRecord, with: newDate)
-                                    }
-                                } label: {
-                                    HStack {
-                                        Text(formatTimestamp(drink.timestamp))
-                                        Spacer()
-                                        Text(Formatter.formatDecimal(drink.standardDrinks))
-                                    }
-                                }
-                            }
-                            .onDelete { offsets in
-                                delete(from: day.drinks, at: offsets)
-                            }
-                            if day.drinks.count > 1 {
+        List {
+            ForEach(days) { day in
+                Section(formatDate(day.date)) {
+                    if day.drinks.isEmpty {
+                        Text("Alcohol-free")
+                    } else {
+                        ForEach(day.drinks, id: \.id) { drink in
+                            NavigationLink(value: Destination.drinkDetail(drink)) {
                                 HStack {
-                                    Text("Total")
+                                    Text(formatTimestamp(drink.timestamp))
                                     Spacer()
-                                    Text(Formatter.formatDecimal(day.totalDrinks))
+                                    Text(Formatter.formatDecimal(drink.standardDrinks))
                                 }
-                                .fontWeight(.semibold)
                             }
+                        }
+                        .onDelete { offsets in
+                            delete(from: day.drinks, at: offsets)
+                        }
+                        if day.drinks.count > 1 {
+                            HStack {
+                                Text("Total")
+                                Spacer()
+                                Text(Formatter.formatDecimal(day.totalDrinks))
+                            }
+                            .fontWeight(.semibold)
                         }
                     }
                 }
@@ -55,6 +50,9 @@ struct DrinksHistoryScreen: View {
         .navigationTitle("Drink History")
         .onAppear {
             buildDays()
+            router.setDrinkUpdateHandler { drinkRecord, newDate in
+                update(drinkRecord, with: newDate)
+            }
         }
     }
     
@@ -191,4 +189,5 @@ struct DrinksHistoryScreen: View {
 
     DrinksHistoryScreen()
         .modelContainer(container)
+        .environment(AppRouter())
 }

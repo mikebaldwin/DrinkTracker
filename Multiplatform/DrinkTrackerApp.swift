@@ -18,6 +18,7 @@ struct DrinkTrackerApp: App {
     @State private var retrySync = false
     
     private let quickActionHandler = QuickActionHandler.shared
+    private let appRouter = AppRouter()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -45,6 +46,7 @@ struct DrinkTrackerApp: App {
         WindowGroup {
             MainScreen()
                 .environment(quickActionHandler)
+                .environment(appRouter)
                 .onChange(of: quickActionHandler.activeAction) { action, _ in
                     if action != nil {
                         // The action will be handled by MainScreen's environment observation

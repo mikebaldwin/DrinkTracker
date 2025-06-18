@@ -15,13 +15,18 @@ enum Destination: Hashable {
     case drinkDetail(DrinkRecord)
 }
 
-enum SheetDestination: Hashable, Identifiable {
+enum SheetDestination: Identifiable {
     case quickEntry
+    case calculator(createCustomDrink: (CustomDrink) -> Void, createDrinkRecord: (DrinkRecord) -> Void)
+    case customDrink(completion: (CustomDrink) -> Void)
+    case settings
     
     var id: String {
         switch self {
-        case .quickEntry:
-            return "quickEntry"
+        case .quickEntry: return "quickEntry"
+        case .calculator: return "calculator"
+        case .customDrink: return "customDrink"
+        case .settings: return "settings"
         }
     }
 }

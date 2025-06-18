@@ -7,7 +7,18 @@ class AppRouter {
     var presentedSheet: SheetDestination?
     var presentedFullScreen: FullScreenDestination?
     
+    private var addCustomDrinkHandler: ((CustomDrink) -> Void)?
+    private var recordDrinkHandler: ((DrinkRecord) -> Void)?
+    
     // MARK: - Navigation Actions
+    
+    func setQuickActionHandlers(
+        addCustomDrink: @escaping (CustomDrink) -> Void,
+        recordDrink: @escaping (DrinkRecord) -> Void
+    ) {
+        addCustomDrinkHandler = addCustomDrink
+        recordDrinkHandler = recordDrink
+    }
     
     func push(_ destination: Destination) {
         navigationPath.append(destination)
@@ -36,30 +47,44 @@ class AppRouter {
         presentedFullScreen = nil
     }
     
-    // MARK: - Quick Action Support
+    func presentCalculator(
+        createCustomDrink: @escaping (CustomDrink) -> Void,
+        createDrinkRecord: @escaping (DrinkRecord) -> Void
+    ) {
+        presentedSheet = .calculator(
+            createCustomDrink: createCustomDrink,
+            createDrinkRecord: createDrinkRecord
+        )
+    }
     
-    var shouldShowCalculatorSheet = false
-    var shouldShowCustomDrinkSheet = false
-    var shouldShowSettingsSheet = false
+    func presentCustomDrink(completion: @escaping (CustomDrink) -> Void) {
+        presentedSheet = .customDrink(completion: completion)
+    }
     
+    func presentSettings() {
+        presentedSheet = .settings
+    }
+
     func handleQuickAction(_ action: QuickActionType) {
-        // Pop to root if we're showing drink history
         if navigationPath.count > 0 {
             popToRoot()
         }
         
-        // Dismiss any presented sheets
         dismiss()
-        shouldShowCalculatorSheet = false
-        shouldShowCustomDrinkSheet = false
-        shouldShowSettingsSheet = false
         
-        // Present the appropriate screen based on action
         switch action {
         case .drinkCalculator:
-            shouldShowCalculatorSheet = true
+            guard let addCustomDrink = addCustomDrinkHandler,
+                  let recordDrink = recordDrinkHandler else { return }
+            presentCalculator(
+                createCustomDrink: addCustomDrink,
+                createDrinkRecord: recordDrink
+            )
         case .customDrink:
-            shouldShowCustomDrinkSheet = true
+            guard let recordDrink = recordDrinkHandler else { return }
+            presentCustomDrink { customDrink in
+                recordDrink(DrinkRecord(customDrink))
+            }
         case .quickEntry:
             presentSheet(.quickEntry)
         }

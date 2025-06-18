@@ -24,8 +24,7 @@ struct DrinkRecordDetailScreen: View {
     @State private var quickEntryValue = ""
     
     var body: some View {
-        NavigationStack {
-            Form {
+        Form {
                 Section {
                     Button {
                         quickEntryValue = Formatter.formatDecimal(drinkRecord.standardDrinks)
@@ -56,7 +55,6 @@ struct DrinkRecordDetailScreen: View {
                             }
                         }
                     }
-                }
             }
         }
         .navigationTitle("Edit Drink")
