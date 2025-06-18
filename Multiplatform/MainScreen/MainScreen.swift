@@ -31,30 +31,24 @@ struct MainScreen: View {
     private var healthStoreManager = HealthStoreManager.shared
     
     private var thisWeeksDrinks: [DrinkRecord] {
-        allDrinks.filter { $0.timestamp >= Date.startOfWeek }
+        allDrinks.thisWeeksRecords
     }
     private var todaysDrinks: [DrinkRecord] {
-        allDrinks.filter { $0.timestamp < Date.tomorrow && $0.timestamp >= Date.startOfToday }
+        allDrinks.todaysRecords
     }
     private var totalStandardDrinksToday: Double {
-        todaysDrinks.reduce(into: 0.0) { $0 += $1.standardDrinks }
+        allDrinks.todaysRecords.totalStandardDrinks
     }
     private var totalStandardDrinksThisWeek: Double {
-        thisWeeksDrinks.reduce(into: 0.0) { $0 += $1.standardDrinks }
+        allDrinks.thisWeeksRecords.totalStandardDrinks
     }
     private var remainingDrinksToday: Double {
-        guard let dailyLimit else { return 0 }
-        
-        var remaining = dailyLimit - totalStandardDrinksToday
-        
-        if let weeklyLimit {
-            let remainingForWeek = weeklyLimit - totalStandardDrinksThisWeek
-            if remaining >= remainingForWeek {
-                remaining = totalStandardDrinksToday == 0 ? 0 : remainingForWeek
-            }
-        }
-        
-        return remaining
+        DrinkLimitCalculator.remainingDrinksToday(
+            dailyLimit: dailyLimit,
+            weeklyLimit: weeklyLimit,
+            totalToday: totalStandardDrinksToday,
+            totalThisWeek: totalStandardDrinksThisWeek
+        )
     }
     
     var body: some View {
@@ -68,12 +62,35 @@ struct MainScreen: View {
                 
                 
                 if dailyLimit != nil || weeklyLimit != nil {
-                    limitsSection
+                    LimitsSection(
+                        dailyLimit: dailyLimit,
+                        weeklyLimit: weeklyLimit,
+                        remainingDrinksToday: remainingDrinksToday,
+                        totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
+                    )
                 }
                 
-                streaksSection
+                StreaksSection(
+                    currentStreak: currentStreak,
+                    longestStreak: longestStreak
+                )
                 
-                actionsSection
+                ActionsSection(
+                    onCalculatorTap: {
+                        router.presentCalculator(
+                            createCustomDrink: addCustomDrink,
+                            createDrinkRecord: recordDrink
+                        )
+                    },
+                    onCustomDrinkTap: {
+                        router.presentCustomDrink { customDrink in
+                            recordDrink(DrinkRecord(customDrink))
+                        }
+                    },
+                    onQuickEntryTap: {
+                        router.presentSheet(.quickEntry)
+                    }
+                )
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -112,105 +129,6 @@ struct MainScreen: View {
                 addCustomDrink: addCustomDrink,
                 recordDrink: recordDrink
             )
-        }
-    }
-    
-    private var limitsSection: some View {
-        Section("Limits") {
-            if dailyLimit != nil {
-                HStack {
-                    Text("Today")
-                        .fontWeight(.semibold)
-                    
-                    Spacer()
-                    
-                    if remainingDrinksToday > 0 {
-                        let noun = remainingDrinksToday == 1 ? "drink" : "drinks"
-                        Text("\(Formatter.formatDecimal(remainingDrinksToday)) \(noun) below limit")
-                    } else if remainingDrinksToday == 0 {
-                        Text("Daily limit reached!")
-                    } else {
-                        let drinksOverLimit = remainingDrinksToday * -1
-                        let noun = drinksOverLimit == 1 ? "drink" : "drinks"
-                        Text("\(Formatter.formatDecimal(drinksOverLimit)) \(noun) over limit")
-                            .foregroundStyle(Color(.red))
-                            .fontWeight(.semibold)
-                    }
-                }
-            }
-            if let weeklyLimit {
-                HStack {
-                    Text("This week")
-                        .fontWeight(.semibold)
-                    
-                    Spacer()
-                    
-                    let remainingDrinks = weeklyLimit - totalStandardDrinksThisWeek
-                    if remainingDrinks > 0 {
-                        let noun = remainingDrinks == 1 ? "drink" : "drinks"
-                        Text("\(Formatter.formatDecimal(remainingDrinks)) \(noun) below limit")
-                    } else if remainingDrinks == weeklyLimit {
-                        Text("Weekly limit reached!")
-                    } else {
-                        let drinksOverLimit = remainingDrinks * -1
-                        let noun = drinksOverLimit == 1 ? "drink" : "drinks"
-                        Text("\(Formatter.formatDecimal(drinksOverLimit)) \(noun) over limit")
-                            .foregroundStyle(Color(.red))
-                            .fontWeight(.semibold)
-                    }
-                }
-            }
-        }
-    }
-    
-    private var streaksSection: some View {
-        Section("Alcohol-free Days") {
-            HStack {
-                Text("Current streak")
-                    .fontWeight(.semibold)
-                Spacer()
-                Text("\($currentStreak.wrappedValue) days")
-            }
-            HStack {
-                Text("Longest streak")
-                    .fontWeight(.semibold)
-                Spacer()
-                Text("\(longestStreak) days")
-            }
-        }
-    }
-    
-    private var actionsSection: some View {
-        Section {
-            Button {
-                router.presentCalculator(
-                    createCustomDrink: addCustomDrink,
-                    createDrinkRecord: recordDrink
-                )
-            } label: {
-                HStack {
-                    Image(systemName: "plus.circle")
-                    Text("Drink Calculator")
-                }
-            }
-            Button {
-                router.presentCustomDrink { customDrink in
-                    recordDrink(DrinkRecord(customDrink))
-                }
-            } label: {
-                HStack {
-                    Image(systemName: "wineglass")
-                    Text("Custom Drinks")
-                }
-            }
-            Button {
-                router.presentSheet(.quickEntry)
-            } label: {
-                HStack {
-                    Image(systemName: "bolt")
-                    Text("Quick Entry")
-                }
-            }
         }
     }
     
