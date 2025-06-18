@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CE05229D2C0F6A4200840AB9 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE05229C2C0F6A4200840AB9 /* Day.swift */; };
+		CE07BA0E2E0351510059CAC6 /* StreakCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA0D2E0351510059CAC6 /* StreakCalculatorTests.swift */; };
 		CE1E00CA2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */; };
 		CE1E00CB2E03407500331C7D /* DrinkLimitCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C82E03407500331C7D /* DrinkLimitCalculator.swift */; };
 		CE1E00CC2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */; };
@@ -55,7 +56,6 @@
 		CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */; };
 		CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
 		CED1BC532C2200EF004F45FC /* StreakCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC522C2200EF004F45FC /* StreakCalculator.swift */; };
-		CED1BC552C22015C004F45FC /* StreakCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC542C22015C004F45FC /* StreakCalculatorTests.swift */; };
 		CEEDC17C2BEBAE420019DF65 /* DrinksHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17B2BEBAE420019DF65 /* DrinksHistoryScreen.swift */; };
 		CEEDC17E2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */; };
 		CEF32C3B2C25F81500E40213 /* DrinkTrackerWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF32C3A2C25F81500E40213 /* DrinkTrackerWatchApp.swift */; };
@@ -116,6 +116,7 @@
 
 /* Begin PBXFileReference section */
 		CE05229C2C0F6A4200840AB9 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
+		CE07BA0D2E0351510059CAC6 /* StreakCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalculatorTests.swift; sourceTree = "<group>"; };
 		CE1E00C82E03407500331C7D /* DrinkLimitCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkLimitCalculator.swift; sourceTree = "<group>"; };
 		CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DrinkRecord+Extensions.swift"; sourceTree = "<group>"; };
 		CE1E00CE2E0340F800331C7D /* LimitsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitsSection.swift; sourceTree = "<group>"; };
@@ -155,7 +156,6 @@
 		CEB911C42BDBF9E300224660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CEC70BA02C07A35400273E1D /* DailyTotal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTotal.swift; sourceTree = "<group>"; };
 		CED1BC522C2200EF004F45FC /* StreakCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalculator.swift; sourceTree = "<group>"; };
-		CED1BC542C22015C004F45FC /* StreakCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalculatorTests.swift; sourceTree = SOURCE_ROOT; };
 		CEEDC17B2BEBAE420019DF65 /* DrinksHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksHistoryScreen.swift; sourceTree = "<group>"; };
 		CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkRecordDetailScreen.swift; sourceTree = "<group>"; };
 		CEF32C382C25F81500E40213 /* Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Watch.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -292,7 +292,7 @@
 			children = (
 				CE3ECA2E2BE92BD30046E242 /* DrinkCalculatorTests.swift */,
 				CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */,
-				CED1BC542C22015C004F45FC /* StreakCalculatorTests.swift */,
+				CE07BA0D2E0351510059CAC6 /* StreakCalculatorTests.swift */,
 			);
 			path = DrinkTrackerTests;
 			sourceTree = "<group>";
@@ -590,7 +590,7 @@
 			files = (
 				CE52A1F22C010DC800BAEBF3 /* IngredientTests.swift in Sources */,
 				CE3ECA2F2BE92BD30046E242 /* DrinkCalculatorTests.swift in Sources */,
-				CED1BC552C22015C004F45FC /* StreakCalculatorTests.swift in Sources */,
+				CE07BA0E2E0351510059CAC6 /* StreakCalculatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
