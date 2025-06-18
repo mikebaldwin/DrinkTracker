@@ -62,6 +62,8 @@
 		CEFEF5152DFB58B60056E83A /* QuickActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEF5132DFB58B30056E83A /* QuickActionType.swift */; };
 		CEFEF5172DFB62A70056E83A /* Destination.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEF5162DFB62A70056E83A /* Destination.swift */; };
 		CEFEF5182DFB62A70056E83A /* Destination.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEF5162DFB62A70056E83A /* Destination.swift */; };
+		CEFEF51A2E01F2440056E83A /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEF5192E01F2440056E83A /* AppRouter.swift */; };
+		CEFEF51B2E01F2440056E83A /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEF5192E01F2440056E83A /* AppRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +155,7 @@
 		CEFEF5102DFB58770056E83A /* QuickActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionHandler.swift; sourceTree = "<group>"; };
 		CEFEF5132DFB58B30056E83A /* QuickActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionType.swift; sourceTree = "<group>"; };
 		CEFEF5162DFB62A70056E83A /* Destination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Destination.swift; sourceTree = "<group>"; };
+		CEFEF5192E01F2440056E83A /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +202,7 @@
 		CE3DACE72BDFD57A00BB52EA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				CEFEF5192E01F2440056E83A /* AppRouter.swift */,
 				CEFEF5132DFB58B30056E83A /* QuickActionType.swift */,
 				CEFEF5102DFB58770056E83A /* QuickActionHandler.swift */,
 				CE866B672C1B354D00461411 /* DataSynchronizer.swift */,
@@ -540,6 +544,7 @@
 				CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */,
 				CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */,
 				CE05229D2C0F6A4200840AB9 /* Day.swift in Sources */,
+				CEFEF51B2E01F2440056E83A /* AppRouter.swift in Sources */,
 				CE3DACE62BDFD49A00BB52EA /* ChartView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -560,6 +565,7 @@
 			files = (
 				CE59F00A2C3C6E43000C8630 /* Day.swift in Sources */,
 				CE7BDF362C2C883B00D260F1 /* DailyTotal.swift in Sources */,
+				CEFEF51A2E01F2440056E83A /* AppRouter.swift in Sources */,
 				CE461A1B2C2DA191008E6E1B /* CustomDrinkScreenWatch.swift in Sources */,
 				CE59F00D2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift in Sources */,
 				CE7BDF352C2C87FC00D260F1 /* StreakCalculator.swift in Sources */,
