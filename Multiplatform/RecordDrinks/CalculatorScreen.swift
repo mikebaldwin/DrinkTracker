@@ -64,7 +64,7 @@ struct CalculatorScreen: View {
                 }
                 dismiss()
             }
-            Button("Save Custom Drink") {
+            Button("Create Custom Drink") {
                 showNameDrinkAlert = true
             }
             Button("Cancel", role: .cancel) { }
