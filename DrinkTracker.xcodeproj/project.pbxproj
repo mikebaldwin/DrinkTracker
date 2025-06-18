@@ -156,6 +156,7 @@
 		CEFEF5132DFB58B30056E83A /* QuickActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionType.swift; sourceTree = "<group>"; };
 		CEFEF5162DFB62A70056E83A /* Destination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Destination.swift; sourceTree = "<group>"; };
 		CEFEF5192E01F2440056E83A /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		CEFEF51D2E03371B0056E83A /* navigation_docs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = navigation_docs.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +218,7 @@
 		CE4169882BD97FB10028D64A = {
 			isa = PBXGroup;
 			children = (
+				CEFEF51C2E0336F40056E83A /* Documentation */,
 				CE4169932BD97FB10028D64A /* Multiplatform */,
 				CE4169A62BD97FB30028D64A /* DrinkTrackerTests */,
 				CEF32C392C25F81500E40213 /* Watch */,
@@ -349,6 +351,14 @@
 				CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */,
 			);
 			path = DrinksHistory;
+			sourceTree = "<group>";
+		};
+		CEFEF51C2E0336F40056E83A /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				CEFEF51D2E03371B0056E83A /* navigation_docs.md */,
+			);
+			path = Documentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
