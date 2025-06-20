@@ -19,6 +19,8 @@
 		CE07BA1A2E05B1930059CAC6 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA182E05B1930059CAC6 /* Notification+Extensions.swift */; };
 		CE07BA1D2E05B2B10059CAC6 /* ConflictResolutionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA1B2E05B2B10059CAC6 /* ConflictResolutionScreen.swift */; };
 		CE07BA1F2E05B3350059CAC6 /* ConflictResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA1E2E05B3350059CAC6 /* ConflictResolver.swift */; };
+		CE07BA212E05D81E0059CAC6 /* ConflictRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA202E05D81E0059CAC6 /* ConflictRow.swift */; };
+		CE07BA232E05D8400059CAC6 /* ConflictResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA222E05D8400059CAC6 /* ConflictResolution.swift */; };
 		CE1E00CA2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */; };
 		CE1E00CB2E03407500331C7D /* DrinkLimitCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C82E03407500331C7D /* DrinkLimitCalculator.swift */; };
 		CE1E00CC2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */; };
@@ -136,6 +138,8 @@
 		CE07BA182E05B1930059CAC6 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		CE07BA1B2E05B2B10059CAC6 /* ConflictResolutionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConflictResolutionScreen.swift; sourceTree = "<group>"; };
 		CE07BA1E2E05B3350059CAC6 /* ConflictResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConflictResolver.swift; sourceTree = "<group>"; };
+		CE07BA202E05D81E0059CAC6 /* ConflictRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConflictRow.swift; sourceTree = "<group>"; };
+		CE07BA222E05D8400059CAC6 /* ConflictResolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConflictResolution.swift; sourceTree = "<group>"; };
 		CE1E00C82E03407500331C7D /* DrinkLimitCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkLimitCalculator.swift; sourceTree = "<group>"; };
 		CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DrinkRecord+Extensions.swift"; sourceTree = "<group>"; };
 		CE1E00CE2E0340F800331C7D /* LimitsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitsSection.swift; sourceTree = "<group>"; };
@@ -230,8 +234,10 @@
 		CE07BA1C2E05B2B10059CAC6 /* SyncConflicts */ = {
 			isa = PBXGroup;
 			children = (
-				CE07BA1E2E05B3350059CAC6 /* ConflictResolver.swift */,
+				CE07BA222E05D8400059CAC6 /* ConflictResolution.swift */,
 				CE07BA1B2E05B2B10059CAC6 /* ConflictResolutionScreen.swift */,
+				CE07BA1E2E05B3350059CAC6 /* ConflictResolver.swift */,
+				CE07BA202E05D81E0059CAC6 /* ConflictRow.swift */,
 			);
 			path = SyncConflicts;
 			sourceTree = "<group>";
@@ -586,6 +592,7 @@
 			files = (
 				CEFEF50D2DFB58240056E83A /* AppDelegate.swift in Sources */,
 				CE07BA162E05AF930059CAC6 /* UserSettings.swift in Sources */,
+				CE07BA232E05D8400059CAC6 /* ConflictResolution.swift in Sources */,
 				CE07BA172E05AF930059CAC6 /* SyncConflict.swift in Sources */,
 				CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */,
 				CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */,
@@ -606,6 +613,7 @@
 				CE6610492C23676C006E824D /* VolumeMeasurement.swift in Sources */,
 				CEFEF5112DFB587E0056E83A /* QuickActionHandler.swift in Sources */,
 				CE07BA102E041ABE0059CAC6 /* UserDefaultsProviding.swift in Sources */,
+				CE07BA212E05D81E0059CAC6 /* ConflictRow.swift in Sources */,
 				CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */,
 				CEEDC17C2BEBAE420019DF65 /* DrinksHistoryScreen.swift in Sources */,
 				CE1E00CA2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */,
