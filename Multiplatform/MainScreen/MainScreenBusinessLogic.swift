@@ -75,6 +75,7 @@ class MainScreenBusinessLogic {
     
     func addCustomDrink(_ customDrink: CustomDrink) {
         modelContext?.insert(customDrink)
+        try? modelContext?.save()
     }
     
     func refreshCurrentStreak(from allDrinks: [DrinkRecord]) {
