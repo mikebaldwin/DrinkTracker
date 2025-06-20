@@ -13,6 +13,7 @@ actor DataSynchronizer {
     
     private var healthStoreManager = HealthStoreManager.shared
     private var context: ModelContext
+    private var detectedConflicts: [SyncConflict] = []
     
     init(container: ModelContainer) {
         self.context = ModelContext(container)
@@ -25,6 +26,20 @@ actor DataSynchronizer {
                 return
             }
             
+            // First, check for conflicts
+            let conflicts = await detectConflicts()
+            
+            if !conflicts.isEmpty {
+                debugPrint("%%% ⚠️ Found \(conflicts.count) sync conflicts - user resolution required")
+                // Post notification that conflicts exist
+                NotificationCenter.default.post(
+                    name: .syncConflictsDetected,
+                    object: conflicts
+                )
+                return
+            }
+            
+            // If no conflicts, proceed with normal sync
             let drinkRecords = fetchDrinks()
             debugPrint("%%% 📊 Found \(drinkRecords.count) existing drink records in SwiftData")
             
@@ -167,6 +182,55 @@ actor DataSynchronizer {
             }
             debugPrint("%%% 📦 Batch deleted \(recordsToDelete.count) records")
         }
+    }
+    
+    func detectConflicts() async -> [SyncConflict] {
+        // Clear previous conflicts
+        detectedConflicts.removeAll()
+        
+        let drinkRecords = fetchDrinks()
+        let samples = await fetchHealthkitRecords()
+        let existingRecords = convertToDictionary(drinkRecords)
+        
+        // Compare each HealthKit sample with corresponding local record
+        for sample in samples {
+            if let localRecord = existingRecords[sample.uuid.uuidString] {
+                let conflicts = compareRecords(sample: sample, localRecord: localRecord)
+                if !conflicts.isEmpty {
+                    let syncConflict = SyncConflict(
+                        id: sample.uuid.uuidString,
+                        healthKitSample: sample,
+                        localRecord: localRecord,
+                        conflictTypes: conflicts
+                    )
+                    detectedConflicts.append(syncConflict)
+                }
+            }
+        }
+        
+        return detectedConflicts
+    }
+    
+    private func compareRecords(sample: HKQuantitySample, localRecord: DrinkRecord) -> [ConflictType] {
+        var conflicts: [ConflictType] = []
+        
+        let hkAmount = sample.quantity.doubleValue(for: .count())
+        let localAmount = localRecord.standardDrinks
+        let hkDate = sample.startDate
+        let localDate = localRecord.timestamp
+        
+        let amountDiffers = abs(hkAmount - localAmount) > 0.01
+        let dateDiffers = abs(hkDate.timeIntervalSince(localDate)) > 60 // 1 minute tolerance
+        
+        if amountDiffers && dateDiffers {
+            conflicts.append(.both)
+        } else if amountDiffers {
+            conflicts.append(.standardDrinks(healthKit: hkAmount, local: localAmount))
+        } else if dateDiffers {
+            conflicts.append(.timestamp(healthKit: hkDate, local: localDate))
+        }
+        
+        return conflicts
     }
 }
 
