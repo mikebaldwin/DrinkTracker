@@ -20,6 +20,7 @@ enum SheetDestination: Identifiable {
     case calculator(createCustomDrink: (CustomDrink) -> Void, createDrinkRecord: (DrinkRecord) -> Void)
     case customDrink(completion: (CustomDrink) -> Void)
     case settings
+    case conflictResolution(conflicts: [SyncConflict], onComplete: () -> Void)
     
     var id: String {
         switch self {
@@ -27,6 +28,7 @@ enum SheetDestination: Identifiable {
         case .calculator: return "calculator"
         case .customDrink: return "customDrink"
         case .settings: return "settings"
+        case .conflictResolution: return "conflictResolution"
         }
     }
 }

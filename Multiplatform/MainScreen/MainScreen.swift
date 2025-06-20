@@ -132,6 +132,16 @@ struct MainScreen: View {
                 }
             )
         }
+        .onReceive(NotificationCenter.default.publisher(for: .syncConflictsDetected)) { notification in
+            if let conflicts = notification.object as? [SyncConflict] {
+                router.presentConflictResolution(conflicts: conflicts) {
+                    // Re-sync after conflicts are resolved
+                    Task {
+                        await businessLogic.syncData()
+                    }
+                }
+            }
+        }
     }
     
     // MARK: - Navigation Helpers
@@ -165,6 +175,11 @@ struct MainScreen: View {
             return AnyView(CustomDrinkScreen(completion: completion))
         case .settings:
             return AnyView(SettingsScreen())
+        case .conflictResolution(let conflicts, let onComplete):
+            return AnyView(ConflictResolutionScreen(
+                conflicts: conflicts,
+                onResolutionComplete: onComplete
+            ))
         }
     }
 }

@@ -107,4 +107,9 @@ class MainScreenBusinessLogic {
     func resetDrinkRecordingFeedback() {
         recordingDrinkComplete = false
     }
+    
+    func syncData() async {
+        let synchronizer = DataSynchronizer(container: modelContext.container)
+        await synchronizer.updateDrinkRecords()
+    }
 }

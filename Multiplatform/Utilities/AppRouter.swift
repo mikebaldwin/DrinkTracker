@@ -64,6 +64,13 @@ class AppRouter {
     func presentSettings() {
         presentedSheet = .settings
     }
+    
+    func presentConflictResolution(
+        conflicts: [SyncConflict],
+        onComplete: @escaping () -> Void
+    ) {
+        presentedSheet = .conflictResolution(conflicts: conflicts, onComplete: onComplete)
+    }
 
     func handleQuickAction(_ action: QuickActionType) {
         if navigationPath.count > 0 {
