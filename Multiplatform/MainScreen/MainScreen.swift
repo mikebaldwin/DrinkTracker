@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainScreen.swift
 //  DrinkTracker
 //
 //  Created by Mike Baldwin on 4/24/24.
@@ -13,7 +13,6 @@ import SwiftUI
 struct MainScreen: View {
     @AppStorage("dailyTarget") private var dailyLimit: Double?
     @AppStorage("weeklyTarget") private var weeklyLimit: Double?
-    @AppStorage("longestStreak") private var longestStreak = 0
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
@@ -25,10 +24,7 @@ struct MainScreen: View {
         order: .reverse
     ) private var allDrinks: [DrinkRecord]
     
-    @State private var currentStreak = 0
-    @State private var recordingDrinkComplete = false
-    
-    private var healthStoreManager = HealthStoreManager.shared
+    @State private var businessLogic = MainScreenBusinessLogic()
     
     private var thisWeeksDrinks: [DrinkRecord] {
         allDrinks.thisWeeksRecords
@@ -60,7 +56,6 @@ struct MainScreen: View {
                     totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
                 )
                 
-                
                 if dailyLimit != nil || weeklyLimit != nil {
                     LimitsSection(
                         dailyLimit: dailyLimit,
@@ -71,20 +66,22 @@ struct MainScreen: View {
                 }
                 
                 StreaksSection(
-                    currentStreak: currentStreak,
-                    longestStreak: longestStreak
+                    currentStreak: businessLogic.currentStreak,
+                    longestStreak: businessLogic.longestStreak
                 )
                 
                 ActionsSection(
                     onCalculatorTap: {
                         router.presentCalculator(
-                            createCustomDrink: addCustomDrink,
-                            createDrinkRecord: recordDrink
+                            createCustomDrink: businessLogic.addCustomDrink,
+                            createDrinkRecord: { drink in
+                                Task { await businessLogic.recordDrink(drink) }
+                            }
                         )
                     },
                     onCustomDrinkTap: {
                         router.presentCustomDrink { customDrink in
-                            recordDrink(DrinkRecord(customDrink))
+                            Task { await businessLogic.recordDrink(DrinkRecord(customDrink)) }
                         }
                     },
                     onQuickEntryTap: {
@@ -105,18 +102,18 @@ struct MainScreen: View {
                 viewFor(destination: destination)
             }
         }
-        .sensoryFeedback(.success, trigger: recordingDrinkComplete)
+        .sensoryFeedback(.success, trigger: businessLogic.recordingDrinkComplete)
         .sheet(item: Bindable(router).presentedSheet) { sheet in
             viewFor(sheet: sheet)
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 _ = allDrinks
-                refreshCurrentStreak()
+                businessLogic.refreshCurrentStreak(from: allDrinks)
             }
         }
         .onChange(of: allDrinks) {
-            refreshCurrentStreak()
+            businessLogic.refreshCurrentStreak(from: allDrinks)
         }
         .onChange(of: quickActionHandler.activeAction) { _, activeAction in
             if let activeAction {
@@ -125,56 +122,13 @@ struct MainScreen: View {
             }
         }
         .onAppear {
+            businessLogic.configure(with: modelContext)
             router.setQuickActionHandlers(
-                addCustomDrink: addCustomDrink,
-                recordDrink: recordDrink
+                addCustomDrink: businessLogic.addCustomDrink,
+                recordDrink: { drink in
+                    Task { await businessLogic.recordDrink(drink) }
+                }
             )
-        }
-    }
-    
-    private func addCustomDrink(_ customDrink: CustomDrink) {
-        modelContext.insert(customDrink)
-    }
-    
-    private func recordDrink(_ drink: DrinkRecord) {
-        Task {
-            do {
-                let sample = HKQuantitySample(
-                    type: HKQuantityType(.numberOfAlcoholicBeverages),
-                    quantity: HKQuantity(
-                        unit: HKUnit.count(),
-                        doubleValue: drink.standardDrinks
-                    ),
-                    start: drink.timestamp,
-                    end: drink.timestamp
-                )
-                
-                try await healthStoreManager.save(sample)
-                debugPrint("✅ Drink saved to HealthKit on \(drink.timestamp)")
-                
-                drink.id = sample.uuid.uuidString
-                
-            } catch {
-                debugPrint("🛑 Failed to save drink to HealthKit: \(error.localizedDescription)")
-            }
-        }
-        modelContext.insert(drink)
-        recordingDrinkComplete.toggle()
-        refreshCurrentStreak()
-    }
-    
-    private func refreshCurrentStreak() {
-        guard let drink = allDrinks.first else { return }
-        
-        currentStreak = StreakCalculator().calculateCurrentStreak(drink)
-        
-        if currentStreak == 0 && longestStreak == 1 {
-            // prevents giving streak credit user has gone zero days without alcohol
-            longestStreak = 0
-        }
-        
-        if currentStreak > longestStreak {
-            longestStreak = currentStreak
         }
     }
     
@@ -195,7 +149,7 @@ struct MainScreen: View {
         switch sheet {
         case .quickEntry:
             return AnyView(QuickEntryView { drinkRecord in
-                recordDrink(drinkRecord)
+                Task { await businessLogic.recordDrink(drinkRecord) }
                 router.dismiss()
             }
             .presentationDetents([.fraction(0.2)]))

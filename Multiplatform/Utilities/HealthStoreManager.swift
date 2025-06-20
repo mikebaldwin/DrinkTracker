@@ -8,6 +8,7 @@
 import Foundation
 import HealthKit
 
+// MARK: - HealthKitError
 enum HealthKitError: Error {
     case quantityTypeNotAvailable
     case quantityTypeResultsNotFound
@@ -16,6 +17,13 @@ enum HealthKitError: Error {
 }
 
 extension HKQuantitySample: @unchecked @retroactive Sendable { }
+
+protocol HealthStoreManaging {
+    func save(_ sample: HKQuantitySample) async throws
+}
+
+// MARK: - HealthStoreManager
+extension HealthStoreManager: HealthStoreManaging {}
 
 final actor HealthStoreManager {
     static let shared = HealthStoreManager()
