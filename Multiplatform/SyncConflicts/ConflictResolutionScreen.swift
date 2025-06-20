@@ -7,12 +7,14 @@
 
 import SwiftUI
 import HealthKit
+import SwiftData
 
 struct ConflictResolutionScreen: View {
     let conflicts: [SyncConflict]
     let onResolutionComplete: () -> Void
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     @State private var resolutions: [String: ConflictResolution] = [:]
     @State private var isResolving = false
     
@@ -63,7 +65,7 @@ struct ConflictResolutionScreen: View {
     private func resolveConflicts() async {
         isResolving = true
         
-        let resolver = ConflictResolver()
+        let resolver = ConflictResolver(context: modelContext)
         
         for conflict in conflicts {
             guard let resolution = resolutions[conflict.id] else { continue }
