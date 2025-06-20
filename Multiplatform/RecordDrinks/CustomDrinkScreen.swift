@@ -73,20 +73,22 @@ struct CustomDrinkScreen: View {
                     }
                     dismiss()
                 }
-                Button("Cancel", role: .cancel) { dismiss() }
+                Button("Cancel", role: .cancel) {
+                    // Dismiss dialog
+                }
             }
         }
         .searchable(text: $searchText)
     }
 }
 
-#Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(
-        for: DrinkRecord.self,
-        configurations: config
-    )
-
-    CustomDrinkScreen(completion: { _ in })
-        .modelContainer(container)
-}
+//#Preview {
+//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+//    let container = try! ModelContainer(
+//        for: DrinkRecord.self,
+//        configurations: config
+//    )
+//
+//    CustomDrinkScreen(completion: { _ in })
+//        .modelContainer(container)
+//}
