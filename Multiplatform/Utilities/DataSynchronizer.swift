@@ -32,10 +32,12 @@ actor DataSynchronizer {
             if !conflicts.isEmpty {
                 debugPrint("%%% ⚠️ Found \(conflicts.count) sync conflicts - user resolution required")
                 // Post notification that conflicts exist
-                NotificationCenter.default.post(
-                    name: .syncConflictsDetected,
-                    object: conflicts
-                )
+                Task { @MainActor in
+                    NotificationCenter.default.post(
+                        name: .syncConflictsDetected,
+                        object: conflicts
+                    )
+                }
                 return
             }
             
@@ -205,6 +207,21 @@ actor DataSynchronizer {
                     )
                     detectedConflicts.append(syncConflict)
                 }
+            }
+        }
+        
+        // Check for local records that don't exist in HealthKit (deleted from HealthKit)
+        let healthKitIDs = Set(samples.map { $0.uuid.uuidString })
+        for (recordID, localRecord) in existingRecords {
+            if !healthKitIDs.contains(recordID) {
+                debugPrint("%%% ⚠️ Detected record deleted from HealthKit: \(recordID)")
+                let syncConflict = SyncConflict(
+                    id: recordID,
+                    healthKitSample: nil,
+                    localRecord: localRecord,
+                    conflictTypes: [.deletedFromHealthKit]
+                )
+                detectedConflicts.append(syncConflict)
             }
         }
         

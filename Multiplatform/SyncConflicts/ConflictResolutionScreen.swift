@@ -100,37 +100,71 @@ struct ConflictRow: View {
                     .foregroundStyle(.secondary)
             }
             
-            HStack(spacing: 20) {
-                VStack {
-                    Text("HealthKit")
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                    Text("\(Formatter.formatDecimal(conflict.healthKitSample.quantity.doubleValue(for: .count()))) drinks")
-                    Text(formatTime(conflict.healthKitSample.startDate))
-                        .font(.caption2)
-                    
-                    Button("Use This") {
-                        onResolutionChanged(.useHealthKit)
+            if let healthKitSample = conflict.healthKitSample {
+                HStack(spacing: 20) {
+                    VStack {
+                        Text("HealthKit")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                        Text("\(Formatter.formatDecimal(healthKitSample.quantity.doubleValue(for: .count()))) drinks")
+                        Text(formatTime(healthKitSample.startDate))
+                            .font(.caption2)
+                        
+                        Button("Use This") {
+                            onResolutionChanged(.useHealthKit)
+                        }
+                        .buttonStyle(.bordered)
+                        .foregroundStyle(resolution == .useHealthKit ? .white : .blue)
+                        .background(resolution == .useHealthKit ? .blue : .clear)
                     }
-                    .buttonStyle(.bordered)
-                    .foregroundStyle(resolution == .useHealthKit ? .white : .blue)
-                    .background(resolution == .useHealthKit ? .blue : .clear)
+                    
+                    VStack {
+                        Text("DrinkTracker")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                        Text("\(Formatter.formatDecimal(conflict.localRecord.standardDrinks)) drinks")
+                        Text(formatTime(conflict.localRecord.timestamp))
+                            .font(.caption2)
+                        
+                        Button("Use This") {
+                            onResolutionChanged(.useLocal)
+                        }
+                        .buttonStyle(.bordered)
+                        .foregroundStyle(resolution == .useLocal ? .white : .blue)
+                        .background(resolution == .useLocal ? .blue : .clear)
+                    }
                 }
-                
-                VStack {
-                    Text("DrinkTracker")
+            } else {
+                // Record was deleted from HealthKit
+                VStack(spacing: 12) {
+                    Text("This record was deleted from HealthKit")
                         .font(.caption)
-                        .fontWeight(.semibold)
-                    Text("\(Formatter.formatDecimal(conflict.localRecord.standardDrinks)) drinks")
-                    Text(formatTime(conflict.localRecord.timestamp))
-                        .font(.caption2)
+                        .foregroundStyle(.secondary)
                     
-                    Button("Use This") {
-                        onResolutionChanged(.useLocal)
+                    VStack {
+                        Text("DrinkTracker Record")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                        Text("\(Formatter.formatDecimal(conflict.localRecord.standardDrinks)) drinks")
+                        Text(formatTime(conflict.localRecord.timestamp))
+                            .font(.caption2)
                     }
-                    .buttonStyle(.bordered)
-                    .foregroundStyle(resolution == .useLocal ? .white : .blue)
-                    .background(resolution == .useLocal ? .blue : .clear)
+                    
+                    HStack(spacing: 12) {
+                        Button("Keep Local Record") {
+                            onResolutionChanged(.useLocal)
+                        }
+                        .buttonStyle(.bordered)
+                        .foregroundStyle(resolution == .useLocal ? .white : .blue)
+                        .background(resolution == .useLocal ? .blue : .clear)
+                        
+                        Button("Delete Local Record") {
+                            onResolutionChanged(.deleteLocal)
+                        }
+                        .buttonStyle(.bordered)
+                        .foregroundStyle(resolution == .deleteLocal ? .white : .red)
+                        .background(resolution == .deleteLocal ? .red : .clear)
+                    }
                 }
             }
         }
@@ -153,6 +187,7 @@ struct ConflictRow: View {
 enum ConflictResolution {
     case useHealthKit
     case useLocal
+    case deleteLocal
 }
 
 #Preview {

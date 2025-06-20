@@ -10,13 +10,13 @@ import HealthKit
 
 struct SyncConflict: Identifiable {
     let id: String  // UUID of the record
-    let healthKitSample: HKQuantitySample
+    let healthKitSample: HKQuantitySample?
     let localRecord: DrinkRecord
     let conflictTypes: [ConflictType]
     
     var displayDate: Date {
-        // Use HealthKit date as primary for display
-        healthKitSample.startDate
+        // Use HealthKit date as primary for display, fallback to local
+        healthKitSample?.startDate ?? localRecord.timestamp
     }
 }
 
@@ -24,6 +24,7 @@ enum ConflictType {
     case standardDrinks(healthKit: Double, local: Double)
     case timestamp(healthKit: Date, local: Date)
     case both
+    case deletedFromHealthKit
     
     var description: String {
         switch self {
@@ -33,6 +34,8 @@ enum ConflictType {
             return "Time differs: HealthKit \(formatShort(hk)) vs Local \(formatShort(local))"
         case .both:
             return "Both amount and time differ"
+        case .deletedFromHealthKit:
+            return "Record was deleted from HealthKit but still exists locally"
         }
     }
     

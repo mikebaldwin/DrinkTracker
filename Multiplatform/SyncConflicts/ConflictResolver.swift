@@ -23,13 +23,18 @@ actor ConflictResolver {
             try await useHealthKitVersion(conflict)
         case .useLocal:
             try await useLocalVersion(conflict)
+        case .deleteLocal:
+            try await deleteLocalVersion(conflict)
         }
     }
     
     private func useHealthKitVersion(_ conflict: SyncConflict) async throws {
+        guard let healthKitSample = conflict.healthKitSample else {
+            throw ConflictResolutionError.noHealthKitSample
+        }
+        
         // Update local record to match HealthKit
         let localRecord = conflict.localRecord
-        let healthKitSample = conflict.healthKitSample
         
         localRecord.standardDrinks = healthKitSample.quantity.doubleValue(for: .count())
         localRecord.timestamp = healthKitSample.startDate
@@ -44,10 +49,12 @@ actor ConflictResolver {
         // Update HealthKit to match local record
         let localRecord = conflict.localRecord
         
-        // Delete existing HealthKit sample
-        try await healthStoreManager.deleteAlcoholicBeverage(
-            withUUID: UUID(uuidString: conflict.id)!
-        )
+        // Delete existing HealthKit sample if it exists
+        if conflict.healthKitSample != nil {
+            try await healthStoreManager.deleteAlcoholicBeverage(
+                withUUID: UUID(uuidString: conflict.id)!
+            )
+        }
         
         // Create new HealthKit sample with local values
         let newSample = HKQuantitySample(
@@ -67,4 +74,19 @@ actor ConflictResolver {
         
         debugPrint("✅ Updated HealthKit to match local record for \(conflict.id)")
     }
+    
+    private func deleteLocalVersion(_ conflict: SyncConflict) async throws {
+        // Delete the local record
+        let localRecord = conflict.localRecord
+        context.delete(localRecord)
+        
+        // Save changes to SwiftData
+        try context.save()
+        
+        debugPrint("✅ Deleted local record for \(conflict.id)")
+    }
+}
+
+enum ConflictResolutionError: Error {
+    case noHealthKitSample
 }
