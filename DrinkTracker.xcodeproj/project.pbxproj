@@ -17,6 +17,8 @@
 		CE07BA172E05AF930059CAC6 /* SyncConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA122E05AF930059CAC6 /* SyncConflict.swift */; };
 		CE07BA192E05B1930059CAC6 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA182E05B1930059CAC6 /* Notification+Extensions.swift */; };
 		CE07BA1A2E05B1930059CAC6 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA182E05B1930059CAC6 /* Notification+Extensions.swift */; };
+		CE07BA1D2E05B2B10059CAC6 /* ConflictResolutionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA1B2E05B2B10059CAC6 /* ConflictResolutionScreen.swift */; };
+		CE07BA1F2E05B3350059CAC6 /* ConflictResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA1E2E05B3350059CAC6 /* ConflictResolver.swift */; };
 		CE1E00CA2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */; };
 		CE1E00CB2E03407500331C7D /* DrinkLimitCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C82E03407500331C7D /* DrinkLimitCalculator.swift */; };
 		CE1E00CC2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */; };
@@ -132,6 +134,8 @@
 		CE07BA122E05AF930059CAC6 /* SyncConflict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncConflict.swift; sourceTree = "<group>"; };
 		CE07BA132E05AF930059CAC6 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		CE07BA182E05B1930059CAC6 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
+		CE07BA1B2E05B2B10059CAC6 /* ConflictResolutionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConflictResolutionScreen.swift; sourceTree = "<group>"; };
+		CE07BA1E2E05B3350059CAC6 /* ConflictResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConflictResolver.swift; sourceTree = "<group>"; };
 		CE1E00C82E03407500331C7D /* DrinkLimitCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkLimitCalculator.swift; sourceTree = "<group>"; };
 		CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DrinkRecord+Extensions.swift"; sourceTree = "<group>"; };
 		CE1E00CE2E0340F800331C7D /* LimitsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitsSection.swift; sourceTree = "<group>"; };
@@ -223,6 +227,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE07BA1C2E05B2B10059CAC6 /* SyncConflicts */ = {
+			isa = PBXGroup;
+			children = (
+				CE07BA1E2E05B3350059CAC6 /* ConflictResolver.swift */,
+				CE07BA1B2E05B2B10059CAC6 /* ConflictResolutionScreen.swift */,
+			);
+			path = SyncConflicts;
+			sourceTree = "<group>";
+		};
 		CE3DACE42BDFD48400BB52EA /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,9 +295,9 @@
 				CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */,
 				CEB911C42BDBF9E300224660 /* Info.plist */,
 				CEFEF50C2DFB58200056E83A /* AppDelegate.swift */,
-				CEFEF50E2DFB583A0056E83A /* SceneDelegate.swift */,
 				CE4169942BD97FB10028D64A /* DrinkTrackerApp.swift */,
 				CE52A1ED2C0106D000BAEBF3 /* IngredientCell.swift */,
+				CEFEF50E2DFB583A0056E83A /* SceneDelegate.swift */,
 				CE3DACEC2BDFE62000BB52EA /* SettingsScreen.swift */,
 				CE41699A2BD97FB30028D64A /* Assets.xcassets */,
 				CEFE3E622C3D7D5800B0D96A /* DrinksHistory */,
@@ -293,6 +306,7 @@
 				CE4169C32BD981A10028D64A /* Models */,
 				CE41699C2BD97FB30028D64A /* Preview Content */,
 				CE55F3CC2C1F62C400E3982B /* RecordDrinks */,
+				CE07BA1C2E05B2B10059CAC6 /* SyncConflicts */,
 				CE3DACE72BDFD57A00BB52EA /* Utilities */,
 			);
 			path = Multiplatform;
@@ -601,8 +615,10 @@
 				CE07BA192E05B1930059CAC6 /* Notification+Extensions.swift in Sources */,
 				CE66104E2C24C7A2006E824D /* Date+Extensions.swift in Sources */,
 				CE1E00D52E03414100331C7D /* ActionsSection.swift in Sources */,
+				CE07BA1D2E05B2B10059CAC6 /* ConflictResolutionScreen.swift in Sources */,
 				CE3DACED2BDFE62000BB52EA /* SettingsScreen.swift in Sources */,
 				CE3ECA2D2BE92BBF0046E242 /* DrinkCalculator.swift in Sources */,
+				CE07BA1F2E05B3350059CAC6 /* ConflictResolver.swift in Sources */,
 				CEFEF50F2DFB583D0056E83A /* SceneDelegate.swift in Sources */,
 				CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */,
 				CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */,
