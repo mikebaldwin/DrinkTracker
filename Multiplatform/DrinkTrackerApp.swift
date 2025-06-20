@@ -44,7 +44,8 @@ struct DrinkTrackerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainScreen()
+            let businessLogic = MainScreenBusinessLogic.create(context: sharedModelContainer.mainContext)
+            MainScreen(businessLogic: businessLogic)
                 .environment(quickActionHandler)
                 .environment(appRouter)
                 .onChange(of: quickActionHandler.activeAction) { action, _ in

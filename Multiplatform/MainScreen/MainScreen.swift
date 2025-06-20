@@ -14,7 +14,6 @@ struct MainScreen: View {
     @AppStorage("dailyTarget") private var dailyLimit: Double?
     @AppStorage("weeklyTarget") private var weeklyLimit: Double?
     
-    @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
     @Environment(AppRouter.self) private var router
     @Environment(QuickActionHandler.self) private var quickActionHandler
@@ -24,7 +23,11 @@ struct MainScreen: View {
         order: .reverse
     ) private var allDrinks: [DrinkRecord]
     
-    @State private var businessLogic = MainScreenBusinessLogic()
+    init(businessLogic: MainScreenBusinessLogic) {
+        self.businessLogic = businessLogic
+    }
+    
+    private let businessLogic: MainScreenBusinessLogic
     
     private var thisWeeksDrinks: [DrinkRecord] {
         allDrinks.thisWeeksRecords
@@ -122,7 +125,6 @@ struct MainScreen: View {
             }
         }
         .onAppear {
-            businessLogic.configure(with: modelContext)
             router.setQuickActionHandlers(
                 addCustomDrink: businessLogic.addCustomDrink,
                 recordDrink: { drink in

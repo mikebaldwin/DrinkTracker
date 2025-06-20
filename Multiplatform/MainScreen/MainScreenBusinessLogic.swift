@@ -21,16 +21,30 @@ class MainScreenBusinessLogic {
     
     private let healthStoreManager: HealthStoreManaging
     private let userDefaults: UserDefaultsProviding
-    private var modelContext: ModelContext?
+    private let modelContext: ModelContext
     
     // MARK: - Initializers
     
-    init(
+    private init(
+        context: ModelContext,
         healthStoreManager: HealthStoreManaging = HealthStoreManager.shared,
         userDefaults: UserDefaultsProviding = UserDefaults.standard
     ) {
+        self.modelContext = context
         self.healthStoreManager = healthStoreManager
         self.userDefaults = userDefaults
+    }
+    
+    static func create(
+        context: ModelContext,
+        healthStoreManager: HealthStoreManaging = HealthStoreManager.shared,
+        userDefaults: UserDefaultsProviding = UserDefaults.standard
+    ) -> MainScreenBusinessLogic {
+        return MainScreenBusinessLogic(
+            context: context,
+            healthStoreManager: healthStoreManager,
+            userDefaults: userDefaults
+        )
     }
     
     // MARK: - Public Properties
@@ -42,9 +56,6 @@ class MainScreenBusinessLogic {
     
     // MARK: - Setup
     
-    func configure(with context: ModelContext) {
-        self.modelContext = context
-    }
     
     // MARK: - Business Logic Methods
     
@@ -69,13 +80,13 @@ class MainScreenBusinessLogic {
             debugPrint("🛑 Failed to save drink to HealthKit: \(error.localizedDescription)")
         }
         
-        modelContext?.insert(drink)
+        modelContext.insert(drink)
         recordingDrinkComplete.toggle()
     }
     
     func addCustomDrink(_ customDrink: CustomDrink) {
-        modelContext?.insert(customDrink)
-        try? modelContext?.save()
+        modelContext.insert(customDrink)
+        try? modelContext.save()
     }
     
     func refreshCurrentStreak(from allDrinks: [DrinkRecord]) {
