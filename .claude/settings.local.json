@@ -4,7 +4,9 @@
       "Bash(xcodebuild:*)",
       "Bash(swift build:*)",
       "Bash(find:*)",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "Bash(swiftc:*)",
+      "Bash(swift:*)"
     ],
     "deny": []
   }
