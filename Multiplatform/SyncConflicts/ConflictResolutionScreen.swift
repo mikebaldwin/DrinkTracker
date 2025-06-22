@@ -27,6 +27,23 @@ struct ConflictResolutionScreen: View {
                         .foregroundStyle(.secondary)
                 }
                 
+                Section(header: Text("Quick Actions")) {
+                    HStack(spacing: 12) {
+                        Button("Trust HealthKit for All") {
+                            selectAllHealthKit()
+                        }
+                        .buttonStyle(.bordered)
+                        .disabled(isResolving)
+                        
+                        Button("Trust DrinkTracker for All") {
+                            selectAllLocal()
+                        }
+                        .buttonStyle(.bordered)
+                        .disabled(isResolving)
+                    }
+                    .padding(.vertical, 4)
+                }
+                
                 ForEach(conflicts) { conflict in
                     ConflictRow(
                         conflict: conflict,
@@ -62,6 +79,18 @@ struct ConflictResolutionScreen: View {
         conflicts.allSatisfy { resolutions[$0.id] != nil }
     }
     
+    private func selectAllHealthKit() {
+        for conflict in conflicts {
+            resolutions[conflict.id] = .useHealthKit
+        }
+    }
+    
+    private func selectAllLocal() {
+        for conflict in conflicts {
+            resolutions[conflict.id] = .useLocal
+        }
+    }
+    
     private func resolveConflicts() async {
         isResolving = true
         
@@ -94,27 +123,26 @@ struct ConflictResolutionScreen: View {
     }
 }
 
-//#Preview {
-//    // Create mock data for preview
-//    let mockHealthKitSample = HKQuantitySample(
-//        type: HKQuantityType(.numberOfAlcoholicBeverages),
-//        quantity: HKQuantity(unit: .count(), doubleValue: 2.0),
-//        start: Date().addingTimeInterval(-3600), // 1 hour ago
-//        end: Date().addingTimeInterval(-3600)
-//    )
-//    
-//    let mockLocalRecord = DrinkRecord(standardDrinks: 1.5, date: Date().addingTimeInterval(-3540)) // 59 minutes ago
-//    mockLocalRecord.id = mockHealthKitSample.uuid.uuidString
-//    
-//    let mockConflict = SyncConflict(
-//        id: mockHealthKitSample.uuid.uuidString,
-//        healthKitSample: mockHealthKitSample,
-//        localRecord: mockLocalRecord,
-//        conflictTypes: [.both]
-//    )
-//    
-//    return ConflictResolutionScreen(
-//        conflicts: [mockConflict],
-//        onResolutionComplete: {}
-//    )
-//}
+#Preview {
+    // Create mock data for preview
+    let mockHealthKitSample = HKQuantitySample(
+        type: HKQuantityType(.numberOfAlcoholicBeverages),
+        quantity: HKQuantity(unit: .count(), doubleValue: 2.0),
+        start: Date().addingTimeInterval(-3600), // 1 hour ago
+        end: Date().addingTimeInterval(-3600)
+    )
+    
+    let mockLocalRecord = DrinkRecord(standardDrinks: 1.5, date: Date().addingTimeInterval(-3540)) // 59 minutes ago
+    
+    let mockConflict = SyncConflict(
+        id: mockHealthKitSample.uuid.uuidString,
+        healthKitSample: mockHealthKitSample,
+        localRecord: mockLocalRecord,
+        conflictTypes: [.both]
+    )
+    
+    ConflictResolutionScreen(
+        conflicts: [mockConflict],
+        onResolutionComplete: {_ in }
+    )
+}
