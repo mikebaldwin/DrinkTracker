@@ -7,6 +7,7 @@
 
 import Foundation
 import HealthKit
+import OSLog
 
 // MARK: - HealthKitError
 enum HealthKitError: Error {
@@ -43,10 +44,10 @@ final actor HealthStoreManager {
         }
         do {
             try await self.healthStore.save(sample)
-            debugPrint("✅ HealhstoreManager saved beverageSample on startDate: \(sample.startDate), endDate: \(sample.endDate)")
+            Logger.healthKit.info("Successfully saved drink record to HealthKit")
         } catch {
             // Handle the error appropriately
-            debugPrint("❌ Error saving beverage sample: \(error)")
+            Logger.healthKit.error("Failed to save drink record: \(error.localizedDescription)")
         }
     }
     
@@ -228,7 +229,7 @@ final actor HealthStoreManager {
             options: []
         )
 
-        debugPrint("$$$ 🔍 Fetching HealthKit samples with predicate: \(predicate)")
+        Logger.healthKit.debug("Starting HealthKit sample fetch")
 
         let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKQuantitySample], Error>) in
             let query = HKSampleQuery(
@@ -238,16 +239,13 @@ final actor HealthStoreManager {
                 sortDescriptors: [sortDescriptor]
             ) { query, samples, error in
                 if let error {
-                    debugPrint("$$$ ❌ Error fetching samples: \(error)")
+                    Logger.healthKit.error("Failed to fetch samples: \(error.localizedDescription)")
                     continuation.resume(throwing: error)
                 } else if let samples = samples as? [HKQuantitySample] {
-                    debugPrint("$$$ ✅ Successfully fetched \(samples.count) samples")
-                    for sample in samples {
-                        debugPrint("$$$ 📅 Sample: \(sample.startDate) - \(sample.quantity.doubleValue(for: .count())) drinks")
-                    }
+                    Logger.healthKit.info("Successfully fetched \(samples.count, privacy: .public) HealthKit samples")
                     continuation.resume(returning: samples)
                 } else {
-                    debugPrint("$$$ ⚠️ No samples found")
+                    Logger.healthKit.info("No HealthKit samples found")
                     continuation.resume(returning: [])
                 }
             }

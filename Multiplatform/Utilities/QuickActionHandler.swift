@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import OSLog
 
 @MainActor
 @Observable
@@ -18,9 +19,9 @@ class QuickActionHandler {
     private init() {}
     
     func handle(_ action: QuickActionType) {
-        print("🎯 QuickActionHandler.handle called with: \(action)")
+        Logger.quickActions.info("QuickActionHandler.handle called with: \(action.rawValue, privacy: .public)")
         activeAction = action
-        print("🎯 QuickActionHandler.activeAction set to: \(String(describing: activeAction))")
+        Logger.quickActions.debug("QuickActionHandler.activeAction set successfully")
     }
     
     func clearAction() {

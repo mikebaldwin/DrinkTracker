@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import OSLog
 
 struct DrinksHistoryScreen: View {
     @Environment(\.modelContext) private var modelContext
@@ -77,7 +78,7 @@ struct DrinksHistoryScreen: View {
     }
     
     private func buildDays() {
-        debugPrint("### 📊 Building days from \(drinkRecords.count) records")
+        Logger.ui.debug("Building days from \(drinkRecords.count, privacy: .public) records")
         days.removeAll()
         
         var dayDictionary = [Date: [DrinkRecord]]()
@@ -86,7 +87,7 @@ struct DrinksHistoryScreen: View {
         // Iterate through the drinkRecords and populate the dayDictionary
         for record in drinkRecords {
             let startOfDay = calendar.startOfDay(for: record.timestamp)
-            debugPrint("### 📅 Processing record from \(record.timestamp) with \(record.standardDrinks) drinks")
+            Logger.ui.debug("Processing drink record with \(record.standardDrinks, privacy: .public) standard drinks")
             dayDictionary[startOfDay, default: []].append(record)
         }
 
@@ -115,7 +116,7 @@ struct DrinksHistoryScreen: View {
 
         // Sort the days array by date
         days.sort { $0.date > $1.date }
-        debugPrint("### 📊 Built \(days.count) days")
+        Logger.ui.debug("Built \(days.count, privacy: .public) days for display")
     }
     
     private func update(_ drinkRecord: DrinkRecord, with newDate: Date) {
@@ -155,9 +156,9 @@ struct DrinksHistoryScreen: View {
                     newDate,
                     withUUID: UUID(uuidString: drinkRecord.id)!
                 )
-                debugPrint("✅ Date reassigned in HealthKit!")
+                Logger.ui.info("Date reassigned in HealthKit successfully")
             } catch {
-                debugPrint("🛑 Failed to assign drink to new day: \(error.localizedDescription)")
+                Logger.ui.error("Failed to assign drink to new day: \(error.localizedDescription)")
             }
         }
     }
@@ -170,20 +171,20 @@ struct DrinksHistoryScreen: View {
             // Explicitly save the deletion before updating UI
             do {
                 try modelContext.save()
-                debugPrint("✅ Deleted from SwiftData and saved")
+                Logger.ui.info("Deleted from SwiftData and saved successfully")
                 buildDays()
                 
                 // Only proceed with HealthKit deletion if SwiftData deletion succeeded
                 Task {
                     do {
                         try await healthStoreManager.deleteAlcoholicBeverage(withUUID: UUID(uuidString: drinkRecord.id)!)
-                        debugPrint("✅ Deleted from HealthKit!")
+                        Logger.ui.info("Deleted from HealthKit successfully")
                     } catch {
-                        debugPrint("🛑 Failed to delete from HealthKit: \(error.localizedDescription)")
+                        Logger.ui.error("Failed to delete from HealthKit: \(error.localizedDescription)")
                     }
                 }
             } catch {
-                debugPrint("🛑 Failed to save SwiftData deletion: \(error.localizedDescription)")
+                Logger.ui.error("Failed to save SwiftData deletion: \(error.localizedDescription)")
                 // TODO: Show user feedback that deletion failed
             }
         }

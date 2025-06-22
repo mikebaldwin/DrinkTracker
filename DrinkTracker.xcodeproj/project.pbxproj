@@ -21,6 +21,8 @@
 		CE07BA1F2E05B3350059CAC6 /* ConflictResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA1E2E05B3350059CAC6 /* ConflictResolver.swift */; };
 		CE07BA212E05D81E0059CAC6 /* ConflictRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA202E05D81E0059CAC6 /* ConflictRow.swift */; };
 		CE07BA232E05D8400059CAC6 /* ConflictResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA222E05D8400059CAC6 /* ConflictResolution.swift */; };
+		CE07BA252E0887E80059CAC6 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA242E0887E80059CAC6 /* AppLogger.swift */; };
+		CE07BA262E0887E80059CAC6 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07BA242E0887E80059CAC6 /* AppLogger.swift */; };
 		CE1E00CA2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */; };
 		CE1E00CB2E03407500331C7D /* DrinkLimitCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C82E03407500331C7D /* DrinkLimitCalculator.swift */; };
 		CE1E00CC2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */; };
@@ -140,6 +142,7 @@
 		CE07BA1E2E05B3350059CAC6 /* ConflictResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConflictResolver.swift; sourceTree = "<group>"; };
 		CE07BA202E05D81E0059CAC6 /* ConflictRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConflictRow.swift; sourceTree = "<group>"; };
 		CE07BA222E05D8400059CAC6 /* ConflictResolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConflictResolution.swift; sourceTree = "<group>"; };
+		CE07BA242E0887E80059CAC6 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		CE1E00C82E03407500331C7D /* DrinkLimitCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkLimitCalculator.swift; sourceTree = "<group>"; };
 		CE1E00C92E03407500331C7D /* DrinkRecord+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DrinkRecord+Extensions.swift"; sourceTree = "<group>"; };
 		CE1E00CE2E0340F800331C7D /* LimitsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitsSection.swift; sourceTree = "<group>"; };
@@ -259,6 +262,7 @@
 		CE3DACE72BDFD57A00BB52EA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				CE07BA242E0887E80059CAC6 /* AppLogger.swift */,
 				CEFEF5192E01F2440056E83A /* AppRouter.swift */,
 				CEFEF5132DFB58B30056E83A /* QuickActionType.swift */,
 				CEFEF5102DFB58770056E83A /* QuickActionHandler.swift */,
@@ -621,6 +625,7 @@
 				CE1E00D02E0340F800331C7D /* LimitsSection.swift in Sources */,
 				CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */,
 				CE07BA192E05B1930059CAC6 /* Notification+Extensions.swift in Sources */,
+				CE07BA252E0887E80059CAC6 /* AppLogger.swift in Sources */,
 				CE66104E2C24C7A2006E824D /* Date+Extensions.swift in Sources */,
 				CE1E00D52E03414100331C7D /* ActionsSection.swift in Sources */,
 				CE07BA1D2E05B2B10059CAC6 /* ConflictResolutionScreen.swift in Sources */,
@@ -672,6 +677,7 @@
 				CE7BDF332C2C850100D260F1 /* QuickEntryViewWatch.swift in Sources */,
 				CEFEF5122DFB587E0056E83A /* QuickActionHandler.swift in Sources */,
 				CE7BDF2F2C2C81A300D260F1 /* Date+Extensions.swift in Sources */,
+				CE07BA262E0887E80059CAC6 /* AppLogger.swift in Sources */,
 				CEFEF5172DFB62A70056E83A /* Destination.swift in Sources */,
 				CE461A182C2D9919008E6E1B /* DataSynchronizer.swift in Sources */,
 				CE07BA142E05AF930059CAC6 /* UserSettings.swift in Sources */,

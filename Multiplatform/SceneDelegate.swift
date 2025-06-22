@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import OSLog
 
 class SceneDelegate: NSObject, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -14,7 +15,7 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
     
     override init() {
         super.init()
-        print("🎯 SceneDelegate initialized")
+        Logger.quickActions.debug("SceneDelegate initialized")
     }
 
     func scene(
@@ -22,27 +23,27 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        print("🎯 SceneDelegate.scene willConnectTo called")
+        Logger.quickActions.debug("SceneDelegate.scene willConnectTo called")
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         // Check if launched from quick action
         if let shortcutItem = connectionOptions.shortcutItem {
-            print("🎯 SceneDelegate found Quick Action on launch: \(shortcutItem.type)")
+            Logger.quickActions.info("Found Quick Action on launch: \(shortcutItem.type, privacy: .public)")
             pendingQuickAction = shortcutItem
         } else {
-            print("🎯 SceneDelegate no Quick Action on launch")
+            Logger.quickActions.debug("No Quick Action on launch")
         }
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        print("🎯 SceneDelegate.sceneDidBecomeActive called")
+        Logger.quickActions.debug("SceneDelegate.sceneDidBecomeActive called")
         // Handle any pending quick action
         if let pendingAction = pendingQuickAction {
-            print("🎯 SceneDelegate handling pending Quick Action: \(pendingAction.type)")
+            Logger.quickActions.info("Handling pending Quick Action: \(pendingAction.type, privacy: .public)")
             handleQuickAction(pendingAction)
             pendingQuickAction = nil
         } else {
-            print("🎯 SceneDelegate no pending Quick Action")
+            Logger.quickActions.debug("No pending Quick Action")
         }
     }
 
@@ -51,21 +52,20 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
         performActionFor shortcutItem: UIApplicationShortcutItem,
         completionHandler: @escaping (Bool) -> Void
     ) {
-        print("🎯 SceneDelegate.windowScene performActionFor called with: \(shortcutItem.type)")
+        Logger.quickActions.info("WindowScene performActionFor called with: \(shortcutItem.type, privacy: .public)")
         let handled = handleQuickAction(shortcutItem)
         completionHandler(handled)
     }
 
     private func handleQuickAction(_ shortcutItem: UIApplicationShortcutItem) -> Bool {
-        print("🎯 Quick Action received: \(shortcutItem.type)")
-        print("🎯 Quick Action title: \(shortcutItem.localizedTitle)")
+        Logger.quickActions.info("Quick Action received: \(shortcutItem.type, privacy: .public)")
         
         guard let actionType = QuickActionType(rawValue: shortcutItem.type) else {
-            print("❌ Failed to parse Quick Action type: \(shortcutItem.type)")
+            Logger.quickActions.error("Failed to parse Quick Action type: \(shortcutItem.type, privacy: .public)")
             return false
         }
         
-        print("✅ Handling Quick Action: \(actionType)")
+        Logger.quickActions.info("Handling Quick Action: \(actionType.rawValue, privacy: .public)")
         QuickActionHandler.shared.handle(actionType)
         return true
     }

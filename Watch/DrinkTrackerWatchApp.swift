@@ -8,6 +8,7 @@
 import HealthKitUI
 import SwiftData
 import SwiftUI
+import OSLog
 
 @main
 struct DrinkTrackerWatchApp: App {
@@ -58,7 +59,7 @@ struct DrinkTrackerWatchApp: App {
 //                        }
                         break
                     case .failure(let error):
-                        debugPrint("*** An error occurred while requesting authentication: \(error) ***")
+                        Logger.watchApp.error("Error occurred while requesting HealthKit authentication: \(error.localizedDescription)")
                     }
                 }
 //                .task {

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 import HealthKit
+import OSLog
 
 actor DataSynchronizer {
     
@@ -22,7 +23,7 @@ actor DataSynchronizer {
     func updateDrinkRecords() async {
         do {
             guard try await healthStoreManager.isAuthorized() else {
-                debugPrint("%%% ❌ HealthKit is not authorized. Aborting sync.")
+                Logger.dataSync.warning("HealthKit not authorized, aborting sync")
                 return
             }
             
@@ -33,7 +34,7 @@ actor DataSynchronizer {
             let conflicts = await detectConflicts()
             
             if !conflicts.isEmpty {
-                debugPrint("%%% ⚠️ Found \(conflicts.count) sync conflicts - user resolution required")
+                Logger.dataSync.warning("Found \(conflicts.count, privacy: .public) sync conflicts requiring user resolution")
                 // Post notification that conflicts exist
                 Task { @MainActor in
                     NotificationCenter.default.post(
@@ -46,38 +47,38 @@ actor DataSynchronizer {
             
             // If no conflicts, proceed with normal sync
             let drinkRecords = fetchDrinks()
-            debugPrint("%%% 📊 Found \(drinkRecords.count) existing drink records in SwiftData")
+            Logger.dataSync.info("Found \(drinkRecords.count, privacy: .public) existing drink records in SwiftData")
             
             let existingRecords = convertToDictionary(drinkRecords)
             let samples = await fetchHealthkitRecords()
-            debugPrint("%%% 📊 Found \(samples.count) drink samples in HealthKit")
+            Logger.dataSync.info("Found \(samples.count, privacy: .public) drink samples in HealthKit")
 
             reconcile(existingRecords, with: samples)
             delete(existingRecords, absentFrom: samples)
             
-            debugPrint("%%% ✅ Sync completed successfully")
+            Logger.dataSync.info("Data sync completed successfully")
         } catch {
-            debugPrint("%%% ❌ Error during sync: \(error)")
+            Logger.dataSync.error("Error during sync: \(error.localizedDescription)")
         }
     }
     
     private func convertToDictionary(_ drinkRecords: [DrinkRecord]) -> [String: DrinkRecord] {
-        debugPrint("%%% 📊 Converting \(drinkRecords.count) existing records to dictionary")
+        Logger.dataSync.debug("Converting \(drinkRecords.count, privacy: .public) existing records to dictionary")
         var existingRecords = [String: DrinkRecord]()
         
         for drinkRecord in drinkRecords {
             if existingRecords[drinkRecord.id] != nil {
-                debugPrint("%%% ⚠️ Found duplicate record with ID: \(drinkRecord.id)")
+                Logger.dataSync.warning("Found duplicate record with ID: \(drinkRecord.id, privacy: .private)")
                 // If we find a duplicate, delete it
                 context.delete(drinkRecord)
-                debugPrint("%%% 🗑️ Deleted duplicate record")
+                Logger.dataSync.info("Deleted duplicate record")
             } else {
                 existingRecords[drinkRecord.id] = drinkRecord
-                debugPrint("%%% ✅ Added record to dictionary: \(drinkRecord.id) from \(drinkRecord.timestamp)")
+                Logger.dataSync.debug("Added record to dictionary: \(drinkRecord.id, privacy: .private)")
             }
         }
         
-        debugPrint("%%% 📊 Dictionary contains \(existingRecords.count) unique records")
+        Logger.dataSync.debug("Dictionary contains \(existingRecords.count, privacy: .public) unique records")
         return existingRecords
     }
     
@@ -87,7 +88,7 @@ actor DataSynchronizer {
             let results = try context.fetch(drinkRecords)
             return results
         } catch {
-            debugPrint("❌ Failed to fetch drink records")
+            Logger.dataSync.error("Failed to fetch drink records: \(error.localizedDescription)")
         }
         return []
     }
@@ -97,14 +98,12 @@ actor DataSynchronizer {
         
         do {
             samples = try await healthStoreManager.fetchAllDrinkSamples()
-            debugPrint("%%% 📊 Retrieved \(samples.count) samples from HealthKit")
+            Logger.dataSync.info("Retrieved \(samples.count, privacy: .public) samples from HealthKit")
             
             // Log the dates of the samples to help debug
-            for sample in samples {
-                debugPrint("%%% 📅 Sample from \(sample.startDate) with \(sample.quantity.doubleValue(for: .count())) drinks")
-            }
+            Logger.dataSync.debug("Retrieved HealthKit samples with detailed timing information")
         } catch {
-            debugPrint("%%% ❌ Failed to retrieve healthkit samples: \(error)")
+            Logger.dataSync.error("Failed to retrieve HealthKit samples: \(error.localizedDescription)")
         }
 
         return samples
@@ -122,18 +121,18 @@ actor DataSynchronizer {
             
             // Only check for records with matching UUID
             if let existingRecord = existingRecords[sample.uuid.uuidString] {
-                debugPrint("%%% 🔄 Found existing record with matching UUID: \(sample.uuid.uuidString)")
+                Logger.dataSync.debug("Found existing record with matching UUID: \(sample.uuid.uuidString, privacy: .private)")
                 var needsUpdate = false
                 
                 if existingRecord.standardDrinks != count {
                     existingRecord.standardDrinks = count
                     needsUpdate = true
-                    debugPrint("%%% 📝 Updated drink count for existing record")
+                    Logger.dataSync.debug("Updated drink count for existing record")
                 }
                 if existingRecord.timestamp != sample.startDate {
                     existingRecord.timestamp = sample.startDate
                     needsUpdate = true
-                    debugPrint("%%% 📝 Updated timestamp for existing record")
+                    Logger.dataSync.debug("Updated timestamp for existing record")
                 }
                 
                 if needsUpdate {
@@ -141,10 +140,10 @@ actor DataSynchronizer {
                 }
             } else {
                 // Create a new record for any sample without a matching UUID
-                debugPrint("%%% ➕ Creating new record for sample from \(sample.startDate)")
+                Logger.dataSync.debug("Creating new record for HealthKit sample")
                 let newRecord = DrinkRecord(sample)
                 newRecords.append(newRecord)
-                debugPrint("%%% ✅ Added new record to batch")
+                Logger.dataSync.debug("Added new record to batch")
             }
         }
         
@@ -158,12 +157,12 @@ actor DataSynchronizer {
             } catch {
                 fatalError("Failed to save context: \(error)")
             }
-            debugPrint("%%% 📦 Batch inserted \(newRecords.count) new records")
+            Logger.dataSync.info("Batch inserted \(newRecords.count, privacy: .public) new records")
         }
         
         // Log any updated records
         if !updatedRecords.isEmpty {
-            debugPrint("%%% 📝 Updated \(updatedRecords.count) existing records")
+            Logger.dataSync.info("Updated \(updatedRecords.count, privacy: .public) existing records")
         }
     }
     
@@ -176,7 +175,7 @@ actor DataSynchronizer {
         
         for (_, record) in existingRecords {
             if !healthKitIDs.contains(record.id) {
-                debugPrint("%%% 🗑️ Found record to delete: \(record.id) from \(record.timestamp)")
+                Logger.dataSync.debug("Found record to delete: \(record.id, privacy: .private)")
                 recordsToDelete.append(record)
             }
         }
@@ -185,7 +184,7 @@ actor DataSynchronizer {
             for record in recordsToDelete {
                 context.delete(record)
             }
-            debugPrint("%%% 📦 Batch deleted \(recordsToDelete.count) records")
+            Logger.dataSync.info("Batch deleted \(recordsToDelete.count, privacy: .public) records")
         }
     }
     
@@ -217,7 +216,7 @@ actor DataSynchronizer {
         let healthKitIDs = Set(samples.map { $0.uuid.uuidString })
         for (recordID, localRecord) in existingRecords {
             if !healthKitIDs.contains(recordID) {
-                debugPrint("%%% ⚠️ Detected record deleted from HealthKit: \(recordID)")
+                Logger.dataSync.warning("Detected record deleted from HealthKit: \(recordID, privacy: .private)")
                 let syncConflict = SyncConflict(
                     id: recordID,
                     healthKitSample: nil,

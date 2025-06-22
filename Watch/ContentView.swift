@@ -8,6 +8,7 @@
 import HealthKitUI
 import SwiftData
 import SwiftUI
+import OSLog
 
 struct ContentView: View {
     @AppStorage("dailyTarget") private var dailyLimit: Double?
@@ -197,11 +198,11 @@ struct ContentView: View {
                 )
                 
                 try await healthStoreManager.save(sample)
-                debugPrint("✅ Drink saved to HealthKit on \(drink.timestamp)")
+                Logger.watchApp.info("Drink saved to HealthKit successfully")
                 
                 drink.id = sample.uuid.uuidString
             } catch {
-                debugPrint("🛑 Failed to save drink to HealthKit: \(error.localizedDescription)")
+                Logger.watchApp.error("Failed to save drink to HealthKit: \(error.localizedDescription)")
             }
         }
         modelContext.insert(drink)

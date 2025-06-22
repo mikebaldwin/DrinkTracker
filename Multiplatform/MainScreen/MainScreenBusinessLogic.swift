@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 import HealthKit
 import Observation
+import OSLog
 
 @Observable
 class MainScreenBusinessLogic {
@@ -73,12 +74,12 @@ class MainScreenBusinessLogic {
             )
             
             try await healthStoreManager.save(sample)
-            debugPrint("✅ Drink saved to HealthKit on \(drink.timestamp)")
+            Logger.ui.info("Drink saved to HealthKit successfully")
             
             drink.id = sample.uuid.uuidString
             
         } catch {
-            debugPrint("🛑 Failed to save drink to HealthKit: \(error.localizedDescription)")
+            Logger.ui.error("Failed to save drink to HealthKit: \(error.localizedDescription)")
         }
         
         modelContext.insert(drink)
@@ -116,7 +117,7 @@ class MainScreenBusinessLogic {
     
     func syncData() async {
         guard !isSyncing else {
-            debugPrint("%%% ⚠️ Sync already in progress, skipping")
+            Logger.ui.debug("Sync already in progress, skipping")
             return
         }
         
