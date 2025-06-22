@@ -50,10 +50,9 @@ actor ConflictResolver {
         let localRecord = conflict.localRecord
         
         // Delete existing HealthKit sample if it exists
-        if conflict.healthKitSample != nil {
-            try await healthStoreManager.deleteAlcoholicBeverage(
-                withUUID: UUID(uuidString: conflict.id)!
-            )
+        if let healthKitSample = conflict.healthKitSample,
+           let uuid = UUID(uuidString: conflict.id) {
+            try await healthStoreManager.deleteAlcoholicBeverage(withUUID: uuid)
         }
         
         // Create new HealthKit sample with local values

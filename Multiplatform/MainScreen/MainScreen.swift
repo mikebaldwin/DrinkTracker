@@ -15,6 +15,7 @@ struct MainScreen: View {
     @AppStorage("weeklyTarget") private var weeklyLimit: Double?
     
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.modelContext) private var modelContext
     @Environment(AppRouter.self) private var router
     @Environment(QuickActionHandler.self) private var quickActionHandler
     
@@ -23,11 +24,9 @@ struct MainScreen: View {
         order: .reverse
     ) private var allDrinks: [DrinkRecord]
     
-    init(businessLogic: MainScreenBusinessLogic) {
-        self.businessLogic = businessLogic
+    private var businessLogic: MainScreenBusinessLogic {
+        MainScreenBusinessLogic.create(context: modelContext)
     }
-    
-    private let businessLogic: MainScreenBusinessLogic
     
     private var thisWeeksDrinks: [DrinkRecord] {
         allDrinks.thisWeeksRecords
@@ -131,14 +130,20 @@ struct MainScreen: View {
                     Task { await businessLogic.recordDrink(drink) }
                 }
             )
+            
+            // Initial sync on app launch
+            if HKHealthStore.isHealthDataAvailable() {
+                Task {
+                    await businessLogic.syncData()
+                }
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .syncConflictsDetected)) { notification in
             if let conflicts = notification.object as? [SyncConflict] {
-                router.presentConflictResolution(conflicts: conflicts) {
-                    // Re-sync after conflicts are resolved
-                    Task {
-                        await businessLogic.syncData()
-                    }
+                router.presentConflictResolution(conflicts: conflicts) { wasSuccessful in
+                    // Conflict resolution completion is handled automatically
+                    // No need to re-sync as successful resolution eliminates conflicts
+                    // and failed resolution will be retried on next app launch
                 }
             }
         }

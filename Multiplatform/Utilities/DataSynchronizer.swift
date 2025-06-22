@@ -15,8 +15,8 @@ actor DataSynchronizer {
     private var context: ModelContext
     private var detectedConflicts: [SyncConflict] = []
     
-    init(container: ModelContainer) {
-        self.context = ModelContext(container)
+    init(context: ModelContext) {
+        self.context = context
     }
     
     func updateDrinkRecords() async {
@@ -25,6 +25,9 @@ actor DataSynchronizer {
                 debugPrint("%%% ❌ HealthKit is not authorized. Aborting sync.")
                 return
             }
+            
+            // Process any pending changes to see recent conflict resolution updates
+            try context.save()
             
             // First, check for conflicts
             let conflicts = await detectConflicts()

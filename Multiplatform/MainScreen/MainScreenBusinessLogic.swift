@@ -16,6 +16,7 @@ class MainScreenBusinessLogic {
     
     private(set) var recordingDrinkComplete = false
     private(set) var currentStreak = 0
+    private var isSyncing = false
     
     // MARK: - Dependencies
     
@@ -109,7 +110,15 @@ class MainScreenBusinessLogic {
     }
     
     func syncData() async {
-        let synchronizer = DataSynchronizer(container: modelContext.container)
+        guard !isSyncing else {
+            debugPrint("%%% ⚠️ Sync already in progress, skipping")
+            return
+        }
+        
+        isSyncing = true
+        defer { isSyncing = false }
+        
+        let synchronizer = DataSynchronizer(context: modelContext)
         await synchronizer.updateDrinkRecords()
     }
 }

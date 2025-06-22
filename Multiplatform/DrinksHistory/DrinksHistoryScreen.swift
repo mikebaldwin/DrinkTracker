@@ -166,15 +166,25 @@ struct DrinksHistoryScreen: View {
         if let index = offsets.first {
             let drinkRecord = drinks[index]
             modelContext.delete(drinkRecord)
-            buildDays()
             
-            Task {
-                do {
-                    try await healthStoreManager.deleteAlcoholicBeverage(withUUID: UUID(uuidString: drinkRecord.id)!)
-                    debugPrint("✅ Deleted from HealthKit!")
-                } catch {
-                    debugPrint("🛑 Failed to delete from HealthKit: \(error.localizedDescription)")
+            // Explicitly save the deletion before updating UI
+            do {
+                try modelContext.save()
+                debugPrint("✅ Deleted from SwiftData and saved")
+                buildDays()
+                
+                // Only proceed with HealthKit deletion if SwiftData deletion succeeded
+                Task {
+                    do {
+                        try await healthStoreManager.deleteAlcoholicBeverage(withUUID: UUID(uuidString: drinkRecord.id)!)
+                        debugPrint("✅ Deleted from HealthKit!")
+                    } catch {
+                        debugPrint("🛑 Failed to delete from HealthKit: \(error.localizedDescription)")
+                    }
                 }
+            } catch {
+                debugPrint("🛑 Failed to save SwiftData deletion: \(error.localizedDescription)")
+                // TODO: Show user feedback that deletion failed
             }
         }
     }

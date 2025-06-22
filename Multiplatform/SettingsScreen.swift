@@ -128,7 +128,7 @@ struct SettingsScreen: View {
     }
     
     private func syncWithHealthKit() async {
-        let synchronizer = DataSynchronizer(container: modelContext.container)
+        let synchronizer = DataSynchronizer(context: modelContext)
         await synchronizer.updateDrinkRecords()
     }
 }

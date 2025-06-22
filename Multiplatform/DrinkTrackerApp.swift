@@ -15,7 +15,6 @@ struct DrinkTrackerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     @State private var trigger = false
-    @State private var retrySync = false
     
     private let quickActionHandler = QuickActionHandler.shared
     private let appRouter = AppRouter()
@@ -44,8 +43,7 @@ struct DrinkTrackerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            let businessLogic = MainScreenBusinessLogic.create(context: sharedModelContainer.mainContext)
-            MainScreen(businessLogic: businessLogic)
+            MainScreen()
                 .environment(quickActionHandler)
                 .environment(appRouter)
                 .onChange(of: quickActionHandler.activeAction) { action, _ in
@@ -67,13 +65,8 @@ struct DrinkTrackerApp: App {
                 ) { result in
                     switch result {
                     case .success(_):
-                        // authorized
-                        if retrySync == true {
-                            Task {
-                                await syncData()
-                                retrySync = false
-                            }
-                        }
+                        // authorized - sync will happen in MainScreen
+                        break
                     case .failure(let error):
                         debugPrint("*** An error occurred while requesting authentication: \(error) ***")
                     }
@@ -85,18 +78,10 @@ struct DrinkTrackerApp: App {
                         print("🎯 Cleared any existing dynamic Quick Actions")
                     }
                     
-                    if HKHealthStore.isHealthDataAvailable() {
-                        await syncData()
-                    } else {
-                        retrySync = true
-                    }
+                    // HealthKit availability check - no action needed
                 }
         }
         .modelContainer(sharedModelContainer)
     }
     
-    private func syncData() async {
-        await DataSynchronizer(container: sharedModelContainer)
-            .updateDrinkRecords()
-    }
 }

@@ -11,7 +11,7 @@ import SwiftData
 
 struct ConflictResolutionScreen: View {
     let conflicts: [SyncConflict]
-    let onResolutionComplete: () -> Void
+    let onResolutionComplete: (Bool) -> Void
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -66,6 +66,7 @@ struct ConflictResolutionScreen: View {
         isResolving = true
         
         let resolver = ConflictResolver(context: modelContext)
+        var allSuccessful = true
         
         for conflict in conflicts {
             guard let resolution = resolutions[conflict.id] else { continue }
@@ -74,12 +75,46 @@ struct ConflictResolutionScreen: View {
                 try await resolver.resolveConflict(conflict, using: resolution)
             } catch {
                 debugPrint("Failed to resolve conflict for \(conflict.id): \(error)")
+                allSuccessful = false
                 // Continue with other conflicts
             }
         }
         
+        // Ensure SwiftData changes are committed before notifying completion
+        do {
+            try modelContext.save()
+        } catch {
+            debugPrint("Failed to save context after conflict resolution: \(error)")
+            allSuccessful = false
+        }
+        
         isResolving = false
-        onResolutionComplete()
+        onResolutionComplete(allSuccessful)
         dismiss()
     }
 }
+
+//#Preview {
+//    // Create mock data for preview
+//    let mockHealthKitSample = HKQuantitySample(
+//        type: HKQuantityType(.numberOfAlcoholicBeverages),
+//        quantity: HKQuantity(unit: .count(), doubleValue: 2.0),
+//        start: Date().addingTimeInterval(-3600), // 1 hour ago
+//        end: Date().addingTimeInterval(-3600)
+//    )
+//    
+//    let mockLocalRecord = DrinkRecord(standardDrinks: 1.5, date: Date().addingTimeInterval(-3540)) // 59 minutes ago
+//    mockLocalRecord.id = mockHealthKitSample.uuid.uuidString
+//    
+//    let mockConflict = SyncConflict(
+//        id: mockHealthKitSample.uuid.uuidString,
+//        healthKitSample: mockHealthKitSample,
+//        localRecord: mockLocalRecord,
+//        conflictTypes: [.both]
+//    )
+//    
+//    return ConflictResolutionScreen(
+//        conflicts: [mockConflict],
+//        onResolutionComplete: {}
+//    )
+//}

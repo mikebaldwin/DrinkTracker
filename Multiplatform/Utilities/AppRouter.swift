@@ -67,7 +67,7 @@ class AppRouter {
     
     func presentConflictResolution(
         conflicts: [SyncConflict],
-        onComplete: @escaping () -> Void
+        onComplete: @escaping (Bool) -> Void
     ) {
         presentedSheet = .conflictResolution(conflicts: conflicts, onComplete: onComplete)
     }
