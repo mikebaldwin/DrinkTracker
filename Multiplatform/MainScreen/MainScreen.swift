@@ -24,6 +24,9 @@ struct MainScreen: View {
         order: .reverse
     ) private var allDrinks: [DrinkRecord]
     
+    @State private var currentStreak: Int = 0
+    @State private var longestStreak: Int = 0
+    
     private var businessLogic: MainScreenBusinessLogic {
         MainScreenBusinessLogic.create(context: modelContext)
     }
@@ -68,8 +71,8 @@ struct MainScreen: View {
                 }
                 
                 StreaksSection(
-                    currentStreak: businessLogic.currentStreak,
-                    longestStreak: businessLogic.longestStreak
+                    currentStreak: currentStreak,
+                    longestStreak: longestStreak
                 )
                 
                 ActionsSection(
@@ -111,11 +114,15 @@ struct MainScreen: View {
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 _ = allDrinks
-                businessLogic.refreshCurrentStreak(from: allDrinks)
+                let streaks = businessLogic.refreshCurrentStreak(from: allDrinks)
+                currentStreak = streaks.currentStreak
+                longestStreak = streaks.longestStreak
             }
         }
         .onChange(of: allDrinks) {
-            businessLogic.refreshCurrentStreak(from: allDrinks)
+            let streaks = businessLogic.refreshCurrentStreak(from: allDrinks)
+            currentStreak = streaks.currentStreak
+            longestStreak = streaks.longestStreak
         }
         .onChange(of: quickActionHandler.activeAction) { _, activeAction in
             if let activeAction {
@@ -124,6 +131,10 @@ struct MainScreen: View {
             }
         }
         .onAppear {
+            let streaks = businessLogic.refreshCurrentStreak(from: allDrinks)
+            currentStreak = streaks.currentStreak
+            longestStreak = streaks.longestStreak
+            
             router.setQuickActionHandlers(
                 addCustomDrink: businessLogic.addCustomDrink,
                 recordDrink: { drink in

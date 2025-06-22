@@ -63,5 +63,21 @@ struct StreakCalculatorTests {
         
         #expect(streak == 0)
     }
+    
+    @Test("Test streak calculator with most recent drink 3 days ago should show 2 day streak")
+    func calculateStreakWithDrinkFromThreeDaysAgo() {
+        let drink = DrinkRecord(
+            standardDrinks: 1.4,
+            date: calendar.date(
+                byAdding: .day,
+                value: -3,
+                to: today
+            )!
+        )
+        
+        let streak = calculator.calculateCurrentStreak(drink)
+        
+        #expect(streak == 2)
+    }
 
 }

@@ -90,8 +90,11 @@ class MainScreenBusinessLogic {
         try? modelContext.save()
     }
     
-    func refreshCurrentStreak(from allDrinks: [DrinkRecord]) {
-        guard let drink = allDrinks.first else { return }
+    func refreshCurrentStreak(from allDrinks: [DrinkRecord]) -> (currentStreak: Int, longestStreak: Int) {
+        guard let drink = allDrinks.first else { 
+            currentStreak = 0
+            return (currentStreak: 0, longestStreak: longestStreak)
+        }
         
         currentStreak = StreakCalculator().calculateCurrentStreak(drink)
         
@@ -103,6 +106,8 @@ class MainScreenBusinessLogic {
         if currentStreak > longestStreak {
             longestStreak = currentStreak
         }
+        
+        return (currentStreak: currentStreak, longestStreak: longestStreak)
     }
     
     func resetDrinkRecordingFeedback() {
