@@ -25,6 +25,7 @@ struct ChartView: View {
                     Image(systemName: "wineglass.fill")
                         .fontWeight(.bold)
                         .foregroundStyle(.blue)
+                        .accessibilityHidden(true)
                     
                     Text("Today: " + Formatter.formatDecimal(totalStandardDrinksToday))
                         .font(.body)
@@ -39,6 +40,10 @@ struct ChartView: View {
                         .foregroundStyle(.blue)
                 }
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Drink summary")
+            .accessibilityValue("Today: \(Formatter.formatDecimal(totalStandardDrinksToday)) drinks, This week: \(Formatter.formatDecimal(totalStandardDrinksThisWeek)) drinks")
+            .accessibilityHint("Tap to view detailed drink history")
             .padding(
                 EdgeInsets(
                     top: 6,

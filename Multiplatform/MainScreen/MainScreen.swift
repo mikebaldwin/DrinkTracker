@@ -100,7 +100,10 @@ struct MainScreen: View {
                         router.presentSettings()
                     } label: {
                         Image(systemName: "gearshape")
+                            .accessibilityHidden(true)
                     }
+                    .accessibilityLabel("Settings")
+                    .accessibilityHint("Opens app settings and preferences")
                 }
             }
             .navigationDestination(for: Destination.self) { destination in
