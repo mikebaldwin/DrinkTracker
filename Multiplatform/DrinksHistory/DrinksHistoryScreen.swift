@@ -23,6 +23,8 @@ struct DrinksHistoryScreen: View {
                 Section(formatDate(day.date)) {
                     if day.drinks.isEmpty {
                         Text("Alcohol-free")
+                            .accessibilityLabel("Alcohol-free day")
+                            .accessibilityHint("No drinks recorded for this day")
                     } else {
                         ForEach(day.drinks, id: \.id) { drink in
                             NavigationLink(value: Destination.drinkDetail(drink)) {
@@ -32,6 +34,10 @@ struct DrinksHistoryScreen: View {
                                     Text(Formatter.formatDecimal(drink.standardDrinks))
                                 }
                             }
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Drink entry")
+                            .accessibilityValue("\(Formatter.formatDecimal(drink.standardDrinks)) drinks at \(formatTimestamp(drink.timestamp))")
+                            .accessibilityHint("Tap to edit this drink entry")
                         }
                         .onDelete { offsets in
                             delete(from: day.drinks, at: offsets)
@@ -43,11 +49,18 @@ struct DrinksHistoryScreen: View {
                                 Text(Formatter.formatDecimal(day.totalDrinks))
                             }
                             .fontWeight(.semibold)
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Daily total")
+                            .accessibilityValue("\(Formatter.formatDecimal(day.totalDrinks)) drinks for \(formatDate(day.date))")
                         }
                     }
                 }
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel("Day section for \(formatAccessibleDate(day.date))")
             }
         }
+        .accessibilityLabel("Drink history list")
+        .accessibilityHint("Shows chronological list of recorded drinks with options to edit or delete")
         .navigationTitle("Drink History")
         .onAppear {
             buildDays()
@@ -75,6 +88,12 @@ struct DrinksHistoryScreen: View {
     private func formatTimestamp(_ date: Date) -> String {
         dateFormatter.dateFormat = "h:mm a"
         return dateFormatter.string(from: date)
+    }
+    
+    private func formatAccessibleDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        return formatter.string(from: date)
     }
     
     private func buildDays() {
@@ -166,6 +185,9 @@ struct DrinksHistoryScreen: View {
     private func delete(from drinks: [DrinkRecord], at offsets: IndexSet) {
         if let index = offsets.first {
             let drinkRecord = drinks[index]
+            let drinkAmount = Formatter.formatDecimal(drinkRecord.standardDrinks)
+            let drinkTime = formatTimestamp(drinkRecord.timestamp)
+            
             modelContext.delete(drinkRecord)
             
             // Explicitly save the deletion before updating UI
@@ -173,6 +195,9 @@ struct DrinksHistoryScreen: View {
                 try modelContext.save()
                 Logger.ui.info("Deleted from SwiftData and saved successfully")
                 buildDays()
+                
+                // Announce deletion for accessibility
+                UIAccessibility.post(notification: .announcement, argument: "Deleted \(drinkAmount) drinks from \(drinkTime)")
                 
                 // Only proceed with HealthKit deletion if SwiftData deletion succeeded
                 Task {
