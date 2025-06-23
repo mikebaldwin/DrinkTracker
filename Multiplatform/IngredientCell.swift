@@ -66,12 +66,19 @@ struct IngredientCell: View {
                 calculate()
             }
             .focused($volumeFieldFocus, equals: .volume)
+            .accessibilityLabel("Volume amount")
+            .accessibilityHint("Enter the volume of this ingredient")
+            .accessibilityValue(volume.isEmpty ? "No value entered" : "\(volume) \(volumeMeasurement.title)")
             
             Picker("Volume Measurement", selection: $volumeMeasurement) {
                 Text("oz").tag(VolumeMeasurement.imperial)
+                    .accessibilityLabel("Ounces")
                 Text("ml").tag(VolumeMeasurement.metric)
+                    .accessibilityLabel("Milliliters")
             }
             .pickerStyle(.segmented)
+            .accessibilityLabel("Volume unit")
+            .accessibilityHint("Choose between ounces and milliliters")
         }
     }
     
@@ -91,11 +98,18 @@ struct IngredientCell: View {
                     ingredient.isProof = (alcoholStrength == .proof)
                     calculate()
                 }
+                .accessibilityLabel("Alcohol strength")
+                .accessibilityHint("Enter the alcohol percentage or proof")
+                .accessibilityValue(strength.isEmpty ? "No value entered" : "\(strength) \(alcoholStrength.title)")
             Picker("Alcohol Strength", selection: $alcoholStrength) {
                 Text("ABV %").tag(AlcoholStrength.abv)
+                    .accessibilityLabel("Alcohol by volume percentage")
                 Text("Proof").tag(AlcoholStrength.proof)
+                    .accessibilityLabel("Proof measurement")
             }
             .pickerStyle(.segmented)
+            .accessibilityLabel("Alcohol strength unit")
+            .accessibilityHint("Choose between ABV percentage and proof")
         }
     }
     
@@ -103,6 +117,8 @@ struct IngredientCell: View {
         Text("\(Formatter.formatDecimal(standardDrinks)) standard \(standardDrinks == 1 ? "drink" : "drinks")")
             .font(.caption)
             .padding(.top)
+            .accessibilityLabel("Calculated result")
+            .accessibilityValue("\(Formatter.formatDecimal(standardDrinks)) standard drinks for this ingredient")
     }
     
     private func calculate() {
