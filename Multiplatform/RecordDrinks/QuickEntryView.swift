@@ -29,6 +29,9 @@ struct QuickEntryView: View {
                         .font(.largeTitle)
                 }
                 .buttonStyle(PlainButtonStyle())
+                .accessibilityLabel("Decrease drink count")
+                .accessibilityHint("Decreases drink count by 0.5")
+                .disabled(drinkCount <= 0)
                 
                 Button {
                     showDrinkEntryAlert = true
@@ -39,6 +42,9 @@ struct QuickEntryView: View {
                         .foregroundStyle(Color.black)
                 }
                 .buttonStyle(PlainButtonStyle())
+                .accessibilityLabel("Current drink count")
+                .accessibilityValue("\(Formatter.formatDecimal(drinkCount)) drinks")
+                .accessibilityHint("Tap to enter exact amount, or use plus and minus buttons")
                 
                 Button {
                     drinkCount += 0.5
@@ -47,6 +53,8 @@ struct QuickEntryView: View {
                         .font(.largeTitle)
                 }
                 .buttonStyle(PlainButtonStyle())
+                .accessibilityLabel("Increase drink count")
+                .accessibilityHint("Increases drink count by 0.5")
                 
                 Spacer()
             }
@@ -60,6 +68,8 @@ struct QuickEntryView: View {
                     Text("Record Drink")
                 }
                 .disabled(drinkCount < 0.1)
+                .accessibilityLabel("Record drinks")
+                .accessibilityHint("Records \(Formatter.formatDecimal(drinkCount)) drinks to today's total")
                 Spacer()
             }
         }
@@ -74,16 +84,26 @@ struct QuickEntryView: View {
                 }
                 drinkCount = 0
             }
+            .accessibilityLabel("Confirm recording")
+            .accessibilityHint("Adds \(Formatter.formatDecimal(drinkCount)) drinks to today's total")
+            
             Button("Cancel", role: .cancel) { drinkCount = 0 }
+            .accessibilityLabel("Cancel recording")
+            .accessibilityHint("Cancels recording and resets counter to zero")
         }
         .alert("Enter standard drinks", isPresented: $showDrinkEntryAlert) {
-            TextField("", text: $manualEntryValue)
+            TextField("Number of drinks", text: $manualEntryValue)
                 .keyboardType(.decimalPad)
+                .accessibilityLabel("Number of drinks")
+                .accessibilityHint("Enter the exact number of standard drinks")
             
             Button("Cancel", role: .cancel) {
                 showDrinkEntryAlert = false
                 manualEntryValue = ""
             }
+            .accessibilityLabel("Cancel entry")
+            .accessibilityHint("Cancels manual entry and returns to counter")
+            
             Button("Done") {
                 if let value = Double(manualEntryValue) {
                     drinkCount = value
@@ -91,6 +111,8 @@ struct QuickEntryView: View {
                 showRecordDrinksConfirmation = true
                 manualEntryValue = ""
             }
+            .accessibilityLabel("Set drink count")
+            .accessibilityHint("Sets the drink count to the entered value")
         }
     }
 }
