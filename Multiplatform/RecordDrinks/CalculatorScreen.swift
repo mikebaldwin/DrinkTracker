@@ -39,6 +39,8 @@ struct CalculatorScreen: View {
                     } label: {
                         Text("Cancel")
                     }
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint("Closes the calculator without saving")
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
@@ -47,6 +49,8 @@ struct CalculatorScreen: View {
                         Text("Done")
                     }
                     .disabled(!formIsValid())
+                    .accessibilityLabel("Done")
+                    .accessibilityHint("Completes calculation and provides options to record or save drink")
                 }
             }
             .onAppear {
@@ -56,7 +60,7 @@ struct CalculatorScreen: View {
         .confirmationDialog(
             "Choose what to do with this drink",
             isPresented: $showDoneConfirmation,
-            titleVisibility: .hidden
+            titleVisibility: .visible
         ) {
             Button("Record Drink") {
                 if let createDrinkRecord {
@@ -64,10 +68,18 @@ struct CalculatorScreen: View {
                 }
                 dismiss()
             }
+            .accessibilityLabel("Record drink now")
+            .accessibilityHint("Records \(Formatter.formatDecimal(totalStandardDrinks)) drinks to today's total")
+            
             Button("Create Custom Drink") {
                 showNameDrinkAlert = true
             }
+            .accessibilityLabel("Save as custom drink")
+            .accessibilityHint("Saves this recipe for future use")
+            
             Button("Cancel", role: .cancel) { }
+            .accessibilityLabel("Cancel")
+            .accessibilityHint("Returns to calculator without taking action")
         }
         .confirmationDialog(
             "Are you drinking it now?",
@@ -80,16 +92,26 @@ struct CalculatorScreen: View {
                 }
                 dismiss()
             }
+            .accessibilityLabel("Yes, record drink")
+            .accessibilityHint("Records the custom drink you just created to today's total")
+            
             Button("Cancel", role: .cancel) {
                 dismiss()
             }
+            .accessibilityLabel("No, just save recipe")
+            .accessibilityHint("Saves the custom drink recipe without recording it now")
         }
         .alert("Give this drink a name", isPresented: $showNameDrinkAlert) {
-            TextField("", text: $nameDrinkValue)
+            TextField("Drink name", text: $nameDrinkValue)
+                .accessibilityLabel("Drink name")
+                .accessibilityHint("Enter a name for this custom drink recipe")
             
             Button("Cancel", role: .cancel) {
                 nameDrinkValue = ""
             }
+            .accessibilityLabel("Cancel")
+            .accessibilityHint("Cancels creating custom drink")
+            
             Button("Done") {
                 if let createCustomDrink {
                     createCustomDrink(
@@ -102,12 +124,16 @@ struct CalculatorScreen: View {
                 nameDrinkValue = ""
                 showRecordDrinkConfirmation = true
             }
+            .accessibilityLabel("Save custom drink")
+            .accessibilityHint("Saves this recipe with the entered name")
         }
     }
     
     private var drinkTotalSection: some View {
         Section {
             Text("\(Formatter.formatDecimal(totalStandardDrinks)) total standard \(totalStandardDrinks == 1 ? "drink" : "drinks")")
+                .accessibilityLabel("Drink total")
+                .accessibilityValue("\(Formatter.formatDecimal(totalStandardDrinks)) standard drinks")
         }
     }
     
@@ -118,6 +144,8 @@ struct CalculatorScreen: View {
                     updateTotalStandardDrinks()
                 }
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Ingredient \(ingredients.firstIndex(where: { $0.id == ingredient.id }) ?? 0 + 1)")
         }
         .onDelete { offsets in
             withAnimation {
@@ -141,6 +169,8 @@ struct CalculatorScreen: View {
                         .frame(maxWidth: .infinity)
                 }
                 .frame(maxWidth: .infinity)
+                .accessibilityLabel("Add new ingredient")
+                .accessibilityHint("Adds another ingredient field to the calculation")
             }
         }
     }
