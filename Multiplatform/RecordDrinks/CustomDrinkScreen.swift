@@ -45,10 +45,16 @@ struct CustomDrinkScreen: View {
                         }
                         .foregroundStyle(Color.black)
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Custom drink: \(drink.name)")
+                    .accessibilityValue("\(Formatter.formatDecimal(drink.standardDrinks)) standard drinks")
+                    .accessibilityHint("Tap to record this drink")
                 }
                 .onDelete { offsets in
                     if let first = offsets.first {
-                        modelContext.delete(customDrinks[first])
+                        let drinkToDelete = customDrinks[first]
+                        modelContext.delete(drinkToDelete)
+                        UIAccessibility.post(notification: .announcement, argument: "Deleted \(drinkToDelete.name)")
                     }
                 }
             }
@@ -60,6 +66,8 @@ struct CustomDrinkScreen: View {
                     } label: {
                         Text("Cancel")
                     }
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint("Closes custom drinks without selecting one")
                 }
             }
             .confirmationDialog(
@@ -73,12 +81,19 @@ struct CustomDrinkScreen: View {
                     }
                     dismiss()
                 }
+                .accessibilityLabel("Record \(selectedDrink?.name ?? "drink")")
+                .accessibilityHint("Records \(selectedDrink?.name ?? "this drink") to today's total")
+                
                 Button("Cancel", role: .cancel) {
                     // Dismiss dialog
                 }
+                .accessibilityLabel("Cancel recording")
+                .accessibilityHint("Cancels recording and returns to custom drinks list")
             }
         }
         .searchable(text: $searchText)
+        .accessibilityLabel("Search custom drinks")
+        .accessibilityHint("Filter saved drinks by name")
     }
 }
 
