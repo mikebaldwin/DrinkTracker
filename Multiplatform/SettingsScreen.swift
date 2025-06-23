@@ -27,56 +27,9 @@ struct SettingsScreen: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section {
-                    Stepper {
-                        Text("Daily limit: \(Formatter.formatDecimal(dailyLimit))")
-                    } onIncrement: {
-                        dailyLimit += 1
-                    } onDecrement: {
-                        if dailyLimit > 0 {
-                            dailyLimit -= 1
-                        }
-                    }
-                    Stepper {
-                        Text("Weekly limit: \(Formatter.formatDecimal(weeklyLimit))")
-                    } onIncrement: {
-                        weeklyLimit += 1
-                    } onDecrement: {
-                        if weeklyLimit > 0 {
-                            weeklyLimit -= 1
-                        }
-                    }
-                    Button {
-                        longestStreak = 0
-                    } label: {
-                        Text("Reset longest streak")
-                    }
-                }
-                Section("Measurement defaults") {
-                    Picker("Volume Measurement", selection: $useMetricAsDefault) {
-                        Text("oz").tag(false)
-                        Text("ml").tag(true)
-                    }
-                    .pickerStyle(.segmented)
-                    
-                    Picker("Alcohol Strength", selection: $useProofAsDefault) {
-                        Text("ABV %").tag(false)
-                        Text("Proof").tag(true)
-                    }
-                    .pickerStyle(.segmented)
-                }
-                Section("Developer") {
-                    Button {
-                        showDeleteAllDataConfirmation = true
-                    } label: {
-                        Text("Delete all SwiftData")
-                    }
-                    Button {
-                        showSyncWithHealthKitConfirmation = true
-                    } label: {
-                        Text("Sync with HealthKit")
-                    }
-                }
+                limitsSection
+                measurementDefaultsSection
+                developerSection
             }
             .navigationTitle("Settings")
             .toolbar {
@@ -86,38 +39,108 @@ struct SettingsScreen: View {
                     } label: {
                         Text("Done")
                     }
+                    .accessibilityLabel("Done")
+                    .accessibilityHint("Closes settings and returns to main screen")
                 }
             }
         }
-        .confirmationDialog(
-            "Delete everything from local storage?",
-            isPresented: $showDeleteAllDataConfirmation,
-            titleVisibility: .visible
-        ) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete All", role: .destructive) {
-                deleteAllRecords()
+        .modifier(ConfirmationDialogsModifier(
+            showDeleteAllDataConfirmation: $showDeleteAllDataConfirmation,
+            showSyncWithHealthKitConfirmation: $showSyncWithHealthKitConfirmation,
+            showResetLongestStreakConfirmation: $showResetLongestStreakConfirmation,
+            deleteAllRecords: deleteAllRecords,
+            syncWithHealthKit: syncWithHealthKit,
+            resetLongestStreak: { longestStreak = 0 }
+        ))
+    }
+    
+    private var limitsSection: some View {
+        Section {
+            Stepper {
+                Text("Daily limit: \(Formatter.formatDecimal(dailyLimit))")
+            } onIncrement: {
+                dailyLimit += 1
+                UIAccessibility.post(notification: .announcement, argument: "Daily limit set to \(Formatter.formatDecimal(dailyLimit))")
+            } onDecrement: {
+                if dailyLimit > 0 {
+                    dailyLimit -= 1
+                    UIAccessibility.post(notification: .announcement, argument: "Daily limit set to \(Formatter.formatDecimal(dailyLimit))")
+                }
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Daily drink limit")
+            .accessibilityValue("\(Formatter.formatDecimal(dailyLimit)) drinks")
+            .accessibilityHint("Use increment and decrement to adjust daily limit")
+            
+            Stepper {
+                Text("Weekly limit: \(Formatter.formatDecimal(weeklyLimit))")
+            } onIncrement: {
+                weeklyLimit += 1
+                UIAccessibility.post(notification: .announcement, argument: "Weekly limit set to \(Formatter.formatDecimal(weeklyLimit))")
+            } onDecrement: {
+                if weeklyLimit > 0 {
+                    weeklyLimit -= 1
+                    UIAccessibility.post(notification: .announcement, argument: "Weekly limit set to \(Formatter.formatDecimal(weeklyLimit))")
+                }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Weekly drink limit")
+            .accessibilityValue("\(Formatter.formatDecimal(weeklyLimit)) drinks")
+            .accessibilityHint("Use increment and decrement to adjust weekly limit")
+            
+            Button {
+                showResetLongestStreakConfirmation = true
+            } label: {
+                Text("Reset longest streak")
+            }
+            .accessibilityLabel("Reset longest streak")
+            .accessibilityHint("Warning: This will reset your longest streak record to zero")
         }
-        .confirmationDialog(
-            "Sync local storage with HealthKit?",
-            isPresented: $showSyncWithHealthKitConfirmation,
-            titleVisibility: .visible
-        ) {
-            Button("Cancel", role: .cancel) { }
-            Button("Sync") {
-                Task { await syncWithHealthKit() }
+    }
+    
+    private var measurementDefaultsSection: some View {
+        Section("Measurement defaults") {
+            Picker("Volume Measurement", selection: $useMetricAsDefault) {
+                Text("oz").tag(false)
+                    .accessibilityLabel("Ounces as default volume unit")
+                Text("ml").tag(true)
+                    .accessibilityLabel("Milliliters as default volume unit")
             }
+            .pickerStyle(.segmented)
+            .accessibilityLabel("Default volume measurement")
+            .accessibilityHint("Choose default unit for volume measurements")
+            
+            Picker("Alcohol Strength", selection: $useProofAsDefault) {
+                Text("ABV %").tag(false)
+                    .accessibilityLabel("ABV percentage as default alcohol strength")
+                Text("Proof").tag(true)
+                    .accessibilityLabel("Proof as default alcohol strength")
+            }
+            .pickerStyle(.segmented)
+            .accessibilityLabel("Default alcohol strength measurement")
+            .accessibilityHint("Choose default unit for alcohol strength measurements")
         }
-        .confirmationDialog(
-            "Reset longest streak to zero?",
-            isPresented: $showResetLongestStreakConfirmation,
-            titleVisibility: .visible
-        ) {
-            Button("Cancel", role: .cancel) { }
-            Button("Reset") {
-                longestStreak = 0
+    }
+    
+    private var developerSection: some View {
+        Section("Developer") {
+            Button {
+                showDeleteAllDataConfirmation = true
+            } label: {
+                Text("Delete all SwiftData")
+                    .foregroundColor(.red)
             }
+            .accessibilityLabel("Delete all data")
+            .accessibilityHint("Warning: This will permanently delete all recorded drinks")
+            .accessibilityAddTraits(.isButton)
+            
+            Button {
+                showSyncWithHealthKitConfirmation = true
+            } label: {
+                Text("Sync with HealthKit")
+            }
+            .accessibilityLabel("Sync with HealthKit")
+            .accessibilityHint("Synchronizes local drink records with Apple HealthKit")
         }
     }
     
@@ -142,4 +165,62 @@ struct SettingsScreen: View {
 
     SettingsScreen()
         .modelContainer(container)
+}
+
+struct ConfirmationDialogsModifier: ViewModifier {
+    @Binding var showDeleteAllDataConfirmation: Bool
+    @Binding var showSyncWithHealthKitConfirmation: Bool
+    @Binding var showResetLongestStreakConfirmation: Bool
+    let deleteAllRecords: () -> Void
+    let syncWithHealthKit: () async -> Void
+    let resetLongestStreak: () -> Void
+    
+    func body(content: Content) -> some View {
+        content
+            .confirmationDialog(
+                "Delete everything from local storage?",
+                isPresented: $showDeleteAllDataConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Cancel", role: .cancel) { }
+                    .accessibilityLabel("Cancel deletion")
+                    .accessibilityHint("Cancels the deletion and keeps all data")
+                
+                Button("Delete All", role: .destructive) {
+                    deleteAllRecords()
+                }
+                .accessibilityLabel("Confirm delete all")
+                .accessibilityHint("Permanently deletes all drink records from local storage")
+            }
+            .confirmationDialog(
+                "Sync local storage with HealthKit?",
+                isPresented: $showSyncWithHealthKitConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Cancel", role: .cancel) { }
+                    .accessibilityLabel("Cancel sync")
+                    .accessibilityHint("Cancels synchronization with HealthKit")
+                
+                Button("Sync") {
+                    Task { await syncWithHealthKit() }
+                }
+                .accessibilityLabel("Start sync")
+                .accessibilityHint("Begins synchronizing drink records with Apple HealthKit")
+            }
+            .confirmationDialog(
+                "Reset longest streak to zero?",
+                isPresented: $showResetLongestStreakConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Cancel", role: .cancel) { }
+                    .accessibilityLabel("Cancel reset")
+                    .accessibilityHint("Cancels resetting longest streak")
+                
+                Button("Reset") {
+                    resetLongestStreak()
+                }
+                .accessibilityLabel("Confirm reset")
+                .accessibilityHint("Resets your longest streak record to zero")
+            }
+    }
 }
