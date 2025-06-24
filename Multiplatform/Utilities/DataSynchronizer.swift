@@ -113,57 +113,83 @@ actor DataSynchronizer {
         _ existingRecords: [String: DrinkRecord],
         with samples: [HKQuantitySample]
     ) {
+        let (newRecords, updatedRecords) = processHealthKitSamples(samples, against: existingRecords)
+        
+        batchInsertNewRecords(newRecords)
+        logUpdatedRecords(updatedRecords)
+    }
+    
+    private func processHealthKitSamples(
+        _ samples: [HKQuantitySample],
+        against existingRecords: [String: DrinkRecord]
+    ) -> (newRecords: [DrinkRecord], updatedRecords: [DrinkRecord]) {
         var newRecords: [DrinkRecord] = []
         var updatedRecords: [DrinkRecord] = []
         
         for sample in samples {
-            let count = sample.quantity.doubleValue(for: .count())
-            
-            // Only check for records with matching UUID
             if let existingRecord = existingRecords[sample.uuid.uuidString] {
-                Logger.dataSync.debug("Found existing record with matching UUID: \(sample.uuid.uuidString, privacy: .private)")
-                var needsUpdate = false
-                
-                if existingRecord.standardDrinks != count {
-                    existingRecord.standardDrinks = count
-                    needsUpdate = true
-                    Logger.dataSync.debug("Updated drink count for existing record")
-                }
-                if existingRecord.timestamp != sample.startDate {
-                    existingRecord.timestamp = sample.startDate
-                    needsUpdate = true
-                    Logger.dataSync.debug("Updated timestamp for existing record")
-                }
-                
-                if needsUpdate {
-                    updatedRecords.append(existingRecord)
+                if let updatedRecord = processExistingRecord(existingRecord, with: sample) {
+                    updatedRecords.append(updatedRecord)
                 }
             } else {
-                // Create a new record for any sample without a matching UUID
-                Logger.dataSync.debug("Creating new record for HealthKit sample")
-                let newRecord = DrinkRecord(sample)
+                let newRecord = processNewRecord(from: sample)
                 newRecords.append(newRecord)
-                Logger.dataSync.debug("Added new record to batch")
             }
         }
         
-        // Batch insert all new records
-        if !newRecords.isEmpty {
-            for record in newRecords {
-                context.insert(record)
-            }
-            do {
-                try context.save()
-            } catch {
-                fatalError("Failed to save context: \(error)")
-            }
-            Logger.dataSync.info("Batch inserted \(newRecords.count, privacy: .public) new records")
+        return (newRecords, updatedRecords)
+    }
+    
+    private func processExistingRecord(
+        _ existingRecord: DrinkRecord,
+        with sample: HKQuantitySample
+    ) -> DrinkRecord? {
+        Logger.dataSync.debug("Found existing record with matching UUID: \(sample.uuid.uuidString, privacy: .private)")
+        
+        let count = sample.quantity.doubleValue(for: .count())
+        var needsUpdate = false
+        
+        if existingRecord.standardDrinks != count {
+            existingRecord.standardDrinks = count
+            needsUpdate = true
+            Logger.dataSync.debug("Updated drink count for existing record")
         }
         
-        // Log any updated records
-        if !updatedRecords.isEmpty {
-            Logger.dataSync.info("Updated \(updatedRecords.count, privacy: .public) existing records")
+        if existingRecord.timestamp != sample.startDate {
+            existingRecord.timestamp = sample.startDate
+            needsUpdate = true
+            Logger.dataSync.debug("Updated timestamp for existing record")
         }
+        
+        return needsUpdate ? existingRecord : nil
+    }
+    
+    private func processNewRecord(from sample: HKQuantitySample) -> DrinkRecord {
+        Logger.dataSync.debug("Creating new record for HealthKit sample")
+        let newRecord = DrinkRecord(sample)
+        Logger.dataSync.debug("Added new record to batch")
+        return newRecord
+    }
+    
+    private func batchInsertNewRecords(_ newRecords: [DrinkRecord]) {
+        guard !newRecords.isEmpty else { return }
+        
+        for record in newRecords {
+            context.insert(record)
+        }
+        
+        do {
+            try context.save()
+        } catch {
+            fatalError("Failed to save context: \(error)")
+        }
+        
+        Logger.dataSync.info("Batch inserted \(newRecords.count, privacy: .public) new records")
+    }
+    
+    private func logUpdatedRecords(_ updatedRecords: [DrinkRecord]) {
+        guard !updatedRecords.isEmpty else { return }
+        Logger.dataSync.info("Updated \(updatedRecords.count, privacy: .public) existing records")
     }
     
     private func delete(
@@ -189,31 +215,52 @@ actor DataSynchronizer {
     }
     
     func detectConflicts() async -> [SyncConflict] {
-        // Clear previous conflicts
         detectedConflicts.removeAll()
         
         let drinkRecords = fetchDrinks()
         let samples = await fetchHealthkitRecords()
         let existingRecords = convertToDictionary(drinkRecords)
         
-        // Compare each HealthKit sample with corresponding local record
+        let sampleConflicts = detectSampleConflicts(samples: samples, existingRecords: existingRecords)
+        let deletionConflicts = detectDeletionConflicts(samples: samples, existingRecords: existingRecords)
+        
+        detectedConflicts.append(contentsOf: sampleConflicts)
+        detectedConflicts.append(contentsOf: deletionConflicts)
+        
+        return detectedConflicts
+    }
+    
+    private func detectSampleConflicts(
+        samples: [HKQuantitySample],
+        existingRecords: [String: DrinkRecord]
+    ) -> [SyncConflict] {
+        var conflicts: [SyncConflict] = []
+        
         for sample in samples {
-            if let localRecord = existingRecords[sample.uuid.uuidString] {
-                let conflicts = compareRecords(sample: sample, localRecord: localRecord)
-                if !conflicts.isEmpty {
-                    let syncConflict = SyncConflict(
-                        id: sample.uuid.uuidString,
-                        healthKitSample: sample,
-                        localRecord: localRecord,
-                        conflictTypes: conflicts
-                    )
-                    detectedConflicts.append(syncConflict)
-                }
+            guard let localRecord = existingRecords[sample.uuid.uuidString] else { continue }
+            
+            let conflictTypes = compareRecords(sample: sample, localRecord: localRecord)
+            if !conflictTypes.isEmpty {
+                let syncConflict = SyncConflict(
+                    id: sample.uuid.uuidString,
+                    healthKitSample: sample,
+                    localRecord: localRecord,
+                    conflictTypes: conflictTypes
+                )
+                conflicts.append(syncConflict)
             }
         }
         
-        // Check for local records that don't exist in HealthKit (deleted from HealthKit)
+        return conflicts
+    }
+    
+    private func detectDeletionConflicts(
+        samples: [HKQuantitySample],
+        existingRecords: [String: DrinkRecord]
+    ) -> [SyncConflict] {
+        var conflicts: [SyncConflict] = []
         let healthKitIDs = Set(samples.map { $0.uuid.uuidString })
+        
         for (recordID, localRecord) in existingRecords {
             if !healthKitIDs.contains(recordID) {
                 Logger.dataSync.warning("Detected record deleted from HealthKit: \(recordID, privacy: .private)")
@@ -223,11 +270,11 @@ actor DataSynchronizer {
                     localRecord: localRecord,
                     conflictTypes: [.deletedFromHealthKit]
                 )
-                detectedConflicts.append(syncConflict)
+                conflicts.append(syncConflict)
             }
         }
         
-        return detectedConflicts
+        return conflicts
     }
     
     private func compareRecords(sample: HKQuantitySample, localRecord: DrinkRecord) -> [ConflictType] {
