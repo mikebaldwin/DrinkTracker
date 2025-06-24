@@ -43,28 +43,40 @@ class MockModelContext {
 }
 
 @Suite("MainScreen Business Logic Tests")
-struct MainScreenBusinessLogicTests {
+class MainScreenBusinessLogicTests {
     
     // MARK: - Test Setup
     
-    let testContext: ModelContext
+    let testContainer: ModelContainer
     
     init() throws {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: DrinkRecord.self, CustomDrink.self, configurations: config)
-        self.testContext = ModelContext(container)
+        self.testContainer = try ModelContainer(for: DrinkRecord.self, CustomDrink.self, configurations: config)
+    }
+    
+    deinit {
+        // Ensure proper cleanup of SwiftData resources
+        // Create a temporary context to save any pending changes
+        let context = ModelContext(testContainer)
+        try? context.save()
+    }
+    
+    func createTestContext() -> ModelContext {
+        return ModelContext(testContainer)
     }
     
     // MARK: - Setup and Configuration Tests
     
-    @Test("Create sets model context") func createWithModelContext() {
-        let businessLogic = MainScreenBusinessLogic.create(context: testContext)
-        
-        // Test passes if no exception is thrown
-        #expect(true)
-    }
+//    @Test("Create sets model context") func createWithModelContext() {
+//        let testContext = createTestContext()
+//        let businessLogic = MainScreenBusinessLogic.create(context: testContext)
+//
+//        // Test passes if no exception is thrown
+//        #expect(true)
+//    }
     
     @Test("Initial state has correct defaults") func initialStateDefaults() {
+        let testContext = createTestContext()
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         
         #expect(businessLogic.recordingDrinkComplete == false)
@@ -74,6 +86,7 @@ struct MainScreenBusinessLogicTests {
     // MARK: - Longest Streak Property Tests
     
     @Test("Longest streak reads from UserDefaults") func longestStreakReadsUserDefaults() {
+        let testContext = createTestContext()
         let mockUserDefaults = MockUserDefaults()
         mockUserDefaults.set(5, forKey: "longestStreak")
         let businessLogic = MainScreenBusinessLogic.create(
@@ -85,6 +98,7 @@ struct MainScreenBusinessLogicTests {
     }
     
     @Test("Longest streak writes to UserDefaults") func longestStreakWritesUserDefaults() {
+        let testContext = createTestContext()
         let mockUserDefaults = MockUserDefaults()
         let businessLogic = MainScreenBusinessLogic.create(
             context: testContext,
@@ -97,6 +111,7 @@ struct MainScreenBusinessLogicTests {
     }
     
     @Test("Longest streak returns zero when not set") func longestStreakDefaultValue() {
+        let testContext = createTestContext()
         let mockUserDefaults = MockUserDefaults()
         let businessLogic = MainScreenBusinessLogic.create(
             context: testContext,
@@ -109,6 +124,7 @@ struct MainScreenBusinessLogicTests {
     // MARK: - Record Drink Tests
     
     @Test("Record drink toggles recording complete") func recordDrinkTogglesComplete() async {
+        let testContext = createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         let businessLogic = MainScreenBusinessLogic.create(
             context: testContext,
@@ -122,6 +138,7 @@ struct MainScreenBusinessLogicTests {
     }
     
     @Test("Record drink creates HealthKit sample") func recordDrinkCreatesHealthKitSample() async {
+        let testContext = createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         let businessLogic = MainScreenBusinessLogic.create(
             context: testContext,
@@ -142,6 +159,7 @@ struct MainScreenBusinessLogicTests {
     }
     
     @Test("Record drink sets ID from HealthKit UUID") func recordDrinkSetsHealthKitID() async {
+        let testContext = createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         let businessLogic = MainScreenBusinessLogic.create(
             context: testContext,
@@ -161,6 +179,7 @@ struct MainScreenBusinessLogicTests {
     }
     
     @Test("Record drink handles HealthKit error gracefully") func recordDrinkHandlesHealthKitError() async {
+        let testContext = createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         mockHealthStore.shouldThrow = true
         let businessLogic = MainScreenBusinessLogic.create(
@@ -179,25 +198,28 @@ struct MainScreenBusinessLogicTests {
     // MARK: - Streak Calculation Tests
     
     @Test("Refresh current streak with empty drinks array") func refreshCurrentStreakWithEmptyArray() {
+        let testContext = createTestContext()
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let emptyDrinks: [DrinkRecord] = []
         
-        businessLogic.refreshCurrentStreak(from: emptyDrinks)
+        _ = businessLogic.refreshCurrentStreak(from: emptyDrinks)
         
         #expect(businessLogic.currentStreak == 0)
     }
     
     @Test("Refresh current streak calculates correctly") func refreshCurrentStreakCalculatesCorrectly() {
+        let testContext = createTestContext()
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let fiveDaysAgo = Calendar.current.date(byAdding: .day, value: -5, to: Date())!
         let drink = DrinkRecord(standardDrinks: 1.0, date: fiveDaysAgo)
         
-        businessLogic.refreshCurrentStreak(from: [drink])
+        _ = businessLogic.refreshCurrentStreak(from: [drink])
         
         #expect(businessLogic.currentStreak == 4)
     }
     
     @Test("Refresh current streak updates longest when current exceeds") func refreshCurrentStreakUpdatesLongest() {
+        let testContext = createTestContext()
         let mockUserDefaults = MockUserDefaults()
         mockUserDefaults.set(3, forKey: "longestStreak")
         let businessLogic = MainScreenBusinessLogic.create(
@@ -207,13 +229,14 @@ struct MainScreenBusinessLogicTests {
         let fiveDaysAgo = Calendar.current.date(byAdding: .day, value: -5, to: Date())!
         let drink = DrinkRecord(standardDrinks: 1.0, date: fiveDaysAgo)
         
-        businessLogic.refreshCurrentStreak(from: [drink])
+        _ = businessLogic.refreshCurrentStreak(from: [drink])
         
         #expect(businessLogic.currentStreak == 4)
         #expect(businessLogic.longestStreak == 4)
     }
     
     @Test("Refresh current streak preserves longest when current is less") func refreshCurrentStreakPreservesLongest() {
+        let testContext = createTestContext()
         let mockUserDefaults = MockUserDefaults()
         mockUserDefaults.set(10, forKey: "longestStreak")
         let businessLogic = MainScreenBusinessLogic.create(
@@ -223,13 +246,14 @@ struct MainScreenBusinessLogicTests {
         let twoDaysAgo = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
         let drink = DrinkRecord(standardDrinks: 1.0, date: twoDaysAgo)
         
-        businessLogic.refreshCurrentStreak(from: [drink])
+        _ = businessLogic.refreshCurrentStreak(from: [drink])
         
         #expect(businessLogic.currentStreak == 1)
         #expect(businessLogic.longestStreak == 10)
     }
     
     @Test("Refresh current streak handles zero streak edge case") func refreshCurrentStreakHandlesZeroStreakEdgeCase() {
+        let testContext = createTestContext()
         let mockUserDefaults = MockUserDefaults()
         mockUserDefaults.set(1, forKey: "longestStreak")
         let businessLogic = MainScreenBusinessLogic.create(
@@ -239,7 +263,7 @@ struct MainScreenBusinessLogicTests {
         let today = Date()
         let drink = DrinkRecord(standardDrinks: 1.0, date: today)
         
-        businessLogic.refreshCurrentStreak(from: [drink])
+        _ = businessLogic.refreshCurrentStreak(from: [drink])
         
         #expect(businessLogic.currentStreak == 0)
         #expect(businessLogic.longestStreak == 0)
@@ -247,7 +271,8 @@ struct MainScreenBusinessLogicTests {
     
     // MARK: - Custom Drink Tests
     
-    @Test("Add custom drink inserts to model context") func addCustomDrinkInsertsToContext() {
+    @Test("Add custom drink inserts to model context") func addCustomDrinkInsertsToContext() throws {
+        let testContext = createTestContext()
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         
         let customDrink = CustomDrink(name: "Test Drink", standardDrinks: 2.5)
@@ -256,7 +281,7 @@ struct MainScreenBusinessLogicTests {
         
         // Verify the drink was inserted by checking the context
         let descriptor = FetchDescriptor<CustomDrink>()
-        let drinks = try! testContext.fetch(descriptor)
+        let drinks = try testContext.fetch(descriptor)
         #expect(drinks.count == 1)
         guard let firstDrink = drinks.first else {
             #expect(Bool(false), "Expected custom drink to exist")
@@ -269,6 +294,7 @@ struct MainScreenBusinessLogicTests {
     // MARK: - Feedback Reset Tests
     
     @Test("Reset drink recording feedback sets to false") func resetDrinkRecordingFeedbackSetsToFalse() async {
+        let testContext = createTestContext()
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         // First set it to true
         let drink = DrinkRecord(standardDrinks: 1.0)
@@ -283,6 +309,7 @@ struct MainScreenBusinessLogicTests {
     // MARK: - Integration Tests
     
     @Test("Record drink workflow end to end") func recordDrinkWorkflowEndToEnd() async {
+        let testContext = createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         let mockUserDefaults = MockUserDefaults()
         let businessLogic = MainScreenBusinessLogic.create(
@@ -314,6 +341,7 @@ struct MainScreenBusinessLogicTests {
     }
     
     @Test("Concurrent drink recording handles multiple calls") func concurrentDrinkRecordingHandlesMultipleCalls() async {
+        let testContext = createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         let businessLogic = MainScreenBusinessLogic.create(
             context: testContext,
@@ -322,8 +350,8 @@ struct MainScreenBusinessLogicTests {
         let drink1 = DrinkRecord(standardDrinks: 1.0)
         let drink2 = DrinkRecord(standardDrinks: 2.0)
         
-        async let result1 = businessLogic.recordDrink(drink1)
-        async let result2 = businessLogic.recordDrink(drink2)
+        async let result1: () = businessLogic.recordDrink(drink1)
+        async let result2: () = businessLogic.recordDrink(drink2)
         
         await result1
         await result2
