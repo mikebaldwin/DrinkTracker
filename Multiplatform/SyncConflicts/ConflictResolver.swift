@@ -8,6 +8,7 @@
 import Foundation
 import HealthKit
 import SwiftData
+import OSLog
 
 actor ConflictResolver {
     private let healthStoreManager = HealthStoreManager.shared
@@ -36,13 +37,13 @@ actor ConflictResolver {
         // Update local record to match HealthKit
         let localRecord = conflict.localRecord
         
-        localRecord.standardDrinks = healthKitSample.quantity.doubleValue(for: .count())
+        localRecord.standardDrinks = healthKitSample.quantity.doubleValue(for: HKUnit.count())
         localRecord.timestamp = healthKitSample.startDate
         
         // Save changes to SwiftData
         try context.save()
         
-        debugPrint("✅ Updated local record to match HealthKit for \(conflict.id)")
+        Logger.dataSync.info("Updated local record to match HealthKit for \(conflict.id)")
     }
     
     private func useLocalVersion(_ conflict: SyncConflict) async throws {
@@ -58,7 +59,7 @@ actor ConflictResolver {
         // Create new HealthKit sample with local values
         let newSample = HKQuantitySample(
             type: HKQuantityType(.numberOfAlcoholicBeverages),
-            quantity: HKQuantity(unit: .count(), doubleValue: localRecord.standardDrinks),
+            quantity: HKQuantity(unit: HKUnit.count(), doubleValue: localRecord.standardDrinks),
             start: localRecord.timestamp,
             end: localRecord.timestamp
         )
@@ -71,7 +72,7 @@ actor ConflictResolver {
         // Save changes to SwiftData
         try context.save()
         
-        debugPrint("✅ Updated HealthKit to match local record for \(conflict.id)")
+        Logger.dataSync.info("Updated HealthKit to match local record for \(conflict.id)")
     }
     
     private func deleteLocalVersion(_ conflict: SyncConflict) async throws {
@@ -82,7 +83,7 @@ actor ConflictResolver {
         // Save changes to SwiftData
         try context.save()
         
-        debugPrint("✅ Deleted local record for \(conflict.id)")
+        Logger.dataSync.info("Deleted local record for \(conflict.id)")
     }
 }
 

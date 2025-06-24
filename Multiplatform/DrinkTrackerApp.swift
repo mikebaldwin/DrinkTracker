@@ -82,14 +82,14 @@ struct DrinkTrackerApp: App {
                     // authorized - sync will happen in MainScreen
                     break
                 case .failure(let error):
-                    Logger.app.error("An error occurred while requesting authentication: \(error.localizedDescription)")
+                    Logger.ui.error("An error occurred while requesting authentication: \(error.localizedDescription)")
                 }
             }
             .task {
                 // Clear any existing dynamic quick actions to prevent duplicates
                 Task { @MainActor in
                     UIApplication.shared.shortcutItems = nil
-                    Logger.app.info("Cleared any existing dynamic Quick Actions")
+                    Logger.ui.info("Cleared any existing dynamic Quick Actions")
                 }
                 
                 // HealthKit availability check - no action needed

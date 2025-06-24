@@ -8,6 +8,7 @@
 import SwiftUI
 import HealthKit
 import SwiftData
+import OSLog
 
 struct ConflictResolutionScreen: View {
     let conflicts: [SyncConflict]
@@ -103,7 +104,7 @@ struct ConflictResolutionScreen: View {
             do {
                 try await resolver.resolveConflict(conflict, using: resolution)
             } catch {
-                debugPrint("Failed to resolve conflict for \(conflict.id): \(error)")
+                Logger.dataSync.error("Failed to resolve conflict for \(conflict.id): \(error.localizedDescription)")
                 allSuccessful = false
                 // Continue with other conflicts
             }
@@ -113,7 +114,7 @@ struct ConflictResolutionScreen: View {
         do {
             try modelContext.save()
         } catch {
-            debugPrint("Failed to save context after conflict resolution: \(error)")
+            Logger.dataSync.error("Failed to save context after conflict resolution: \(error.localizedDescription)")
             allSuccessful = false
         }
         
