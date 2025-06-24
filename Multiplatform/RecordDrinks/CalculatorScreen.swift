@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CalculatorScreen: View {
     var createCustomDrink: ((CustomDrink) -> Void)?
     var createDrinkRecord: ((DrinkRecord) -> Void)?
+    
+    @Environment(SettingsStore.self) private var settingsStore
     
     @Environment(\.dismiss) private var dismiss
 
@@ -140,7 +143,11 @@ struct CalculatorScreen: View {
     private var ingredientEntrySection: some View {
         ForEach($ingredients) { ingredient in
             Section() {
-                IngredientCell(ingredient: ingredient) {
+                IngredientCell(
+                    ingredient: ingredient,
+                    useMetricAsDefault: settingsStore.useMetricAsDefault,
+                    useProofAsDefault: settingsStore.useProofAsDefault
+                ) {
                     updateTotalStandardDrinks()
                 }
             }

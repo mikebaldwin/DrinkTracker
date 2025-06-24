@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct IngredientCell: View {
+    init(ingredient: Binding<Ingredient>, useMetricAsDefault: Bool, useProofAsDefault: Bool, onUpdate: @escaping (() -> Void)) {
+        self._ingredient = ingredient
+        self.useMetricAsDefault = useMetricAsDefault
+        self.useProofAsDefault = useProofAsDefault
+        self.onUpdate = onUpdate
+    }
     private enum Field: Hashable {
         case volume, abv
     }
 
-    @AppStorage("useMetricAsDefault") private var useMetricAsDefault = false
-    @AppStorage("useProofAsDefault") private var useProofAsDefault = false
-
+    private var useMetricAsDefault: Bool
+    private var useProofAsDefault: Bool
+    
     @Binding var ingredient: Ingredient
     @FocusState private var volumeFieldFocus: Field?
 
