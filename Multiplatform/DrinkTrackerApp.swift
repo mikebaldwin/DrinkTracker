@@ -9,12 +9,14 @@ import SwiftUI
 import SwiftData
 import HealthKitUI
 import UIKit
+import OSLog
 
 @main
 struct DrinkTrackerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     @State private var trigger = false
+    @State private var settingsStore: SettingsStore?
     
     private let quickActionHandler = QuickActionHandler.shared
     private let appRouter = AppRouter()
@@ -22,7 +24,8 @@ struct DrinkTrackerApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             DrinkRecord.self,
-            CustomDrink.self
+            CustomDrink.self,
+            UserSettings.self
         ])
         let modelConfiguration = ModelConfiguration(
             nil,
@@ -43,45 +46,60 @@ struct DrinkTrackerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainScreen()
-                .environment(quickActionHandler)
-                .environment(appRouter)
-                .onChange(of: quickActionHandler.activeAction) { action, _ in
-                    if action != nil {
-                        // The action will be handled by MainScreen's environment observation
-                        quickActionHandler.clearAction()
-                    }
+            Group {
+                if let settingsStore {
+                    MainScreen()
+                        .environment(quickActionHandler)
+                        .environment(appRouter)
+                        .environment(settingsStore)
+                } else {
+                    // Loading state while SettingsStore initializes
+                    Text("Loading...")
+                        .onAppear {
+                            initializeSettingsStore()
+                        }
                 }
-                .onAppear() {
-                    if HKHealthStore.isHealthDataAvailable() {
-                        trigger.toggle()
-                    }
+            }
+            .onChange(of: quickActionHandler.activeAction) { action, _ in
+                if action != nil {
+                    // The action will be handled by MainScreen's environment observation
+                    quickActionHandler.clearAction()
                 }
-                .healthDataAccessRequest(
-                    store: HealthStoreManager.shared.healthStore,
-                    shareTypes: [HKQuantityType(.numberOfAlcoholicBeverages)],
-                    readTypes: [HKQuantityType(.numberOfAlcoholicBeverages)],
-                    trigger: trigger
-                ) { result in
-                    switch result {
-                    case .success(_):
-                        // authorized - sync will happen in MainScreen
-                        break
-                    case .failure(let error):
-                        debugPrint("*** An error occurred while requesting authentication: \(error) ***")
-                    }
+            }
+            .onAppear() {
+                if HKHealthStore.isHealthDataAvailable() {
+                    trigger.toggle()
                 }
-                .task {
-                    // Clear any existing dynamic quick actions to prevent duplicates
-                    Task { @MainActor in
-                        UIApplication.shared.shortcutItems = nil
-                        print("🎯 Cleared any existing dynamic Quick Actions")
-                    }
-                    
-                    // HealthKit availability check - no action needed
+            }
+            .healthDataAccessRequest(
+                store: HealthStoreManager.shared.healthStore,
+                shareTypes: [HKQuantityType(.numberOfAlcoholicBeverages)],
+                readTypes: [HKQuantityType(.numberOfAlcoholicBeverages)],
+                trigger: trigger
+            ) { result in
+                switch result {
+                case .success(_):
+                    // authorized - sync will happen in MainScreen
+                    break
+                case .failure(let error):
+                    Logger.app.error("An error occurred while requesting authentication: \(error.localizedDescription)")
                 }
+            }
+            .task {
+                // Clear any existing dynamic quick actions to prevent duplicates
+                Task { @MainActor in
+                    UIApplication.shared.shortcutItems = nil
+                    Logger.app.info("Cleared any existing dynamic Quick Actions")
+                }
+                
+                // HealthKit availability check - no action needed
+            }
         }
         .modelContainer(sharedModelContainer)
     }
     
+    private func initializeSettingsStore() {
+        let context = sharedModelContainer.mainContext
+        settingsStore = SettingsStore(modelContext: context)
+    }
 }
