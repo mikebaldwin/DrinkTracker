@@ -11,9 +11,19 @@ import SwiftUI
 import OSLog
 
 struct ContentView: View {
-    @AppStorage("dailyTarget") private var dailyLimit: Double?
-    @AppStorage("weeklyTarget") private var weeklyLimit: Double?
-    @AppStorage("longestStreak") private var longestStreak = 0
+    @Environment(SettingsStore.self) private var settingsStore
+    
+    private var dailyLimit: Double? {
+        settingsStore.dailyLimit > 0 ? settingsStore.dailyLimit : nil
+    }
+    
+    private var weeklyLimit: Double? {
+        settingsStore.weeklyLimit > 0 ? settingsStore.weeklyLimit : nil
+    }
+    
+    private var longestStreak: Int {
+        settingsStore.longestStreak
+    }
 
     @Environment(\.modelContext) private var modelContext
 
@@ -158,7 +168,7 @@ struct ContentView: View {
                 Text("Longest streak")
                     .fontWeight(.semibold)
                 Spacer()
-                Text("\(longestStreak) days")
+                Text("\(settingsStore.longestStreak) days")
             }
         }
     }
@@ -214,12 +224,12 @@ struct ContentView: View {
                 
         currentStreak = StreakCalculator().calculateCurrentStreak(drink)
         
-        if currentStreak == 0 && longestStreak == 1 {
+        if currentStreak == 0 && settingsStore.longestStreak == 1 {
             // prevents giving streak credit user has gone zero days without alcohol
-            longestStreak = 0
+            settingsStore.longestStreak = 0
         }
-        if currentStreak > longestStreak {
-            longestStreak = currentStreak
+        if currentStreak > settingsStore.longestStreak {
+            settingsStore.longestStreak = currentStreak
         }
     }
 }
