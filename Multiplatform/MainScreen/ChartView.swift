@@ -9,9 +9,8 @@ import Charts
 import SwiftUI
 
 struct ChartView: View {
-    @AppStorage("dailyTarget") private var dailyLimit: Double?
-    @AppStorage("weeklyTarget") private var weeklyLimit: Double?
-    
+    private var dailyLimit: Double?
+    private var weeklyLimit: Double?
     private var drinkRecords: [DrinkRecord]
     private var totalStandardDrinksToday: Double
     private var totalStandardDrinksThisWeek: Double
@@ -88,10 +87,14 @@ struct ChartView: View {
     }
     
     init(
+        dailyLimit: Double?,
+        weeklyLimit: Double?,
         drinkRecords: [DrinkRecord],
         totalStandardDrinksToday: Double,
         totalStandardDrinksThisWeek: Double
     ) {
+        self.dailyLimit = dailyLimit
+        self.weeklyLimit = weeklyLimit
         self.drinkRecords = drinkRecords
         self.totalStandardDrinksToday = totalStandardDrinksToday
         self.totalStandardDrinksThisWeek = totalStandardDrinksThisWeek

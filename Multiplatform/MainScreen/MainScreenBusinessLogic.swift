@@ -51,11 +51,6 @@ class MainScreenBusinessLogic {
     
     // MARK: - Public Properties
     
-    var longestStreak: Int {
-        get { userDefaults.integer(forKey: "longestStreak") }
-        set { userDefaults.set(newValue, forKey: "longestStreak") }
-    }
-    
     // MARK: - Setup
     
     
@@ -91,24 +86,24 @@ class MainScreenBusinessLogic {
         try? modelContext.save()
     }
     
-    func refreshCurrentStreak(from allDrinks: [DrinkRecord]) -> (currentStreak: Int, longestStreak: Int) {
+    func refreshCurrentStreak(from allDrinks: [DrinkRecord], settingsStore: SettingsStore) -> Int {
         guard let drink = allDrinks.first else { 
             currentStreak = 0
-            return (currentStreak: 0, longestStreak: longestStreak)
+            return 0
         }
         
         currentStreak = StreakCalculator().calculateCurrentStreak(drink)
         
-        if currentStreak == 0 && longestStreak == 1 {
+        if currentStreak == 0 && settingsStore.longestStreak == 1 {
             // prevents giving streak credit user has gone zero days without alcohol
-            longestStreak = 0
+            settingsStore.longestStreak = 0
         }
         
-        if currentStreak > longestStreak {
-            longestStreak = currentStreak
+        if currentStreak > settingsStore.longestStreak {
+            settingsStore.longestStreak = currentStreak
         }
         
-        return (currentStreak: currentStreak, longestStreak: longestStreak)
+        return currentStreak
     }
     
     func resetDrinkRecordingFeedback() {

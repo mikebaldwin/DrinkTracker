@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CalculatorView: View {
     var completion: ((CustomDrink) -> Void)?
+    
+    @Environment(SettingsStore.self) private var settingsStore
     
     @Environment(\.dismiss) private var dismiss
     @State private var nameText = ""
@@ -28,7 +31,11 @@ struct CalculatorView: View {
                 if !ingredients.isEmpty {
                     ForEach($ingredients) { ingredient in
                         Section() {
-                            IngredientCell(ingredient: ingredient) {
+                            IngredientCell(
+                                ingredient: ingredient,
+                                useMetricAsDefault: settingsStore.useMetricAsDefault,
+                                useProofAsDefault: settingsStore.useProofAsDefault
+                            ) {
                                 updateTotalStandardDrinks()
                             }
                         }

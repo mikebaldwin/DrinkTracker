@@ -72,6 +72,10 @@
 		CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */; };
 		CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */; };
 		CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
+		CECA55602E0B196A00C86021 /* SettingsMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA555E2E0B196A00C86021 /* SettingsMigrator.swift */; };
+		CECA55612E0B196A00C86021 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA555F2E0B196A00C86021 /* SettingsStore.swift */; };
+		CECA55622E0B196A00C86021 /* SettingsMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA555E2E0B196A00C86021 /* SettingsMigrator.swift */; };
+		CECA55632E0B196A00C86021 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA555F2E0B196A00C86021 /* SettingsStore.swift */; };
 		CED1BC532C2200EF004F45FC /* StreakCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC522C2200EF004F45FC /* StreakCalculator.swift */; };
 		CEEDC17C2BEBAE420019DF65 /* DrinksHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17B2BEBAE420019DF65 /* DrinksHistoryScreen.swift */; };
 		CEEDC17E2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */; };
@@ -183,6 +187,8 @@
 		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
 		CEB911C42BDBF9E300224660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CEC70BA02C07A35400273E1D /* DailyTotal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTotal.swift; sourceTree = "<group>"; };
+		CECA555E2E0B196A00C86021 /* SettingsMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMigrator.swift; sourceTree = "<group>"; };
+		CECA555F2E0B196A00C86021 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		CED1BC522C2200EF004F45FC /* StreakCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalculator.swift; sourceTree = "<group>"; };
 		CEEDC17B2BEBAE420019DF65 /* DrinksHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksHistoryScreen.swift; sourceTree = "<group>"; };
 		CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkRecordDetailScreen.swift; sourceTree = "<group>"; };
@@ -264,12 +270,14 @@
 			children = (
 				CE07BA242E0887E80059CAC6 /* AppLogger.swift */,
 				CEFEF5192E01F2440056E83A /* AppRouter.swift */,
-				CEFEF5132DFB58B30056E83A /* QuickActionType.swift */,
-				CEFEF5102DFB58770056E83A /* QuickActionHandler.swift */,
 				CE866B672C1B354D00461411 /* DataSynchronizer.swift */,
 				CE3ECA2C2BE92BBF0046E242 /* DrinkCalculator.swift */,
 				CE3DACE82BDFD59100BB52EA /* Formatter.swift */,
 				CE2638F92BED28CB000B7CDD /* HealthStoreManager.swift */,
+				CEFEF5102DFB58770056E83A /* QuickActionHandler.swift */,
+				CEFEF5132DFB58B30056E83A /* QuickActionType.swift */,
+				CECA555E2E0B196A00C86021 /* SettingsMigrator.swift */,
+				CECA555F2E0B196A00C86021 /* SettingsStore.swift */,
 				CED1BC522C2200EF004F45FC /* StreakCalculator.swift */,
 				CE07BA0F2E041ABE0059CAC6 /* UserDefaultsProviding.swift */,
 			);
@@ -616,6 +624,8 @@
 				CE1E00D92E03462E00331C7D /* MainScreenBusinessLogic.swift in Sources */,
 				CE6610492C23676C006E824D /* VolumeMeasurement.swift in Sources */,
 				CEFEF5112DFB587E0056E83A /* QuickActionHandler.swift in Sources */,
+				CECA55602E0B196A00C86021 /* SettingsMigrator.swift in Sources */,
+				CECA55612E0B196A00C86021 /* SettingsStore.swift in Sources */,
 				CE07BA102E041ABE0059CAC6 /* UserDefaultsProviding.swift in Sources */,
 				CE07BA212E05D81E0059CAC6 /* ConflictRow.swift in Sources */,
 				CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */,
@@ -674,6 +684,8 @@
 				CEF32C3B2C25F81500E40213 /* DrinkTrackerWatchApp.swift in Sources */,
 				CE1E00D62E03414100331C7D /* ActionsSection.swift in Sources */,
 				CE7BDF2D2C2C817700D260F1 /* CustomDrink.swift in Sources */,
+				CECA55622E0B196A00C86021 /* SettingsMigrator.swift in Sources */,
+				CECA55632E0B196A00C86021 /* SettingsStore.swift in Sources */,
 				CE7BDF332C2C850100D260F1 /* QuickEntryViewWatch.swift in Sources */,
 				CEFEF5122DFB587E0056E83A /* QuickActionHandler.swift in Sources */,
 				CE7BDF2F2C2C81A300D260F1 /* Date+Extensions.swift in Sources */,

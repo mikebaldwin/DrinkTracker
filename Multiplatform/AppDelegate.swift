@@ -13,7 +13,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        print("🎯 AppDelegate didFinishLaunchingWithOptions")
         return true
     }
     
@@ -22,13 +21,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         configurationForConnecting connectingSceneSession: UISceneSession,
         options: UIScene.ConnectionOptions
     ) -> UISceneConfiguration {
-        print("🎯 AppDelegate configurationForConnecting called")
         let configuration = UISceneConfiguration(
             name: "Default Configuration",
             sessionRole: connectingSceneSession.role
         )
         configuration.delegateClass = SceneDelegate.self
-        print("🎯 AppDelegate configured SceneDelegate")
         return configuration
     }
 }

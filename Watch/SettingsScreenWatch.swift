@@ -9,34 +9,33 @@ import SwiftData
 import SwiftUI
 
 struct SettingsScreenWatch: View {
-    @AppStorage("dailyTarget") private var dailyLimit = 0.0
-    @AppStorage("weeklyTarget") private var weeklyLimit = 0.0
-    @AppStorage("longestStreak") private var longestStreak = 0
+    @Environment(SettingsStore.self) private var settingsStore
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     Stepper {
-                        Text("Daily limit: \(Formatter.formatDecimal(dailyLimit))")
+                        Text("Daily limit: \(Formatter.formatDecimal(settingsStore.dailyLimit))")
                             .font(.body)
                     } onIncrement: {
-                        dailyLimit += 1
+                        settingsStore.dailyLimit += 1
                     } onDecrement: {
-                        if dailyLimit > 0 {
-                            dailyLimit -= 1
+                        if settingsStore.dailyLimit > 0 {
+                            settingsStore.dailyLimit -= 1
                         }
                     }
                     Stepper {
-                        Text("Weekly limit: \(Formatter.formatDecimal(weeklyLimit))")
+                        Text("Weekly limit: \(Formatter.formatDecimal(settingsStore.weeklyLimit))")
                             .font(.body)
                     } onIncrement: {
-                        weeklyLimit += 1
+                        settingsStore.weeklyLimit += 1
                     } onDecrement: {
-                        if weeklyLimit > 0 {
-                            weeklyLimit -= 1
+                        if settingsStore.weeklyLimit > 0 {
+                            settingsStore.weeklyLimit -= 1
                         }
                     }
                 }

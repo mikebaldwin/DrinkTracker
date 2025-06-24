@@ -9,11 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct SettingsScreen: View {
-    @AppStorage("dailyTarget") private var dailyLimit = 0.0
-    @AppStorage("weeklyTarget") private var weeklyLimit = 0.0
-    @AppStorage("longestStreak") private var longestStreak = 0
-    @AppStorage("useMetricAsDefault") private var useMetricAsDefault = false
-    @AppStorage("useProofAsDefault") private var useProofAsDefault = false
+    @Environment(SettingsStore.self) private var settingsStore
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -50,42 +46,44 @@ struct SettingsScreen: View {
             showResetLongestStreakConfirmation: $showResetLongestStreakConfirmation,
             deleteAllRecords: deleteAllRecords,
             syncWithHealthKit: syncWithHealthKit,
-            resetLongestStreak: { longestStreak = 0 }
+            resetLongestStreak: { 
+                settingsStore.longestStreak = 0
+            }
         ))
     }
     
     private var limitsSection: some View {
         Section {
             Stepper {
-                Text("Daily limit: \(Formatter.formatDecimal(dailyLimit))")
+                Text("Daily limit: \(Formatter.formatDecimal(settingsStore.dailyLimit))")
             } onIncrement: {
-                dailyLimit += 1
-                UIAccessibility.post(notification: .announcement, argument: "Daily limit set to \(Formatter.formatDecimal(dailyLimit))")
+                settingsStore.dailyLimit += 1
+                UIAccessibility.post(notification: .announcement, argument: "Daily limit set to \(Formatter.formatDecimal(settingsStore.dailyLimit))")
             } onDecrement: {
-                if dailyLimit > 0 {
-                    dailyLimit -= 1
-                    UIAccessibility.post(notification: .announcement, argument: "Daily limit set to \(Formatter.formatDecimal(dailyLimit))")
+                if settingsStore.dailyLimit > 0 {
+                    settingsStore.dailyLimit -= 1
+                    UIAccessibility.post(notification: .announcement, argument: "Daily limit set to \(Formatter.formatDecimal(settingsStore.dailyLimit))")
                 }
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Daily drink limit")
-            .accessibilityValue("\(Formatter.formatDecimal(dailyLimit)) drinks")
+            .accessibilityValue("\(Formatter.formatDecimal(settingsStore.dailyLimit)) drinks")
             .accessibilityHint("Use increment and decrement to adjust daily limit")
             
             Stepper {
-                Text("Weekly limit: \(Formatter.formatDecimal(weeklyLimit))")
+                Text("Weekly limit: \(Formatter.formatDecimal(settingsStore.weeklyLimit))")
             } onIncrement: {
-                weeklyLimit += 1
-                UIAccessibility.post(notification: .announcement, argument: "Weekly limit set to \(Formatter.formatDecimal(weeklyLimit))")
+                settingsStore.weeklyLimit += 1
+                UIAccessibility.post(notification: .announcement, argument: "Weekly limit set to \(Formatter.formatDecimal(settingsStore.weeklyLimit))")
             } onDecrement: {
-                if weeklyLimit > 0 {
-                    weeklyLimit -= 1
-                    UIAccessibility.post(notification: .announcement, argument: "Weekly limit set to \(Formatter.formatDecimal(weeklyLimit))")
+                if settingsStore.weeklyLimit > 0 {
+                    settingsStore.weeklyLimit -= 1
+                    UIAccessibility.post(notification: .announcement, argument: "Weekly limit set to \(Formatter.formatDecimal(settingsStore.weeklyLimit))")
                 }
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Weekly drink limit")
-            .accessibilityValue("\(Formatter.formatDecimal(weeklyLimit)) drinks")
+            .accessibilityValue("\(Formatter.formatDecimal(settingsStore.weeklyLimit)) drinks")
             .accessibilityHint("Use increment and decrement to adjust weekly limit")
             
             Button {
@@ -100,7 +98,12 @@ struct SettingsScreen: View {
     
     private var measurementDefaultsSection: some View {
         Section("Measurement defaults") {
-            Picker("Volume Measurement", selection: $useMetricAsDefault) {
+            Picker("Volume Measurement", selection: Binding(
+                get: { settingsStore.useMetricAsDefault },
+                set: { newValue in
+                    settingsStore.useMetricAsDefault = newValue
+                }
+            )) {
                 Text("oz").tag(false)
                     .accessibilityLabel("Ounces as default volume unit")
                 Text("ml").tag(true)
@@ -110,7 +113,12 @@ struct SettingsScreen: View {
             .accessibilityLabel("Default volume measurement")
             .accessibilityHint("Choose default unit for volume measurements")
             
-            Picker("Alcohol Strength", selection: $useProofAsDefault) {
+            Picker("Alcohol Strength", selection: Binding(
+                get: { settingsStore.useProofAsDefault },
+                set: { newValue in
+                    settingsStore.useProofAsDefault = newValue
+                }
+            )) {
                 Text("ABV %").tag(false)
                     .accessibilityLabel("ABV percentage as default alcohol strength")
                 Text("Proof").tag(true)

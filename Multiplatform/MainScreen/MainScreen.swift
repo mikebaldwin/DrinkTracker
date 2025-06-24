@@ -11,8 +11,7 @@ import SwiftData
 import SwiftUI
 
 struct MainScreen: View {
-    @AppStorage("dailyTarget") private var dailyLimit: Double?
-    @AppStorage("weeklyTarget") private var weeklyLimit: Double?
+    @Environment(SettingsStore.self) private var settingsStore
     
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
@@ -25,7 +24,18 @@ struct MainScreen: View {
     ) private var allDrinks: [DrinkRecord]
     
     @State private var currentStreak: Int = 0
-    @State private var longestStreak: Int = 0
+    
+    private var dailyLimit: Double? {
+        settingsStore.dailyLimit > 0 ? settingsStore.dailyLimit : nil
+    }
+    
+    private var weeklyLimit: Double? {
+        settingsStore.weeklyLimit > 0 ? settingsStore.weeklyLimit : nil
+    }
+    
+    private var longestStreak: Int {
+        settingsStore.longestStreak
+    }
     
     private var businessLogic: MainScreenBusinessLogic {
         MainScreenBusinessLogic.create(context: modelContext)
@@ -56,6 +66,8 @@ struct MainScreen: View {
         NavigationStack(path: Bindable(router).navigationPath) {
             Form {
                 ChartView(
+                    dailyLimit: dailyLimit,
+                    weeklyLimit: weeklyLimit,
                     drinkRecords: thisWeeksDrinks,
                     totalStandardDrinksToday: totalStandardDrinksToday,
                     totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
@@ -117,15 +129,11 @@ struct MainScreen: View {
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 _ = allDrinks
-                let streaks = businessLogic.refreshCurrentStreak(from: allDrinks)
-                currentStreak = streaks.currentStreak
-                longestStreak = streaks.longestStreak
+                currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
             }
         }
         .onChange(of: allDrinks) {
-            let streaks = businessLogic.refreshCurrentStreak(from: allDrinks)
-            currentStreak = streaks.currentStreak
-            longestStreak = streaks.longestStreak
+            currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
         }
         .onChange(of: quickActionHandler.activeAction) { _, activeAction in
             if let activeAction {
@@ -134,9 +142,7 @@ struct MainScreen: View {
             }
         }
         .onAppear {
-            let streaks = businessLogic.refreshCurrentStreak(from: allDrinks)
-            currentStreak = streaks.currentStreak
-            longestStreak = streaks.longestStreak
+            currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
             
             router.setQuickActionHandlers(
                 addCustomDrink: businessLogic.addCustomDrink,
