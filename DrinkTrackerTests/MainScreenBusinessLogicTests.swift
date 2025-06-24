@@ -51,7 +51,7 @@ class MainScreenBusinessLogicTests {
     
     init() throws {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        self.testContainer = try ModelContainer(for: DrinkRecord.self, CustomDrink.self, configurations: config)
+        self.testContainer = try ModelContainer(for: DrinkRecord.self, CustomDrink.self, UserSettings.self, configurations: config)
     }
     
     deinit {
@@ -83,42 +83,10 @@ class MainScreenBusinessLogicTests {
         #expect(businessLogic.currentStreak == 0)
     }
     
-    // MARK: - Longest Streak Property Tests
+    // MARK: - Helper Methods
     
-    @Test("Longest streak reads from UserDefaults") func longestStreakReadsUserDefaults() {
-        let testContext = createTestContext()
-        let mockUserDefaults = MockUserDefaults()
-        mockUserDefaults.set(5, forKey: "longestStreak")
-        let businessLogic = MainScreenBusinessLogic.create(
-            context: testContext,
-            userDefaults: mockUserDefaults
-        )
-        
-        #expect(businessLogic.longestStreak == 5)
-    }
-    
-    @Test("Longest streak writes to UserDefaults") func longestStreakWritesUserDefaults() {
-        let testContext = createTestContext()
-        let mockUserDefaults = MockUserDefaults()
-        let businessLogic = MainScreenBusinessLogic.create(
-            context: testContext,
-            userDefaults: mockUserDefaults
-        )
-        
-        businessLogic.longestStreak = 10
-        
-        #expect(mockUserDefaults.integer(forKey: "longestStreak") == 10)
-    }
-    
-    @Test("Longest streak returns zero when not set") func longestStreakDefaultValue() {
-        let testContext = createTestContext()
-        let mockUserDefaults = MockUserDefaults()
-        let businessLogic = MainScreenBusinessLogic.create(
-            context: testContext,
-            userDefaults: mockUserDefaults
-        )
-        
-        #expect(businessLogic.longestStreak == 0)
+    func createTestSettingsStore(context: ModelContext) -> SettingsStore {
+        return SettingsStore(modelContext: context)
     }
     
     // MARK: - Record Drink Tests
@@ -199,74 +167,72 @@ class MainScreenBusinessLogicTests {
     
     @Test("Refresh current streak with empty drinks array") func refreshCurrentStreakWithEmptyArray() {
         let testContext = createTestContext()
+        let settingsStore = createTestSettingsStore(context: testContext)
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let emptyDrinks: [DrinkRecord] = []
         
-        _ = businessLogic.refreshCurrentStreak(from: emptyDrinks)
+        let currentStreak = businessLogic.refreshCurrentStreak(from: emptyDrinks, settingsStore: settingsStore)
         
+        #expect(currentStreak == 0)
         #expect(businessLogic.currentStreak == 0)
     }
     
     @Test("Refresh current streak calculates correctly") func refreshCurrentStreakCalculatesCorrectly() {
         let testContext = createTestContext()
+        let settingsStore = createTestSettingsStore(context: testContext)
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let fiveDaysAgo = Calendar.current.date(byAdding: .day, value: -5, to: Date())!
         let drink = DrinkRecord(standardDrinks: 1.0, date: fiveDaysAgo)
         
-        _ = businessLogic.refreshCurrentStreak(from: [drink])
+        let currentStreak = businessLogic.refreshCurrentStreak(from: [drink], settingsStore: settingsStore)
         
+        #expect(currentStreak == 4)
         #expect(businessLogic.currentStreak == 4)
     }
     
     @Test("Refresh current streak updates longest when current exceeds") func refreshCurrentStreakUpdatesLongest() {
         let testContext = createTestContext()
-        let mockUserDefaults = MockUserDefaults()
-        mockUserDefaults.set(3, forKey: "longestStreak")
-        let businessLogic = MainScreenBusinessLogic.create(
-            context: testContext,
-            userDefaults: mockUserDefaults
-        )
+        let settingsStore = createTestSettingsStore(context: testContext)
+        settingsStore.longestStreak = 3
+        let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let fiveDaysAgo = Calendar.current.date(byAdding: .day, value: -5, to: Date())!
         let drink = DrinkRecord(standardDrinks: 1.0, date: fiveDaysAgo)
         
-        _ = businessLogic.refreshCurrentStreak(from: [drink])
+        let currentStreak = businessLogic.refreshCurrentStreak(from: [drink], settingsStore: settingsStore)
         
+        #expect(currentStreak == 4)
         #expect(businessLogic.currentStreak == 4)
-        #expect(businessLogic.longestStreak == 4)
+        #expect(settingsStore.longestStreak == 4)
     }
     
     @Test("Refresh current streak preserves longest when current is less") func refreshCurrentStreakPreservesLongest() {
         let testContext = createTestContext()
-        let mockUserDefaults = MockUserDefaults()
-        mockUserDefaults.set(10, forKey: "longestStreak")
-        let businessLogic = MainScreenBusinessLogic.create(
-            context: testContext,
-            userDefaults: mockUserDefaults
-        )
+        let settingsStore = createTestSettingsStore(context: testContext)
+        settingsStore.longestStreak = 10
+        let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let twoDaysAgo = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
         let drink = DrinkRecord(standardDrinks: 1.0, date: twoDaysAgo)
         
-        _ = businessLogic.refreshCurrentStreak(from: [drink])
+        let currentStreak = businessLogic.refreshCurrentStreak(from: [drink], settingsStore: settingsStore)
         
+        #expect(currentStreak == 1)
         #expect(businessLogic.currentStreak == 1)
-        #expect(businessLogic.longestStreak == 10)
+        #expect(settingsStore.longestStreak == 10)
     }
     
     @Test("Refresh current streak handles zero streak edge case") func refreshCurrentStreakHandlesZeroStreakEdgeCase() {
         let testContext = createTestContext()
-        let mockUserDefaults = MockUserDefaults()
-        mockUserDefaults.set(1, forKey: "longestStreak")
-        let businessLogic = MainScreenBusinessLogic.create(
-            context: testContext,
-            userDefaults: mockUserDefaults
-        )
+        let settingsStore = createTestSettingsStore(context: testContext)
+        settingsStore.longestStreak = 1
+        let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let today = Date()
         let drink = DrinkRecord(standardDrinks: 1.0, date: today)
         
-        _ = businessLogic.refreshCurrentStreak(from: [drink])
+        let currentStreak = businessLogic.refreshCurrentStreak(from: [drink], settingsStore: settingsStore)
         
+        #expect(currentStreak == 0)
         #expect(businessLogic.currentStreak == 0)
-        #expect(businessLogic.longestStreak == 0)
+        #expect(settingsStore.longestStreak == 0)
     }
     
     // MARK: - Custom Drink Tests
