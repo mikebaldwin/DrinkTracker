@@ -39,15 +39,14 @@ final actor HealthStoreManager {
     private init() { }
     
     func save(_ sample: HKQuantitySample) async throws {
-        guard try await isAuthorized() else {
-            throw HealthKitError.authorizationFailed
-        }
+        try await validateAuthorizationAndType()
+        
         do {
             try await self.healthStore.save(sample)
             Logger.healthKit.info("Successfully saved drink record to HealthKit")
         } catch {
-            // Handle the error appropriately
             Logger.healthKit.error("Failed to save drink record: \(error.localizedDescription)")
+            throw error
         }
     }
     
@@ -68,15 +67,13 @@ final actor HealthStoreManager {
     }
     
     func updateAlcoholicBeverageDate(_ newDate: Date, withUUID uuid: UUID) async throws {
-        guard let alcoholicBeverageType else {
-            throw HealthKitError.quantityTypeNotAvailable
-        }
+        let alcoholicBeverageType = try getAlcoholicBeverageType()
+        let sample = try await fetchSample(uuid: uuid)
         
-        guard let sample = try await fetchSample(uuid: uuid) else {
+        guard let sample else {
             throw HealthKitError.quantityTypeResultsNotFound
         }
         
-        // Create a new quantity sample with the updated date
         let updatedSample = HKQuantitySample(
             type: alcoholicBeverageType,
             quantity: sample.quantity,
@@ -84,18 +81,14 @@ final actor HealthStoreManager {
             end: newDate
         )
         
-        // Save the updated sample to HealthKit
         try await self.healthStore.save(updatedSample)
-        
-        // Delete the original sample from HealthKit
         try await self.healthStore.delete(sample)
     }
     
     @discardableResult
     func isAuthorized() async throws -> Bool {
-        guard let alcoholicBeverageType else {
-            throw HealthKitError.quantityTypeNotAvailable
-        }
+        let alcoholicBeverageType = try getAlcoholicBeverageType()
+        
         let success = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Bool, Error>) in
             healthStore.requestAuthorization(toShare: [alcoholicBeverageType], read: [alcoholicBeverageType]) { success, error in
                 if let error {
@@ -109,14 +102,23 @@ final actor HealthStoreManager {
         return success
     }
     
-    private func fetchSample(uuid: UUID) async throws -> HKQuantitySample?  {
+    private func getAlcoholicBeverageType() throws -> HKQuantityType {
         guard let alcoholicBeverageType else {
             throw HealthKitError.quantityTypeNotAvailable
         }
-        
+        return alcoholicBeverageType
+    }
+    
+    private func validateAuthorizationAndType() async throws {
+        _ = try getAlcoholicBeverageType()
         guard try await isAuthorized() else {
             throw HealthKitError.authorizationFailed
         }
+    }
+    
+    private func fetchSample(uuid: UUID) async throws -> HKQuantitySample?  {
+        let alcoholicBeverageType = try getAlcoholicBeverageType()
+        try await validateAuthorizationAndType()
         
         let predicate = HKQuery.predicateForObject(with: uuid)
         
@@ -152,13 +154,8 @@ final actor HealthStoreManager {
     }
     
     func fetchDrinkDataForWeekOf(date: Date) async throws -> [DailyTotal] {
-        guard let alcoholicBeverageType else {
-            throw HealthKitError.quantityTypeNotAvailable
-        }
-        
-        guard try await isAuthorized() else {
-            throw HealthKitError.authorizationFailed
-        }
+        let alcoholicBeverageType = try getAlcoholicBeverageType()
+        try await validateAuthorizationAndType()
         
         let startOfWeek = Date.startOfWeek
         let endOfWeek = Date.endOfWeek
@@ -209,13 +206,8 @@ final actor HealthStoreManager {
     }
     
     func fetchAllDrinkSamples() async throws -> [HKQuantitySample] {
-        guard let alcoholicBeverageType else {
-            throw HealthKitError.quantityTypeNotAvailable
-        }
-        
-        guard try await isAuthorized() else {
-            throw HealthKitError.authorizationFailed
-        }
+        let alcoholicBeverageType = try getAlcoholicBeverageType()
+        try await validateAuthorizationAndType()
         
         let sortDescriptor = NSSortDescriptor(
             key: HKSampleSortIdentifierEndDate,
