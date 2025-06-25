@@ -10,7 +10,8 @@
       "Bash(grep:*)",
       "Bash(git commit:*)",
       "Bash(git add:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "WebFetch(domain:www.hackingwithswift.com)"
     ],
     "deny": []
   }

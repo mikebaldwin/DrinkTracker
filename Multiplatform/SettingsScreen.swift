@@ -25,6 +25,7 @@ struct SettingsScreen: View {
             Form {
                 limitsSection
                 measurementDefaultsSection
+                drinkingStatusSection
                 developerSection
             }
             .navigationTitle("Settings")
@@ -130,6 +131,47 @@ struct SettingsScreen: View {
         }
     }
     
+    private var drinkingStatusSection: some View {
+        Section("Drinking Status Tracking") {
+            Toggle("Track drinking status", isOn: Binding(
+                get: { settingsStore.drinkingStatusTrackingEnabled },
+                set: { settingsStore.drinkingStatusTrackingEnabled = $0 }
+            ))
+            .accessibilityLabel("Enable drinking status tracking")
+            .accessibilityHint("Enables or disables calculation of drinking status based on CDC guidelines")
+            
+            if settingsStore.drinkingStatusTrackingEnabled {
+                DatePicker(
+                    "Start tracking from",
+                    selection: Binding(
+                        get: { settingsStore.drinkingStatusStartDate },
+                        set: { settingsStore.drinkingStatusStartDate = $0 }
+                    ),
+                    in: ...Date(),
+                    displayedComponents: [.date]
+                )
+                .accessibilityLabel("Tracking start date")
+                .accessibilityHint("Sets the date from which drinking status will be calculated")
+                
+                Picker("Sex (for CDC guidelines)", selection: Binding(
+                    get: { settingsStore.userSex },
+                    set: { settingsStore.userSex = $0 }
+                )) {
+                    ForEach(Sex.allCases, id: \.self) { sex in
+                        Text(sex.rawValue).tag(sex)
+                    }
+                }
+                .accessibilityLabel("Sex for CDC guidelines")
+                .accessibilityHint("Helps apply appropriate heavy drinking thresholds based on CDC recommendations")
+                
+                Text("Drinking status calculated from this date forward, including alcohol-free days. Sex helps apply CDC heavy drinking thresholds (8+ drinks/week for females, 15+ for males).")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .accessibilityLabel("Drinking status tracking explanation")
+            }
+        }
+    }
+    
     private var developerSection: some View {
         Section("Developer") {
             Button {
@@ -167,7 +209,8 @@ struct SettingsScreen: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(
-        for: DrinkRecord.self,
+        for: DrinkRecord.self, CustomDrink.self, UserSettings.self,
+        migrationPlan: AppMigrationPlan.self,
         configurations: config
     )
 

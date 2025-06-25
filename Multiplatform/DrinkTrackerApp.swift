@@ -22,22 +22,15 @@ struct DrinkTrackerApp: App {
     private let appRouter = AppRouter()
     
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            DrinkRecord.self,
-            CustomDrink.self,
-            UserSettings.self
-        ])
         let modelConfiguration = ModelConfiguration(
-            nil,
-            schema: schema,
-            isStoredInMemoryOnly: false,
             cloudKitDatabase: .private("iCloud.com.mikebaldwin.DrinkTracker")
         )
         
         do {
             return try ModelContainer(
-                for: schema,
-                configurations: [modelConfiguration]
+                for: DrinkRecord.self, CustomDrink.self, UserSettings.self,
+                migrationPlan: AppMigrationPlan.self,
+                configurations: modelConfiguration
             )
         } catch {
             fatalError("Could not create ModelContainer: \(error)")

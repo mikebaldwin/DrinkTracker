@@ -47,22 +47,17 @@ class MainScreenBusinessLogicTests {
     
     // MARK: - Test Setup
     
-    let testContainer: ModelContainer
-    
-    init() throws {
+    private func createTestContainer() throws -> ModelContainer {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        self.testContainer = try ModelContainer(for: DrinkRecord.self, CustomDrink.self, UserSettings.self, configurations: config)
+        return try ModelContainer(
+            for: DrinkRecord.self, CustomDrink.self, UserSettings.self,
+            configurations: config
+        )
     }
     
-    deinit {
-        // Ensure proper cleanup of SwiftData resources
-        // Create a temporary context to save any pending changes
-        let context = ModelContext(testContainer)
-        try? context.save()
-    }
-    
-    func createTestContext() -> ModelContext {
-        return ModelContext(testContainer)
+    func createTestContext() throws -> ModelContext {
+        let container = try createTestContainer()
+        return ModelContext(container)
     }
     
     // MARK: - Setup and Configuration Tests
@@ -75,8 +70,8 @@ class MainScreenBusinessLogicTests {
 //        #expect(true)
 //    }
     
-    @Test("Initial state has correct defaults") func initialStateDefaults() {
-        let testContext = createTestContext()
+    @Test("Initial state has correct defaults") func initialStateDefaults() throws {
+        let testContext = try createTestContext()
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         
         #expect(businessLogic.recordingDrinkComplete == false)
@@ -85,14 +80,15 @@ class MainScreenBusinessLogicTests {
     
     // MARK: - Helper Methods
     
-    func createTestSettingsStore(context: ModelContext) -> SettingsStore {
+    func createTestSettingsStore() throws -> SettingsStore {
+        let context = try createTestContext()
         return SettingsStore(modelContext: context)
     }
     
     // MARK: - Record Drink Tests
     
-    @Test("Record drink toggles recording complete") func recordDrinkTogglesComplete() async {
-        let testContext = createTestContext()
+    @Test("Record drink toggles recording complete") func recordDrinkTogglesComplete() async throws {
+        let testContext = try createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         let businessLogic = MainScreenBusinessLogic.create(
             context: testContext,
@@ -105,8 +101,8 @@ class MainScreenBusinessLogicTests {
         #expect(businessLogic.recordingDrinkComplete == true)
     }
     
-    @Test("Record drink creates HealthKit sample") func recordDrinkCreatesHealthKitSample() async {
-        let testContext = createTestContext()
+    @Test("Record drink creates HealthKit sample") func recordDrinkCreatesHealthKitSample() async throws {
+        let testContext = try createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         let businessLogic = MainScreenBusinessLogic.create(
             context: testContext,
@@ -126,8 +122,8 @@ class MainScreenBusinessLogicTests {
         #expect(savedSample.endDate == drink.timestamp)
     }
     
-    @Test("Record drink sets ID from HealthKit UUID") func recordDrinkSetsHealthKitID() async {
-        let testContext = createTestContext()
+    @Test("Record drink sets ID from HealthKit UUID") func recordDrinkSetsHealthKitID() async throws {
+        let testContext = try createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         let businessLogic = MainScreenBusinessLogic.create(
             context: testContext,
@@ -146,8 +142,8 @@ class MainScreenBusinessLogicTests {
         #expect(drink.id != originalId)
     }
     
-    @Test("Record drink handles HealthKit error gracefully") func recordDrinkHandlesHealthKitError() async {
-        let testContext = createTestContext()
+    @Test("Record drink handles HealthKit error gracefully") func recordDrinkHandlesHealthKitError() async throws {
+        let testContext = try createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         mockHealthStore.shouldThrow = true
         let businessLogic = MainScreenBusinessLogic.create(
@@ -165,9 +161,9 @@ class MainScreenBusinessLogicTests {
     
     // MARK: - Streak Calculation Tests
     
-    @Test("Refresh current streak with empty drinks array") func refreshCurrentStreakWithEmptyArray() {
-        let testContext = createTestContext()
-        let settingsStore = createTestSettingsStore(context: testContext)
+    @Test("Refresh current streak with empty drinks array") func refreshCurrentStreakWithEmptyArray() throws {
+        let testContext = try createTestContext()
+        let settingsStore = try createTestSettingsStore()
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let emptyDrinks: [DrinkRecord] = []
         
@@ -177,9 +173,9 @@ class MainScreenBusinessLogicTests {
         #expect(businessLogic.currentStreak == 0)
     }
     
-    @Test("Refresh current streak calculates correctly") func refreshCurrentStreakCalculatesCorrectly() {
-        let testContext = createTestContext()
-        let settingsStore = createTestSettingsStore(context: testContext)
+    @Test("Refresh current streak calculates correctly") func refreshCurrentStreakCalculatesCorrectly() throws {
+        let testContext = try createTestContext()
+        let settingsStore = try createTestSettingsStore()
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let fiveDaysAgo = Calendar.current.date(byAdding: .day, value: -5, to: Date())!
         let drink = DrinkRecord(standardDrinks: 1.0, date: fiveDaysAgo)
@@ -190,9 +186,9 @@ class MainScreenBusinessLogicTests {
         #expect(businessLogic.currentStreak == 4)
     }
     
-    @Test("Refresh current streak updates longest when current exceeds") func refreshCurrentStreakUpdatesLongest() {
-        let testContext = createTestContext()
-        let settingsStore = createTestSettingsStore(context: testContext)
+    @Test("Refresh current streak updates longest when current exceeds") func refreshCurrentStreakUpdatesLongest() throws {
+        let testContext = try createTestContext()
+        let settingsStore = try createTestSettingsStore()
         settingsStore.longestStreak = 3
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let fiveDaysAgo = Calendar.current.date(byAdding: .day, value: -5, to: Date())!
@@ -205,9 +201,9 @@ class MainScreenBusinessLogicTests {
         #expect(settingsStore.longestStreak == 4)
     }
     
-    @Test("Refresh current streak preserves longest when current is less") func refreshCurrentStreakPreservesLongest() {
-        let testContext = createTestContext()
-        let settingsStore = createTestSettingsStore(context: testContext)
+    @Test("Refresh current streak preserves longest when current is less") func refreshCurrentStreakPreservesLongest() throws {
+        let testContext = try createTestContext()
+        let settingsStore = try createTestSettingsStore()
         settingsStore.longestStreak = 10
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let twoDaysAgo = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
@@ -220,9 +216,9 @@ class MainScreenBusinessLogicTests {
         #expect(settingsStore.longestStreak == 10)
     }
     
-    @Test("Refresh current streak handles zero streak edge case") func refreshCurrentStreakHandlesZeroStreakEdgeCase() {
-        let testContext = createTestContext()
-        let settingsStore = createTestSettingsStore(context: testContext)
+    @Test("Refresh current streak handles zero streak edge case") func refreshCurrentStreakHandlesZeroStreakEdgeCase() throws {
+        let testContext = try createTestContext()
+        let settingsStore = try createTestSettingsStore()
         settingsStore.longestStreak = 1
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         let today = Date()
@@ -238,7 +234,7 @@ class MainScreenBusinessLogicTests {
     // MARK: - Custom Drink Tests
     
     @Test("Add custom drink inserts to model context") func addCustomDrinkInsertsToContext() throws {
-        let testContext = createTestContext()
+        let testContext = try createTestContext()
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         
         let customDrink = CustomDrink(name: "Test Drink", standardDrinks: 2.5)
@@ -259,8 +255,8 @@ class MainScreenBusinessLogicTests {
     
     // MARK: - Feedback Reset Tests
     
-    @Test("Reset drink recording feedback sets to false") func resetDrinkRecordingFeedbackSetsToFalse() async {
-        let testContext = createTestContext()
+    @Test("Reset drink recording feedback sets to false") func resetDrinkRecordingFeedbackSetsToFalse() async throws {
+        let testContext = try createTestContext()
         let businessLogic = MainScreenBusinessLogic.create(context: testContext)
         // First set it to true
         let drink = DrinkRecord(standardDrinks: 1.0)
@@ -274,8 +270,8 @@ class MainScreenBusinessLogicTests {
     
     // MARK: - Integration Tests
     
-    @Test("Record drink workflow end to end") func recordDrinkWorkflowEndToEnd() async {
-        let testContext = createTestContext()
+    @Test("Record drink workflow end to end") func recordDrinkWorkflowEndToEnd() async throws {
+        let testContext = try createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         let mockUserDefaults = MockUserDefaults()
         let businessLogic = MainScreenBusinessLogic.create(
@@ -306,8 +302,8 @@ class MainScreenBusinessLogicTests {
         #expect(drink.id == savedSample.uuid.uuidString)
     }
     
-    @Test("Concurrent drink recording handles multiple calls") func concurrentDrinkRecordingHandlesMultipleCalls() async {
-        let testContext = createTestContext()
+    @Test("Concurrent drink recording handles multiple calls") func concurrentDrinkRecordingHandlesMultipleCalls() async throws {
+        let testContext = try createTestContext()
         let mockHealthStore = MockHealthStoreManager()
         let businessLogic = MainScreenBusinessLogic.create(
             context: testContext,

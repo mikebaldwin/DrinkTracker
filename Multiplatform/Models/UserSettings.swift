@@ -8,13 +8,34 @@
 import Foundation
 import SwiftData
 
-@Model
-final class UserSettings {
-    var dailyLimit: Double = 0.0
-    var weeklyLimit: Double = 0.0
-    var longestStreak: Int = 0
-    var useMetricAsDefault: Bool = false
-    var useProofAsDefault: Bool = false
-    
-    init() {}
+// MARK: - Current Model Typealiases
+typealias UserSettings = AppSchemaV2.UserSettings
+
+extension AppSchemaV2 {
+    @Model
+    final class UserSettings {
+        var dailyLimit: Double = 0.0
+        var weeklyLimit: Double = 0.0
+        var longestStreak: Int = 0
+        var useMetricAsDefault: Bool = false
+        var useProofAsDefault: Bool = false
+        var drinkingStatusTrackingEnabled: Bool = true
+        var drinkingStatusStartDate: Date = Date()
+        var userSex: Sex? = Sex.female
+        
+        init() {}
+    }
+}
+
+extension AppSchemaV1 {
+    @Model
+    final class UserSettings {
+        var dailyLimit: Double = 0.0
+        var weeklyLimit: Double = 0.0
+        var longestStreak: Int = 0
+        var useMetricAsDefault: Bool = false
+        var useProofAsDefault: Bool = false
+        
+        init() {}
+    }
 }
