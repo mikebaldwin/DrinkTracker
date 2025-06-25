@@ -8,13 +8,31 @@
 import Foundation
 import SwiftData
 
-@Model
-final class CustomDrink {
-    let name: String = ""
-    let standardDrinks: Double = 0.0
-    
-    init(name: String, standardDrinks: Double) {
-        self.name = name
-        self.standardDrinks = standardDrinks
+// MARK: - Current Model Typealias
+typealias CustomDrink = AppSchemaV2.CustomDrink
+
+extension AppSchemaV2 {
+    @Model
+    final class CustomDrink {
+        var name: String = ""
+        var standardDrinks: Double = 0.0
+        
+        init(name: String, standardDrinks: Double) {
+            self.name = name
+            self.standardDrinks = standardDrinks
+        }
+    }
+}
+
+extension AppSchemaV1 {
+    @Model
+    final class CustomDrink {
+        var name: String = ""
+        var standardDrinks: Double = 0.0
+        
+        init(name: String, standardDrinks: Double) {
+            self.name = name
+            self.standardDrinks = standardDrinks
+        }
     }
 }
