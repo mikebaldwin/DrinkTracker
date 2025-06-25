@@ -1,0 +1,102 @@
+//
+//  DrinkingStatusCalculator.swift
+//  DrinkTracker
+//
+//  Created by Mike Baldwin on 6/25/25.
+//
+
+import Foundation
+import OSLog
+
+struct DrinkingStatusCalculator {
+    static func calculateStatus(
+        for period: ReportingPeriod,
+        drinks: [DrinkRecord], 
+        settingsStore: SettingsStore
+    ) -> DrinkingStatus? {
+        Logger.drinkingStatus.info("🧮 Starting drinking status calculation")
+        Logger.drinkingStatus.info("📊 Input: period=\(period.days) days, drinks count=\(drinks.count)")
+        Logger.drinkingStatus.info("⚙️ Settings: tracking enabled=\(settingsStore.drinkingStatusTrackingEnabled), userSex=\(settingsStore.userSex.rawValue), startDate=\(settingsStore.drinkingStatusStartDate)")
+        
+        guard settingsStore.drinkingStatusTrackingEnabled else { 
+            Logger.drinkingStatus.info("❌ Tracking disabled, returning nil")
+            return nil 
+        }
+        
+        let trackingStartDate = settingsStore.drinkingStatusStartDate
+        let periodStartDate = Calendar.current.date(
+            byAdding: .day, 
+            value: -period.days, 
+            to: Date()
+        ) ?? Date()
+        
+        Logger.drinkingStatus.info("📅 Date calculations: trackingStart=\(trackingStartDate), periodStart=\(periodStartDate)")
+        
+        // Use the later of tracking start date or period start date
+        let effectiveStartDate = max(trackingStartDate, periodStartDate)
+        Logger.drinkingStatus.info("📅 Effective start date: \(effectiveStartDate)")
+        
+        // If tracking period is shorter than requested period, return nil
+        let daysSinceTracking = Calendar.current.dateComponents(
+            [.day], 
+            from: trackingStartDate, 
+            to: Date()
+        ).day ?? 0
+        
+        Logger.drinkingStatus.info("📊 Days since tracking started: \(daysSinceTracking), required: \(period.days)")
+        
+        guard daysSinceTracking >= period.days else { 
+            Logger.drinkingStatus.info("❌ Insufficient tracking period (\(daysSinceTracking) < \(period.days)), returning nil")
+            return nil 
+        }
+        
+        let relevantDrinks = drinks.filter { drink in
+            drink.timestamp >= effectiveStartDate
+        }
+        
+        Logger.drinkingStatus.info("🍻 Relevant drinks: \(relevantDrinks.count) out of \(drinks.count) total")
+        
+        let totalDrinks = relevantDrinks.reduce(0) { $0 + $1.standardDrinks }
+        let weeksInPeriod = Double(period.days) / 7.0
+        let drinksPerWeek = totalDrinks / weeksInPeriod
+        
+        Logger.drinkingStatus.info("📊 Calculation: totalDrinks=\(totalDrinks), weeksInPeriod=\(weeksInPeriod), drinksPerWeek=\(drinksPerWeek)")
+        
+        let result = classifyDrinkingStatus(drinksPerWeek: drinksPerWeek, sex: settingsStore.userSex)
+//        Logger.drinkingStatus.info("✅ Final result: \(result)")
+        
+        return result
+    }
+    
+    private static func classifyDrinkingStatus(drinksPerWeek: Double, sex: Sex) -> DrinkingStatus {
+        Logger.drinkingStatus.info("🔍 Classifying: drinksPerWeek=\(drinksPerWeek), sex=\(sex.rawValue)")
+        
+        switch drinksPerWeek {
+        case 0:
+            Logger.drinkingStatus.info("📊 Classification: 0 drinks → nonDrinker")
+            return .nonDrinker
+        case 0.1...3:
+            Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) drinks (0.1-3.0) → lightDrinker")
+            return .lightDrinker
+        case 3.1...:
+            // Apply CDC sex-specific heavy drinking thresholds
+            let heavyThreshold: Double = switch sex {
+            case .female: 8.0  // 8+ drinks/week for females
+            case .male: 15.0   // 15+ drinks/week for males
+            }
+            
+            Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) drinks (3.1+), heavyThreshold=\(heavyThreshold) for \(sex.rawValue)")
+            
+            if drinksPerWeek >= heavyThreshold {
+                Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) >= \(heavyThreshold) → heavyDrinker")
+                return .heavyDrinker
+            } else {
+                Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) < \(heavyThreshold) → moderateDrinker")
+                return .moderateDrinker
+            }
+        default:
+            Logger.drinkingStatus.info("📊 Classification: default case → nonDrinker")
+            return .nonDrinker
+        }
+    }
+}
