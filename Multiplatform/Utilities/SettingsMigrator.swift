@@ -18,7 +18,9 @@ struct SettingsMigrator {
         settings.weeklyLimit == 0.0 &&
         settings.longestStreak == 0 &&
         settings.useMetricAsDefault == false &&
-        settings.useProofAsDefault == false
+        settings.useProofAsDefault == false &&
+        settings.drinkingStatusTrackingEnabled == true &&
+        settings.drinkingStatusStartDate.timeIntervalSinceNow < 60 // Within last minute indicates default
         
         guard allAtDefaults else {
             Logger.settings.info("UserSettings already configured, skipping migration")
@@ -62,6 +64,11 @@ struct SettingsMigrator {
             Logger.settings.debug("Migrated useProofAsDefault: \(value)")
             migratedCount += 1
         }
+        
+        // Set tracking start date to current date on first launch
+        settings.drinkingStatusStartDate = Date()
+        Logger.settings.debug("Set drinking status tracking start date to current date")
+        migratedCount += 1
         
         Logger.settings.info("Migration completed: \(migratedCount) settings migrated from UserDefaults to SwiftData")
     }
