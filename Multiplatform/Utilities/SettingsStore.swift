@@ -27,6 +27,7 @@ final class SettingsStore {
             if let foundSettings = existingSettings.first {
                 self.settings = foundSettings
                 Logger.settings.info("Existing UserSettings found, initialization complete")
+                verifyMigration()
             } else {
                 Logger.settings.info("No existing settings found, creating new UserSettings")
                 
@@ -88,5 +89,29 @@ final class SettingsStore {
     var useProofAsDefault: Bool {
         get { settings.useProofAsDefault }
         set { updateSettings { $0.useProofAsDefault = newValue } }
+    }
+    
+    var drinkingStatusTrackingEnabled: Bool {
+        get { settings.drinkingStatusTrackingEnabled }
+        set { updateSettings { $0.drinkingStatusTrackingEnabled = newValue } }
+    }
+    
+    var drinkingStatusStartDate: Date {
+        get { settings.drinkingStatusStartDate }
+        set { updateSettings { $0.drinkingStatusStartDate = newValue } }
+    }
+    
+    var userSex: Sex {
+        get { settings.userSex ?? Sex.female }
+        set { updateSettings { $0.userSex = newValue } }
+    }
+    
+    // MARK: - Migration Verification
+    
+    private func verifyMigration() {
+        Logger.settings.info("Verifying migration - Current settings:")
+        Logger.settings.info("  - drinkingStatusTrackingEnabled: \(self.settings.drinkingStatusTrackingEnabled)")
+        Logger.settings.info("  - drinkingStatusStartDate: \(self.settings.drinkingStatusStartDate)")
+        Logger.settings.info("  - userSex: \(self.settings.userSex?.rawValue ?? "nil")")
     }
 }
