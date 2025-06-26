@@ -73,7 +73,9 @@ struct MainScreen: View {
                     totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
                 )
                 
-                DrinkingStatusSection(drinkRecords: allDrinks)
+                if settingsStore.drinkingStatusTrackingEnabled {
+                    DrinkingStatusSection(drinkRecords: allDrinks)
+                }
                 
                 if dailyLimit != nil || weeklyLimit != nil {
                     LimitsSection(

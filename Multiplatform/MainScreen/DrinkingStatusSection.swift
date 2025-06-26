@@ -14,31 +14,25 @@ struct DrinkingStatusSection: View {
     
     var body: some View {
         Section("Drinking Status") {
-            if settingsStore.drinkingStatusTrackingEnabled {
-                ForEach(ReportingPeriod.allCases, id: \.self) { period in
-                    HStack {
-                        Text(period.rawValue)
-                        Spacer()
-                        if let status = DrinkingStatusCalculator.calculateStatus(
-                            for: period,
-                            drinks: drinkRecords,
-                            settingsStore: settingsStore
-                        ) {
-                            Text(status.rawValue)
-                                .foregroundStyle(colorForStatus(status))
-                                .accessibilityLabel("\(period.rawValue): \(status.rawValue)")
-                        } else {
-                            Text("Insufficient data")
-                                .foregroundStyle(.secondary)
-                                .accessibilityLabel("\(period.rawValue): Insufficient data")
-                        }
+            ForEach(ReportingPeriod.allCases, id: \.self) { period in
+                HStack {
+                    Text(period.rawValue)
+                    Spacer()
+                    if let status = DrinkingStatusCalculator.calculateStatus(
+                        for: period,
+                        drinks: drinkRecords,
+                        settingsStore: settingsStore
+                    ) {
+                        Text(status.rawValue)
+                            .foregroundStyle(colorForStatus(status))
+                            .accessibilityLabel("\(period.rawValue): \(status.rawValue)")
+                    } else {
+                        Text("Not enough data")
+                            .foregroundStyle(.secondary)
+                            .accessibilityLabel("\(period.rawValue): Not enough data")
                     }
-                    .accessibilityElement(children: .combine)
                 }
-            } else {
-                Text("Tracking disabled")
-                    .foregroundStyle(.secondary)
-                    .accessibilityLabel("Drinking status tracking is disabled")
+                .accessibilityElement(children: .combine)
             }
         }
     }
