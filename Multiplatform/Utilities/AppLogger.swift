@@ -6,6 +6,7 @@ extension Logger {
     // Core app functionality
     static let calculations = Logger(subsystem: subsystem, category: "calculations")
     static let dataSync = Logger(subsystem: subsystem, category: "datasync")
+    static let developer = Logger(subsystem: subsystem, category: "developer")
     static let drinkingStatus = Logger(subsystem: subsystem, category: "drinkingstatus")
     static let healthKit = Logger(subsystem: subsystem, category: "healthkit")
     static let navigation = Logger(subsystem: subsystem, category: "navigation")
