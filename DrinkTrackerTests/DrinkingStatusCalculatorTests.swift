@@ -323,4 +323,190 @@ struct DrinkingStatusCalculatorTests {
         // 8.5 drinks/week = heavy for female
         #expect(status == .heavyDrinker)
     }
+    
+    // MARK: - Average Drinks Per Day Tests
+
+    @Test("Calculate average drinks per day for 7-day period") 
+    func testAverageDrinksPerDaySevenDays() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        
+        // 14 drinks over 7 days = 2.0 drinks/day
+        let drinks = [
+            createDrinkRecord(daysAgo: 1, standardDrinks: 3.0),
+            createDrinkRecord(daysAgo: 2, standardDrinks: 2.0), 
+            createDrinkRecord(daysAgo: 3, standardDrinks: 3.0),
+            createDrinkRecord(daysAgo: 4, standardDrinks: 2.0),
+            createDrinkRecord(daysAgo: 5, standardDrinks: 2.0),
+            createDrinkRecord(daysAgo: 6, standardDrinks: 2.0)
+        ]
+        
+        let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .week7,
+            drinks: drinks,
+            settingsStore: settingsStore
+        )
+        
+        #expect(average == 2.0) // 14 drinks ÷ 7 days = 2.0 drinks/day
+    }
+
+    @Test("Calculate average drinks per day for 30-day period") 
+    func testAverageDrinksPerDayThirtyDays() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -40, to: Date()) ?? Date()
+        
+        // Create drinks spread across 30 days totaling 60 drinks = 2.0 drinks/day
+        let drinks = Array(1...20).map { i in
+            createDrinkRecord(daysAgo: i, standardDrinks: 3.0)  // 20 x 3 = 60 drinks total
+        }
+        
+        let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .days30,
+            drinks: drinks,
+            settingsStore: settingsStore
+        )
+        
+        #expect(average == 2.0) // 60 drinks ÷ 30 days = 2.0 drinks/day
+    }
+
+    @Test("Calculate average drinks per day for year period") 
+    func testAverageDrinksPerDayYear() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -400, to: Date()) ?? Date()
+        
+        // Create drinks spread across year totaling 729 drinks ≈ 2.0 drinks/day
+        let simpleDrinks = Array(1...243).map { i in
+            createDrinkRecord(daysAgo: i % 300, standardDrinks: 3.0)  // 243 * 3 = 729 ≈ 730
+        }
+        
+        let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .year,
+            drinks: simpleDrinks,
+            settingsStore: settingsStore
+        )
+        
+        let expectedAverage = 729.0 / 365.0 // ≈ 1.997 drinks/day
+        #expect(abs(average! - expectedAverage) < 0.01)
+    }
+
+    @Test("Average per day returns nil when tracking disabled") 
+    func testAveragePerDayReturnsNilWhenTrackingDisabled() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusTrackingEnabled = false
+        
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 2.0)]
+        
+        let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .week7,
+            drinks: drinks,
+            settingsStore: settingsStore
+        )
+        
+        #expect(average == nil)
+    }
+
+    @Test("Average per day returns nil for insufficient tracking period") 
+    func testAveragePerDayReturnsNilForInsufficientPeriod() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -3, to: Date()) ?? Date()
+        
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 2.0)]
+        
+        let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .week7,
+            drinks: drinks,
+            settingsStore: settingsStore
+        )
+        
+        #expect(average == nil)
+    }
+
+    @Test("Zero drinks shows zero average per day") 
+    func testZeroDrinksShowsZeroAveragePerDay() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        
+        let drinks: [DrinkRecord] = []
+        
+        let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .week7,
+            drinks: drinks,
+            settingsStore: settingsStore
+        )
+        
+        #expect(average == 0.0)
+    }
+
+    @Test("Fractional drinks per day calculation") 
+    func testFractionalDrinksPerDay() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        
+        // 5 drinks over 7 days = ~0.714 drinks/day
+        let drinks = [
+            createDrinkRecord(daysAgo: 1, standardDrinks: 2.5),
+            createDrinkRecord(daysAgo: 4, standardDrinks: 2.5)
+        ]
+        
+        let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .week7,
+            drinks: drinks,
+            settingsStore: settingsStore
+        )
+        
+        let expectedAverage = 5.0 / 7.0 // ~0.714
+        #expect(abs(average! - expectedAverage) < 0.001)
+    }
+
+    @Test("Different periods with same drinks show different averages") 
+    func testDifferentPeriodsShowDifferentAverages() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -400, to: Date()) ?? Date()
+        
+        // Same total drinks but different period lengths
+        let drinks = [
+            createDrinkRecord(daysAgo: 1, standardDrinks: 1.0),
+            createDrinkRecord(daysAgo: 15, standardDrinks: 1.0),
+            createDrinkRecord(daysAgo: 100, standardDrinks: 1.0)
+        ]
+        
+        let weekAverage = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .week7, drinks: drinks, settingsStore: settingsStore
+        )
+        let monthAverage = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .days30, drinks: drinks, settingsStore: settingsStore
+        )
+        let yearAverage = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .year, drinks: drinks, settingsStore: settingsStore
+        )
+        
+        // Week period: 1 drink ÷ 7 days = ~0.143 drinks/day
+        #expect(abs(weekAverage! - (1.0/7.0)) < 0.001)
+        // Month period: 2 drinks ÷ 30 days = ~0.067 drinks/day  
+        #expect(abs(monthAverage! - (2.0/30.0)) < 0.001)
+        // Year period: 3 drinks ÷ 365 days = ~0.008 drinks/day
+        #expect(abs(yearAverage! - (3.0/365.0)) < 0.001)
+    }
+
+    @Test("Multiple drinks on same day counted correctly") 
+    func testMultipleDrinksSameDayCountedCorrectly() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        
+        // 3 drinks all on same day = 3 total drinks over 7 days
+        let drinks = [
+            createDrinkRecord(daysAgo: 1, standardDrinks: 1.0),
+            createDrinkRecord(daysAgo: 1, standardDrinks: 1.5),
+            createDrinkRecord(daysAgo: 1, standardDrinks: 0.5)
+        ]
+        
+        let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .week7,
+            drinks: drinks,
+            settingsStore: settingsStore
+        )
+        
+        let expectedAverage = 3.0 / 7.0 // ~0.429 drinks/day
+        #expect(abs(average! - expectedAverage) < 0.001)
+    }
 }
