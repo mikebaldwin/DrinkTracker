@@ -19,6 +19,11 @@ struct SettingsScreen: View {
     @State private var showDeleteAllDataConfirmation = false
     @State private var showSyncWithHealthKitConfirmation = false
     @State private var showResetLongestStreakConfirmation = false
+    @State private var showTestDataGenerationOptions = false
+    @State private var showGenerationConfirmation = false
+    @State private var selectedProfile: TestDataDrinkingProfile?
+    @State private var isGeneratingData = false
+    @State private var generationProgress: Double = 0.0
     
     var body: some View {
         NavigationStack {
@@ -41,15 +46,26 @@ struct SettingsScreen: View {
                 }
             }
         }
+        .overlay {
+            if isGeneratingData {
+                ProgressView("Generating test data...", value: generationProgress, total: 1.0)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(.ultraThinMaterial)
+            }
+        }
         .modifier(ConfirmationDialogsModifier(
             showDeleteAllDataConfirmation: $showDeleteAllDataConfirmation,
             showSyncWithHealthKitConfirmation: $showSyncWithHealthKitConfirmation,
             showResetLongestStreakConfirmation: $showResetLongestStreakConfirmation,
+            showTestDataGenerationOptions: $showTestDataGenerationOptions,
+            showGenerationConfirmation: $showGenerationConfirmation,
+            selectedProfile: $selectedProfile,
             deleteAllRecords: deleteAllRecords,
             syncWithHealthKit: syncWithHealthKit,
             resetLongestStreak: { 
                 settingsStore.longestStreak = 0
-            }
+            },
+            generateTestData: generateTestData
         ))
     }
     
@@ -191,6 +207,23 @@ struct SettingsScreen: View {
             }
             .accessibilityLabel("Sync with HealthKit")
             .accessibilityHint("Synchronizes local drink records with Apple HealthKit")
+            
+            Button {
+                showTestDataGenerationOptions = true
+            } label: {
+                Text("Generate Test Data")
+            }
+            .disabled(!drinkRecords.isEmpty)
+            .accessibilityLabel("Generate test data")
+            .accessibilityHint("Creates 18 months of sample drink records for testing")
+            
+            if !drinkRecords.isEmpty {
+                Text("Clear existing data first to use test data generator")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .accessibilityLabel("Test data generator unavailable")
+                    .accessibilityHint("Clear existing drink records first to enable test data generation")
+            }
         }
     }
     
@@ -203,6 +236,23 @@ struct SettingsScreen: View {
     private func syncWithHealthKit() async {
         let synchronizer = DataSynchronizer(context: modelContext)
         await synchronizer.updateDrinkRecords()
+    }
+    
+    private func generateTestData() async {
+        guard drinkRecords.isEmpty else { return }
+        guard let profile = selectedProfile else { return }
+        
+        isGeneratingData = true
+        defer { isGeneratingData = false }
+        
+        do {
+            let generator = TestDataGenerator(modelContext: modelContext, settingsStore: settingsStore)
+            try await generator.generateTestData(profile: profile) { progress in
+                generationProgress = progress
+            }
+        } catch {
+            print("Failed to generate test data: \(error)")
+        }
     }
 }
 
@@ -222,9 +272,13 @@ struct ConfirmationDialogsModifier: ViewModifier {
     @Binding var showDeleteAllDataConfirmation: Bool
     @Binding var showSyncWithHealthKitConfirmation: Bool
     @Binding var showResetLongestStreakConfirmation: Bool
+    @Binding var showTestDataGenerationOptions: Bool
+    @Binding var showGenerationConfirmation: Bool
+    @Binding var selectedProfile: TestDataDrinkingProfile?
     let deleteAllRecords: () -> Void
     let syncWithHealthKit: () async -> Void
     let resetLongestStreak: () -> Void
+    let generateTestData: () async -> Void
     
     func body(content: Content) -> some View {
         content
@@ -272,6 +326,31 @@ struct ConfirmationDialogsModifier: ViewModifier {
                 }
                 .accessibilityLabel("Confirm reset")
                 .accessibilityHint("Resets your longest streak record to zero")
+            }
+            .confirmationDialog(
+                "Choose drinking profile for test data generation",
+                isPresented: $showTestDataGenerationOptions,
+                titleVisibility: .visible
+            ) {
+                ForEach(TestDataDrinkingProfile.allCases, id: \.self) { profile in
+                    Button("\(profile.rawValue) (\(profile.description))") {
+                        selectedProfile = profile
+                        showGenerationConfirmation = true
+                    }
+                }
+                Button("Cancel", role: .cancel) { }
+            }
+            .confirmationDialog(
+                "Generate 18 months of \(selectedProfile?.rawValue ?? "") test data?",
+                isPresented: $showGenerationConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Generate Test Data") {
+                    Task { await generateTestData() }
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("This will create approximately 540 drink records. Only use for testing purposes.")
             }
     }
 }

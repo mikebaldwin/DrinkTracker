@@ -257,7 +257,11 @@ class MainScreenBusinessLogicTests {
     
     @Test("Reset drink recording feedback sets to false") func resetDrinkRecordingFeedbackSetsToFalse() async throws {
         let testContext = try createTestContext()
-        let businessLogic = MainScreenBusinessLogic.create(context: testContext)
+        let mockHealthStore = MockHealthStoreManager()
+        let businessLogic = MainScreenBusinessLogic.create(
+            context: testContext,
+            healthStoreManager: mockHealthStore
+        )
         // First set it to true
         let drink = DrinkRecord(standardDrinks: 1.0)
         await businessLogic.recordDrink(drink)
