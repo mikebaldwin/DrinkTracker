@@ -9,9 +9,9 @@ import Foundation
 
 enum DrinkingStatus: String, CaseIterable {
     case nonDrinker = "Non-drinker"
-    case lightDrinker = "Light drinker" 
-    case moderateDrinker = "Moderate drinker"
-    case heavyDrinker = "Heavy drinker"
+    case lightDrinker = "Light"
+    case moderateDrinker = "Moderate"
+    case heavyDrinker = "Heavy"
     
     var description: String {
         switch self {
