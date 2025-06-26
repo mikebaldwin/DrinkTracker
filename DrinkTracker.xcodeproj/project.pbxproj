@@ -83,6 +83,16 @@
 		CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE866B672C1B354D00461411 /* DataSynchronizer.swift */; };
 		CEA845B42E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845B32E0D77A000F1DF02 /* TestDataGenerator.swift */; };
 		CEA845B52E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845B32E0D77A000F1DF02 /* TestDataGenerator.swift */; };
+		CEA845D72E0DC6BB00F1DF02 /* CardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845D62E0DC6BB00F1DF02 /* CardStyle.swift */; };
+		CEA845D82E0DC6BB00F1DF02 /* CardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845D62E0DC6BB00F1DF02 /* CardStyle.swift */; };
+		CEA845DA2E0DC74D00F1DF02 /* DashboardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845D92E0DC74D00F1DF02 /* DashboardCardView.swift */; };
+		CEA845DB2E0DC74D00F1DF02 /* DashboardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845D92E0DC74D00F1DF02 /* DashboardCardView.swift */; };
+		CEA845DD2E0DCF1100F1DF02 /* HistoryNavigationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845DC2E0DCF1100F1DF02 /* HistoryNavigationCard.swift */; };
+		CEA845DE2E0DCF1100F1DF02 /* HistoryNavigationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845DC2E0DCF1100F1DF02 /* HistoryNavigationCard.swift */; };
+		CEA845E02E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845DF2E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift */; };
+		CEA845E12E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845DF2E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift */; };
+		CEA845E32E0DCF5800F1DF02 /* LimitsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845E22E0DCF5800F1DF02 /* LimitsCard.swift */; };
+		CEA845E42E0DCF5800F1DF02 /* LimitsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845E22E0DCF5800F1DF02 /* LimitsCard.swift */; };
 		CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */; };
 		CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */; };
 		CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
@@ -208,6 +218,11 @@
 		CE7BDF322C2C850100D260F1 /* QuickEntryViewWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryViewWatch.swift; sourceTree = "<group>"; };
 		CE866B672C1B354D00461411 /* DataSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSynchronizer.swift; sourceTree = "<group>"; };
 		CEA845B32E0D77A000F1DF02 /* TestDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataGenerator.swift; sourceTree = "<group>"; };
+		CEA845D62E0DC6BB00F1DF02 /* CardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardStyle.swift; sourceTree = "<group>"; };
+		CEA845D92E0DC74D00F1DF02 /* DashboardCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardView.swift; sourceTree = "<group>"; };
+		CEA845DC2E0DCF1100F1DF02 /* HistoryNavigationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryNavigationCard.swift; sourceTree = "<group>"; };
+		CEA845DF2E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlcoholFreeDaysCard.swift; sourceTree = "<group>"; };
+		CEA845E22E0DCF5800F1DF02 /* LimitsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitsCard.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorScreen.swift; sourceTree = "<group>"; };
 		CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrinkScreen.swift; sourceTree = "<group>"; };
 		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
@@ -284,9 +299,14 @@
 			isa = PBXGroup;
 			children = (
 				CE1E00D42E03414100331C7D /* ActionsSection.swift */,
+				CEA845DF2E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift */,
+				CEA845D62E0DC6BB00F1DF02 /* CardStyle.swift */,
 				CE3DACE52BDFD49A00BB52EA /* ChartView.swift */,
+				CEA845D92E0DC74D00F1DF02 /* DashboardCardView.swift */,
 				CECA55672E0C170C00C86021 /* DrinkingStatusSection.swift */,
 				CE1E00C82E03407500331C7D /* DrinkLimitCalculator.swift */,
+				CEA845DC2E0DCF1100F1DF02 /* HistoryNavigationCard.swift */,
+				CEA845E22E0DCF5800F1DF02 /* LimitsCard.swift */,
 				CE1E00CE2E0340F800331C7D /* LimitsSection.swift */,
 				CE4169962BD97FB10028D64A /* MainScreen.swift */,
 				CE1E00D72E03462E00331C7D /* MainScreenBusinessLogic.swift */,
@@ -643,6 +663,7 @@
 			files = (
 				CEFEF50D2DFB58240056E83A /* AppDelegate.swift in Sources */,
 				CE07BA232E05D8400059CAC6 /* ConflictResolution.swift in Sources */,
+				CEA845E12E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift in Sources */,
 				CE07BA172E05AF930059CAC6 /* SyncConflict.swift in Sources */,
 				CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */,
 				CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */,
@@ -664,12 +685,14 @@
 				CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */,
 				CE1E00D32E03411D00331C7D /* StreaksSection.swift in Sources */,
 				CE55F3D12C1F65CF00E3982B /* QuickEntryView.swift in Sources */,
+				CEA845DA2E0DC74D00F1DF02 /* DashboardCardView.swift in Sources */,
 				CE1E00D92E03462E00331C7D /* MainScreenBusinessLogic.swift in Sources */,
 				CECA55682E0C170C00C86021 /* DrinkingStatusSection.swift in Sources */,
 				CE6610492C23676C006E824D /* VolumeMeasurement.swift in Sources */,
 				CEFEF5112DFB587E0056E83A /* QuickActionHandler.swift in Sources */,
 				CECA55602E0B196A00C86021 /* SettingsMigrator.swift in Sources */,
 				CECA55612E0B196A00C86021 /* SettingsStore.swift in Sources */,
+				CEA845D72E0DC6BB00F1DF02 /* CardStyle.swift in Sources */,
 				CE07BA102E041ABE0059CAC6 /* UserDefaultsProviding.swift in Sources */,
 				CE07BA212E05D81E0059CAC6 /* ConflictRow.swift in Sources */,
 				CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */,
@@ -683,11 +706,13 @@
 				CE66104E2C24C7A2006E824D /* Date+Extensions.swift in Sources */,
 				CE1E00D52E03414100331C7D /* ActionsSection.swift in Sources */,
 				CE07BA1D2E05B2B10059CAC6 /* ConflictResolutionScreen.swift in Sources */,
+				CEA845DD2E0DCF1100F1DF02 /* HistoryNavigationCard.swift in Sources */,
 				CE3DACED2BDFE62000BB52EA /* SettingsScreen.swift in Sources */,
 				CE3ECA2D2BE92BBF0046E242 /* DrinkCalculator.swift in Sources */,
 				CE07BA1F2E05B3350059CAC6 /* ConflictResolver.swift in Sources */,
 				CEFEF50F2DFB583D0056E83A /* SceneDelegate.swift in Sources */,
 				CE4169952BD97FB10028D64A /* DrinkTrackerApp.swift in Sources */,
+				CEA845E32E0DCF5800F1DF02 /* LimitsCard.swift in Sources */,
 				CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */,
 				CE05229D2C0F6A4200840AB9 /* Day.swift in Sources */,
 				CEFEF51B2E01F2440056E83A /* AppRouter.swift in Sources */,
@@ -716,6 +741,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE049D292E0C6617009D415F /* AppMigrationPlan.swift in Sources */,
+				CEA845D82E0DC6BB00F1DF02 /* CardStyle.swift in Sources */,
 				CE049D2A2E0C6617009D415F /* AppSchemaV1.swift in Sources */,
 				CE049D2B2E0C6617009D415F /* AppSchemaV2.swift in Sources */,
 				CE59F00A2C3C6E43000C8630 /* Day.swift in Sources */,
@@ -744,13 +770,17 @@
 				CE1E00D62E03414100331C7D /* ActionsSection.swift in Sources */,
 				CE7BDF2D2C2C817700D260F1 /* CustomDrink.swift in Sources */,
 				CECA55622E0B196A00C86021 /* SettingsMigrator.swift in Sources */,
+				CEA845DB2E0DC74D00F1DF02 /* DashboardCardView.swift in Sources */,
+				CEA845E02E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift in Sources */,
 				CECA55632E0B196A00C86021 /* SettingsStore.swift in Sources */,
 				CE7BDF332C2C850100D260F1 /* QuickEntryViewWatch.swift in Sources */,
 				CEFEF5122DFB587E0056E83A /* QuickActionHandler.swift in Sources */,
+				CEA845E42E0DCF5800F1DF02 /* LimitsCard.swift in Sources */,
 				CE7BDF2F2C2C81A300D260F1 /* Date+Extensions.swift in Sources */,
 				CE07BA262E0887E80059CAC6 /* AppLogger.swift in Sources */,
 				CEFEF5172DFB62A70056E83A /* Destination.swift in Sources */,
 				CE461A182C2D9919008E6E1B /* DataSynchronizer.swift in Sources */,
+				CEA845DE2E0DCF1100F1DF02 /* HistoryNavigationCard.swift in Sources */,
 				CE07BA152E05AF930059CAC6 /* SyncConflict.swift in Sources */,
 				CE7BDF2E2C2C818E00D260F1 /* DrinkRecord.swift in Sources */,
 				CEFEF5142DFB58B60056E83A /* QuickActionType.swift in Sources */,

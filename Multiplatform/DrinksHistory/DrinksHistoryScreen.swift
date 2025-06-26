@@ -12,13 +12,44 @@ import OSLog
 struct DrinksHistoryScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppRouter.self) private var router
+    @Environment(SettingsStore.self) private var settingsStore
     @Query(sort: \DrinkRecord.timestamp, order: .reverse) var drinkRecords: [DrinkRecord]
     
     @State private var days: [Day] = []
     private var healthStoreManager = HealthStoreManager.shared
     
+    private var dailyLimit: Double? {
+        settingsStore.dailyLimit > 0 ? settingsStore.dailyLimit : nil
+    }
+    
+    private var weeklyLimit: Double? {
+        settingsStore.weeklyLimit > 0 ? settingsStore.weeklyLimit : nil
+    }
+    
+    private var thisWeeksDrinks: [DrinkRecord] {
+        drinkRecords.thisWeeksRecords
+    }
+    
+    private var totalStandardDrinksToday: Double {
+        drinkRecords.todaysRecords.totalStandardDrinks
+    }
+    
+    private var totalStandardDrinksThisWeek: Double {
+        drinkRecords.thisWeeksRecords.totalStandardDrinks
+    }
+    
     var body: some View {
         List {
+            Section {
+                ChartView(
+                    dailyLimit: dailyLimit,
+                    weeklyLimit: weeklyLimit,
+                    drinkRecords: thisWeeksDrinks,
+                    totalStandardDrinksToday: totalStandardDrinksToday,
+                    totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
+                )
+            }
+            
             ForEach(days) { day in
                 Section(formatDate(day.date)) {
                     if day.drinks.isEmpty {

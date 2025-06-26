@@ -27,4 +27,27 @@ struct DrinkLimitCalculator {
         
         return remaining
     }
+    
+    static func weeklyProgressMessage(
+        weeklyLimit: Double?,
+        totalThisWeek: Double
+    ) -> String {
+        guard let weeklyLimit = weeklyLimit else {
+            return "No weekly limit set"
+        }
+        
+        let remaining = weeklyLimit - totalThisWeek
+        
+        if remaining > 1 {
+            return "\(Int(remaining)) drinks below limit"
+        } else if remaining > 0 {
+            return "1 drink below limit"
+        } else if remaining == 0 {
+            return "On track"
+        } else if remaining >= -1 {
+            return "1 drink over limit"
+        } else {
+            return "\(Int(abs(remaining))) drinks over limit"
+        }
+    }
 }
