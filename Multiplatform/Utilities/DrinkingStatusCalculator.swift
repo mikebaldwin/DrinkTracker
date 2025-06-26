@@ -68,6 +68,41 @@ struct DrinkingStatusCalculator {
         return result
     }
     
+    static func calculateAverageDrinksPerDay(
+        for period: ReportingPeriod,
+        drinks: [DrinkRecord], 
+        settingsStore: SettingsStore
+    ) -> Double? {
+        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
+        
+        let trackingStartDate = settingsStore.drinkingStatusStartDate
+        let periodStartDate = Calendar.current.date(
+            byAdding: .day, 
+            value: -period.days, 
+            to: Date()
+        ) ?? Date()
+        
+        let effectiveStartDate = max(trackingStartDate, periodStartDate)
+        
+        // Check if we have enough tracking data
+        let daysSinceTracking = Calendar.current.dateComponents(
+            [.day], 
+            from: trackingStartDate, 
+            to: Date()
+        ).day ?? 0
+        
+        guard daysSinceTracking >= period.days else { return nil }
+        
+        let relevantDrinks = drinks.filter { drink in
+            drink.timestamp >= effectiveStartDate
+        }
+        
+        let totalDrinks = relevantDrinks.reduce(0) { $0 + $1.standardDrinks }
+        
+        // Calculate average drinks per day for the period
+        return totalDrinks / Double(period.days)
+    }
+    
     private static func classifyDrinkingStatus(drinksPerWeek: Double, sex: Sex) -> DrinkingStatus {
         Logger.drinkingStatus.info("🔍 Classifying: drinksPerWeek=\(drinksPerWeek), sex=\(sex.rawValue)")
         
