@@ -81,6 +81,8 @@
 		CE7BDF352C2C87FC00D260F1 /* StreakCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC522C2200EF004F45FC /* StreakCalculator.swift */; };
 		CE7BDF362C2C883B00D260F1 /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
 		CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE866B672C1B354D00461411 /* DataSynchronizer.swift */; };
+		CEA845B42E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845B32E0D77A000F1DF02 /* TestDataGenerator.swift */; };
+		CEA845B52E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845B32E0D77A000F1DF02 /* TestDataGenerator.swift */; };
 		CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */; };
 		CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */; };
 		CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
@@ -205,6 +207,7 @@
 		CE66104D2C24C7A2006E824D /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		CE7BDF322C2C850100D260F1 /* QuickEntryViewWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryViewWatch.swift; sourceTree = "<group>"; };
 		CE866B672C1B354D00461411 /* DataSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSynchronizer.swift; sourceTree = "<group>"; };
+		CEA845B32E0D77A000F1DF02 /* TestDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataGenerator.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorScreen.swift; sourceTree = "<group>"; };
 		CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrinkScreen.swift; sourceTree = "<group>"; };
 		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
@@ -307,6 +310,7 @@
 				CECA555E2E0B196A00C86021 /* SettingsMigrator.swift */,
 				CECA555F2E0B196A00C86021 /* SettingsStore.swift */,
 				CED1BC522C2200EF004F45FC /* StreakCalculator.swift */,
+				CEA845B32E0D77A000F1DF02 /* TestDataGenerator.swift */,
 				CE07BA0F2E041ABE0059CAC6 /* UserDefaultsProviding.swift */,
 			);
 			path = Utilities;
@@ -691,6 +695,7 @@
 				CE59A5D92E0C245F0004FAA7 /* DrinkingStatus.swift in Sources */,
 				CE59A5DA2E0C245F0004FAA7 /* Sex.swift in Sources */,
 				CE3DACE62BDFD49A00BB52EA /* ChartView.swift in Sources */,
+				CEA845B52E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,6 +722,7 @@
 				CE07BA112E041ABE0059CAC6 /* UserDefaultsProviding.swift in Sources */,
 				CE1E00D82E03462E00331C7D /* MainScreenBusinessLogic.swift in Sources */,
 				CE7BDF362C2C883B00D260F1 /* DailyTotal.swift in Sources */,
+				CEA845B42E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */,
 				CECA55652E0C16F700C86021 /* DrinkingStatusCalculator.swift in Sources */,
 				CE07BA1A2E05B1930059CAC6 /* Notification+Extensions.swift in Sources */,
 				CEFEF51A2E01F2440056E83A /* AppRouter.swift in Sources */,
