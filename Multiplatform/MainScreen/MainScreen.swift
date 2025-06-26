@@ -62,23 +62,85 @@ struct MainScreen: View {
         )
     }
     
-    var body: some View {
-        NavigationStack(path: Bindable(router).navigationPath) {
-            Form {
-                ChartView(
-                    dailyLimit: dailyLimit,
-                    weeklyLimit: weeklyLimit,
-                    drinkRecords: thisWeeksDrinks,
-                    totalStandardDrinksToday: totalStandardDrinksToday,
-                    totalStandardDrinksThisWeek: totalStandardDrinksThisWeek
+    private var drinkingStatus7Days: DrinkingStatus? {
+        DrinkingStatusCalculator.calculateStatus(
+            for: .week7,
+            drinks: allDrinks,
+            settingsStore: settingsStore
+        )
+    }
+    
+    private var drinkingStatus30Days: DrinkingStatus? {
+        DrinkingStatusCalculator.calculateStatus(
+            for: .days30,
+            drinks: allDrinks,
+            settingsStore: settingsStore
+        )
+    }
+    
+    private var drinkingStatusYear: DrinkingStatus? {
+        DrinkingStatusCalculator.calculateStatus(
+            for: .year,
+            drinks: allDrinks,
+            settingsStore: settingsStore
+        )
+    }
+    
+    private var weeklyProgressMessage: String {
+        DrinkLimitCalculator.weeklyProgressMessage(
+            weeklyLimit: weeklyLimit,
+            totalThisWeek: totalStandardDrinksThisWeek
+        )
+    }
+    
+    private var onCalculatorTap: () -> Void {
+        {
+            router.presentCalculator(
+                createCustomDrink: businessLogic.addCustomDrink,
+                createDrinkRecord: { drink in
+                    Task { await businessLogic.recordDrink(drink) }
+                }
+            )
+        }
+    }
+    
+    private var onCustomDrinkTap: () -> Void {
+        {
+            router.presentCustomDrink { customDrink in
+                Task { await businessLogic.recordDrink(DrinkRecord(customDrink)) }
+            }
+        }
+    }
+    
+    private var onQuickEntryTap: () -> Void {
+        {
+            router.presentSheet(.quickEntry)
+        }
+    }
+    
+    @ViewBuilder
+    private func mainContentView() -> some View {
+        ScrollView {
+            VStack(spacing: 16) {
+                DashboardCardView(
+                    currentStreak: currentStreak,
+                    drinkingStatus7Days: drinkingStatus7Days,
+                    drinkingStatus30Days: drinkingStatus30Days,
+                    drinkingStatusYear: drinkingStatusYear,
+                    weeklyProgress: weeklyProgressMessage
                 )
                 
-                if settingsStore.drinkingStatusTrackingEnabled {
-                    DrinkingStatusSection(drinkRecords: allDrinks)
+                HistoryNavigationCard {
+                    router.push(.drinksHistory)
                 }
                 
+                AlcoholFreeDaysCard(
+                    currentStreak: currentStreak,
+                    longestStreak: longestStreak
+                )
+                
                 if dailyLimit != nil || weeklyLimit != nil {
-                    LimitsSection(
+                    LimitsCard(
                         dailyLimit: dailyLimit,
                         weeklyLimit: weeklyLimit,
                         remainingDrinksToday: remainingDrinksToday,
@@ -86,89 +148,101 @@ struct MainScreen: View {
                     )
                 }
                 
-                StreaksSection(
-                    currentStreak: currentStreak,
-                    longestStreak: longestStreak
-                )
-                
                 ActionsSection(
-                    onCalculatorTap: {
-                        router.presentCalculator(
-                            createCustomDrink: businessLogic.addCustomDrink,
-                            createDrinkRecord: { drink in
-                                Task { await businessLogic.recordDrink(drink) }
-                            }
-                        )
-                    },
-                    onCustomDrinkTap: {
-                        router.presentCustomDrink { customDrink in
-                            Task { await businessLogic.recordDrink(DrinkRecord(customDrink)) }
-                        }
-                    },
-                    onQuickEntryTap: {
-                        router.presentSheet(.quickEntry)
-                    }
+                    onCalculatorTap: onCalculatorTap,
+                    onCustomDrinkTap: onCustomDrinkTap,
+                    onQuickEntryTap: onQuickEntryTap
                 )
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        router.presentSettings()
-                    } label: {
-                        Image(systemName: "gearshape")
-                            .accessibilityHidden(true)
+            .padding(.horizontal, 16)
+        }
+    }
+    
+    
+    var body: some View {
+        NavigationStack(path: Bindable(router).navigationPath) {
+            mainContentView()
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            router.presentSettings()
+                        } label: {
+                            Image(systemName: "gearshape")
+                                .accessibilityHidden(true)
+                        }
+                        .accessibilityLabel("Settings")
+                        .accessibilityHint("Opens app settings and preferences")
                     }
-                    .accessibilityLabel("Settings")
-                    .accessibilityHint("Opens app settings and preferences")
                 }
-            }
-            .navigationDestination(for: Destination.self) { destination in
-                viewFor(destination: destination)
-            }
+                .navigationDestination(for: Destination.self) { destination in
+                    viewFor(destination: destination)
+                }
         }
         .sensoryFeedback(.success, trigger: businessLogic.recordingDrinkComplete)
         .sheet(item: Bindable(router).presentedSheet) { sheet in
             viewFor(sheet: sheet)
         }
         .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .active {
-                _ = allDrinks
-                currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
-            }
+            handleScenePhaseChange(newPhase)
         }
         .onChange(of: allDrinks) {
-            currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
+            handleDrinksChange()
         }
         .onChange(of: quickActionHandler.activeAction) { _, activeAction in
-            if let activeAction {
-                router.handleQuickAction(activeAction)
-                quickActionHandler.clearAction()
-            }
+            handleQuickActionChange(activeAction)
         }
         .onAppear {
-            currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
-            
-            router.setQuickActionHandlers(
-                addCustomDrink: businessLogic.addCustomDrink,
-                recordDrink: { drink in
-                    Task { await businessLogic.recordDrink(drink) }
-                }
-            )
-            
-            // Initial sync on app launch
-            if HKHealthStore.isHealthDataAvailable() {
-                Task {
-                    await businessLogic.syncData()
-                }
-            }
+            handleOnAppear()
         }
         .onReceive(NotificationCenter.default.publisher(for: .syncConflictsDetected)) { notification in
-            if let conflicts = notification.object as? [SyncConflict] {
-                router.presentConflictResolution(conflicts: conflicts) { wasSuccessful in
-                    // Conflict resolution completion is handled automatically
-                    // No need to re-sync as successful resolution eliminates conflicts
-                    // and failed resolution will be retried on next app launch
-                }
+            handleSyncConflicts(notification)
+        }
+    }
+    
+    // MARK: - Event Handlers
+    
+    private func handleScenePhaseChange(_ newPhase: ScenePhase) {
+        if newPhase == .active {
+            _ = allDrinks
+            currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
+        }
+    }
+    
+    private func handleDrinksChange() {
+        currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
+    }
+    
+    private func handleQuickActionChange(_ activeAction: QuickActionType?) {
+        if let activeAction {
+            router.handleQuickAction(activeAction)
+            quickActionHandler.clearAction()
+        }
+    }
+    
+    private func handleOnAppear() {
+        currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
+        
+        router.setQuickActionHandlers(
+            addCustomDrink: businessLogic.addCustomDrink,
+            recordDrink: { drink in
+                Task { await businessLogic.recordDrink(drink) }
+            }
+        )
+        
+        // Initial sync on app launch
+        if HKHealthStore.isHealthDataAvailable() {
+            Task {
+                await businessLogic.syncData()
+            }
+        }
+    }
+    
+    private func handleSyncConflicts(_ notification: Notification) {
+        if let conflicts = notification.object as? [SyncConflict] {
+            router.presentConflictResolution(conflicts: conflicts) { wasSuccessful in
+                // Conflict resolution completion is handled automatically
+                // No need to re-sync as successful resolution eliminates conflicts
+                // and failed resolution will be retried on next app launch
             }
         }
     }
