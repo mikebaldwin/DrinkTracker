@@ -116,6 +116,104 @@ final class SettingsStore {
         set { updateSettings { $0.monthlyAlcoholSpend = newValue } }
     }
     
+    // MARK: - Brain Healing Properties (Always Enabled)
+    
+    var healingMomentumDays: Double {
+        get { settings.healingMomentumDays }
+        set { updateSettings { $0.healingMomentumDays = newValue } }
+    }
+
+    var lastHealingUpdate: Date {
+        get { settings.lastHealingUpdate }
+        set { updateSettings { $0.lastHealingUpdate = newValue } }
+    }
+
+    var lastHealingReset: Date {
+        get { settings.lastHealingReset }
+        set { updateSettings { $0.lastHealingReset = newValue } }
+    }
+
+    var healingPhase: HealingPhase {
+        get { settings.healingPhase }
+        set { updateSettings { $0.healingPhase = newValue } }
+    }
+    
+    // MARK: - Brain Healing Methods
+    
+    // Always update healing momentum - no conditional logic
+    func updateHealingMomentum(with drinkRecords: [DrinkRecord]) {
+        let (newMomentum, newPhase) = HealingMomentumCalculator.updateHealingMomentum(
+            drinkRecords: drinkRecords,
+            settings: settings
+        )
+        
+        updateSettings { settings in
+            settings.healingMomentumDays = newMomentum
+            settings.healingPhase = newPhase
+            settings.lastHealingUpdate = Date()
+            
+            // Update reset date if momentum was reset to 0
+            if newMomentum == 0 && self.settings.healingMomentumDays > 0 {
+                settings.lastHealingReset = Date()
+            }
+        }
+    }
+
+    func resetHealingProgress() {
+        updateSettings { settings in
+            settings.healingMomentumDays = 0.0
+            settings.healingPhase = .criticalRecovery
+            settings.lastHealingReset = Date()
+            settings.lastHealingUpdate = Date()
+        }
+    }
+
+    // Always initialize healing momentum on app start
+    func initializeHealingMomentumIfNeeded(with drinkRecords: [DrinkRecord]) {
+        // Only initialize if healing momentum is at zero and we haven't set a reset date recently
+        guard settings.healingMomentumDays == 0.0 && 
+              Calendar.current.isDate(settings.lastHealingReset, inSameDayAs: Date()) else {
+            return
+        }
+        
+        // Use StreakCalculator to get the exact same day count as streak feature
+        let sortedDrinks = drinkRecords.sorted { $0.timestamp > $1.timestamp }
+        guard let mostRecentDrink = sortedDrinks.first else {
+            // No drinks ever recorded - set healing to start from a long time ago
+            updateSettings { settings in
+                settings.lastHealingReset = Calendar.current.date(byAdding: .year, value: -1, to: Date()) ?? Date()
+                settings.lastHealingUpdate = Date()
+                settings.healingMomentumDays = 365.0 // 1 year of healing
+                settings.healingPhase = .establishedSobriety
+            }
+            return
+        }
+        
+        // Use StreakCalculator to get exact same count as streak feature
+        let streakCalculator = StreakCalculator()
+        let currentStreakDays = streakCalculator.calculateCurrentStreak(mostRecentDrink)
+        
+        if currentStreakDays > 0 {
+            let streakStartDate = Calendar.current.date(byAdding: .day, value: 1, to: mostRecentDrink.timestamp) ?? Date()
+            
+            updateSettings { settings in
+                settings.lastHealingReset = streakStartDate
+                settings.lastHealingUpdate = Date()
+                settings.healingMomentumDays = Double(currentStreakDays)
+                
+                // Determine initial phase based on streak length
+                if currentStreakDays <= 30 {
+                    settings.healingPhase = .criticalRecovery
+                } else if currentStreakDays <= 90 {
+                    settings.healingPhase = .sensitiveRecovery
+                } else {
+                    settings.healingPhase = .establishedSobriety
+                }
+            }
+        }
+    }
+
+    
     // MARK: - Migration Verification
     
     private func verifyMigration() {

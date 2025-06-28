@@ -19,6 +19,7 @@ struct SettingsScreen: View {
     @State private var showDeleteAllDataConfirmation = false
     @State private var showSyncWithHealthKitConfirmation = false
     @State private var showResetLongestStreakConfirmation = false
+    @State private var showResetHealingProgressConfirmation = false
     @State private var showTestDataGenerationOptions = false
     @State private var showGenerationConfirmation = false
     @State private var selectedProfile: TestDataDrinkingProfile?
@@ -60,6 +61,7 @@ struct SettingsScreen: View {
             showDeleteAllDataConfirmation: $showDeleteAllDataConfirmation,
             showSyncWithHealthKitConfirmation: $showSyncWithHealthKitConfirmation,
             showResetLongestStreakConfirmation: $showResetLongestStreakConfirmation,
+            showResetHealingProgressConfirmation: $showResetHealingProgressConfirmation,
             showTestDataGenerationOptions: $showTestDataGenerationOptions,
             showGenerationConfirmation: $showGenerationConfirmation,
             selectedProfile: $selectedProfile,
@@ -67,6 +69,9 @@ struct SettingsScreen: View {
             syncWithHealthKit: syncWithHealthKit,
             resetLongestStreak: { 
                 settingsStore.longestStreak = 0
+            },
+            resetHealingProgress: {
+                settingsStore.resetHealingProgress()
             },
             generateTestData: generateTestData
         ))
@@ -141,6 +146,18 @@ struct SettingsScreen: View {
             }
             .accessibilityLabel("Reset longest streak")
             .accessibilityHint("Warning: This will reset your longest streak record to zero")
+            
+            Button {
+                showResetHealingProgressConfirmation = true
+            } label: {
+                Text("Reset brain healing progress")
+            }
+            .accessibilityLabel("Reset brain healing progress")
+            .accessibilityHint("Warning: This will reset your brain healing progress to day zero")
+        } header: {
+            Text("Limits & Progress")
+        } footer: {
+            Text("Brain healing progress: \(Int(settingsStore.healingMomentumDays)) days")
         }
     }
     
@@ -334,12 +351,14 @@ struct ConfirmationDialogsModifier: ViewModifier {
     @Binding var showDeleteAllDataConfirmation: Bool
     @Binding var showSyncWithHealthKitConfirmation: Bool
     @Binding var showResetLongestStreakConfirmation: Bool
+    @Binding var showResetHealingProgressConfirmation: Bool
     @Binding var showTestDataGenerationOptions: Bool
     @Binding var showGenerationConfirmation: Bool
     @Binding var selectedProfile: TestDataDrinkingProfile?
     let deleteAllRecords: () -> Void
     let syncWithHealthKit: () async -> Void
     let resetLongestStreak: () -> Void
+    let resetHealingProgress: () -> Void
     let generateTestData: () async -> Void
     
     func body(content: Content) -> some View {
@@ -388,6 +407,23 @@ struct ConfirmationDialogsModifier: ViewModifier {
                 }
                 .accessibilityLabel("Confirm reset")
                 .accessibilityHint("Resets your longest streak record to zero")
+            }
+            .confirmationDialog(
+                "Reset brain healing progress to zero?",
+                isPresented: $showResetHealingProgressConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Cancel", role: .cancel) { }
+                    .accessibilityLabel("Cancel reset")
+                    .accessibilityHint("Cancels resetting brain healing progress")
+                
+                Button("Reset") {
+                    resetHealingProgress()
+                }
+                .accessibilityLabel("Confirm reset")
+                .accessibilityHint("Resets your brain healing progress to day zero")
+            } message: {
+                Text("This will reset your brain healing momentum to day zero and return you to the initial recovery phase.")
             }
             .confirmationDialog(
                 "Choose drinking profile for test data generation",

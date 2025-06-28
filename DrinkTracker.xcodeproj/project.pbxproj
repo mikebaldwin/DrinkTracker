@@ -98,6 +98,16 @@
 		CEA845E12E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845DF2E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift */; };
 		CEA845E32E0DCF5800F1DF02 /* LimitsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845E22E0DCF5800F1DF02 /* LimitsCard.swift */; };
 		CEA845E42E0DCF5800F1DF02 /* LimitsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845E22E0DCF5800F1DF02 /* LimitsCard.swift */; };
+		CEABEB982E1076C6007DEA9F /* AppSchemaV4.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABEB952E1076C6007DEA9F /* AppSchemaV4.swift */; };
+		CEABEB992E1076C6007DEA9F /* BrainHealingStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABEB962E1076C6007DEA9F /* BrainHealingStage.swift */; };
+		CEABEB9A2E1076C6007DEA9F /* HealingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABEB972E1076C6007DEA9F /* HealingPhase.swift */; };
+		CEABEB9B2E1076C6007DEA9F /* AppSchemaV4.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABEB952E1076C6007DEA9F /* AppSchemaV4.swift */; };
+		CEABEB9C2E1076C6007DEA9F /* BrainHealingStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABEB962E1076C6007DEA9F /* BrainHealingStage.swift */; };
+		CEABEB9D2E1076C6007DEA9F /* HealingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABEB972E1076C6007DEA9F /* HealingPhase.swift */; };
+		CEABEB9F2E1076DA007DEA9F /* HealingMomentumCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABEB9E2E1076DA007DEA9F /* HealingMomentumCalculator.swift */; };
+		CEABEBA02E1076DA007DEA9F /* HealingMomentumCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABEB9E2E1076DA007DEA9F /* HealingMomentumCalculator.swift */; };
+		CEABEBA32E1076F5007DEA9F /* BrainHealingTimelineScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABEBA12E1076F5007DEA9F /* BrainHealingTimelineScreen.swift */; };
+		CEABEBA42E1076F5007DEA9F /* BrainHealingTimelineScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABEBA12E1076F5007DEA9F /* BrainHealingTimelineScreen.swift */; };
 		CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */; };
 		CEB911BF2BDAA73300224660 /* CustomDrinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */; };
 		CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC70BA02C07A35400273E1D /* DailyTotal.swift */; };
@@ -231,6 +241,11 @@
 		CEA845DC2E0DCF1100F1DF02 /* HistoryNavigationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryNavigationCard.swift; sourceTree = "<group>"; };
 		CEA845DF2E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlcoholFreeDaysCard.swift; sourceTree = "<group>"; };
 		CEA845E22E0DCF5800F1DF02 /* LimitsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitsCard.swift; sourceTree = "<group>"; };
+		CEABEB952E1076C6007DEA9F /* AppSchemaV4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSchemaV4.swift; sourceTree = "<group>"; };
+		CEABEB962E1076C6007DEA9F /* BrainHealingStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainHealingStage.swift; sourceTree = "<group>"; };
+		CEABEB972E1076C6007DEA9F /* HealingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealingPhase.swift; sourceTree = "<group>"; };
+		CEABEB9E2E1076DA007DEA9F /* HealingMomentumCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealingMomentumCalculator.swift; sourceTree = "<group>"; };
+		CEABEBA12E1076F5007DEA9F /* BrainHealingTimelineScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainHealingTimelineScreen.swift; sourceTree = "<group>"; };
 		CEB911BA2BD98A7F00224660 /* CalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorScreen.swift; sourceTree = "<group>"; };
 		CEB911BE2BDAA73300224660 /* CustomDrinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDrinkScreen.swift; sourceTree = "<group>"; };
 		CEB911C32BDBF68900224660 /* DrinkTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DrinkTracker.entitlements; sourceTree = "<group>"; };
@@ -319,6 +334,7 @@
 				CE4169962BD97FB10028D64A /* MainScreen.swift */,
 				CE1E00D72E03462E00331C7D /* MainScreenBusinessLogic.swift */,
 				CE1E00D12E03411D00331C7D /* StreaksSection.swift */,
+				CEABEBA12E1076F5007DEA9F /* BrainHealingTimelineScreen.swift */,
 			);
 			path = MainScreen;
 			sourceTree = "<group>";
@@ -326,6 +342,7 @@
 		CE3DACE72BDFD57A00BB52EA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				CEABEB9E2E1076DA007DEA9F /* HealingMomentumCalculator.swift */,
 				CE07BA242E0887E80059CAC6 /* AppLogger.swift */,
 				CEFEF5192E01F2440056E83A /* AppRouter.swift */,
 				CE866B672C1B354D00461411 /* DataSynchronizer.swift */,
@@ -420,12 +437,15 @@
 				CE049D272E0C6617009D415F /* AppSchemaV1.swift */,
 				CE049D282E0C6617009D415F /* AppSchemaV2.swift */,
 				CE659C4D2E10285400A1BFA9 /* AppSchemaV3.swift */,
+				CEABEB952E1076C6007DEA9F /* AppSchemaV4.swift */,
+				CEABEB962E1076C6007DEA9F /* BrainHealingStage.swift */,
 				CE4169C42BD984C40028D64A /* CustomDrink.swift */,
 				CEC70BA02C07A35400273E1D /* DailyTotal.swift */,
 				CE05229C2C0F6A4200840AB9 /* Day.swift */,
 				CEFEF5162DFB62A70056E83A /* Destination.swift */,
 				CE59A5D22E0C245F0004FAA7 /* DrinkingStatus.swift */,
 				CE4169982BD97FB10028D64A /* DrinkRecord.swift */,
+				CEABEB972E1076C6007DEA9F /* HealingPhase.swift */,
 				CE3ECA302BE956BB0046E242 /* Ingredient.swift */,
 				CE59A5D32E0C245F0004FAA7 /* ReportingPeriod.swift */,
 				CE59A5D42E0C245F0004FAA7 /* Sex.swift */,
@@ -674,7 +694,11 @@
 			files = (
 				CEFEF50D2DFB58240056E83A /* AppDelegate.swift in Sources */,
 				CE07BA232E05D8400059CAC6 /* ConflictResolution.swift in Sources */,
+				CEABEB9B2E1076C6007DEA9F /* AppSchemaV4.swift in Sources */,
+				CEABEB9C2E1076C6007DEA9F /* BrainHealingStage.swift in Sources */,
+				CEABEB9D2E1076C6007DEA9F /* HealingPhase.swift in Sources */,
 				CEA845E12E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift in Sources */,
+				CEABEBA32E1076F5007DEA9F /* BrainHealingTimelineScreen.swift in Sources */,
 				CE07BA172E05AF930059CAC6 /* SyncConflict.swift in Sources */,
 				CE4169C52BD984C40028D64A /* CustomDrink.swift in Sources */,
 				CEC70BA12C07A35400273E1D /* DailyTotal.swift in Sources */,
@@ -701,6 +725,7 @@
 				CECA55682E0C170C00C86021 /* DrinkingStatusSection.swift in Sources */,
 				CE6610492C23676C006E824D /* VolumeMeasurement.swift in Sources */,
 				CEFEF5112DFB587E0056E83A /* QuickActionHandler.swift in Sources */,
+				CEABEBA02E1076DA007DEA9F /* HealingMomentumCalculator.swift in Sources */,
 				CECA55602E0B196A00C86021 /* SettingsMigrator.swift in Sources */,
 				CE659C4E2E10285400A1BFA9 /* AppSchemaV3.swift in Sources */,
 				CECA55612E0B196A00C86021 /* SettingsStore.swift in Sources */,
@@ -763,6 +788,7 @@
 				CE1E00D82E03462E00331C7D /* MainScreenBusinessLogic.swift in Sources */,
 				CE7BDF362C2C883B00D260F1 /* DailyTotal.swift in Sources */,
 				CEA845B42E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */,
+				CEABEBA42E1076F5007DEA9F /* BrainHealingTimelineScreen.swift in Sources */,
 				CECA55652E0C16F700C86021 /* DrinkingStatusCalculator.swift in Sources */,
 				CE07BA1A2E05B1930059CAC6 /* Notification+Extensions.swift in Sources */,
 				CEFEF51A2E01F2440056E83A /* AppRouter.swift in Sources */,
@@ -770,6 +796,9 @@
 				CE59F00D2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift in Sources */,
 				CE1E00CF2E0340F800331C7D /* LimitsSection.swift in Sources */,
 				CE049D302E0C6626009D415F /* UserSettings.swift in Sources */,
+				CEABEB982E1076C6007DEA9F /* AppSchemaV4.swift in Sources */,
+				CEABEB992E1076C6007DEA9F /* BrainHealingStage.swift in Sources */,
+				CEABEB9A2E1076C6007DEA9F /* HealingPhase.swift in Sources */,
 				CE7BDF352C2C87FC00D260F1 /* StreakCalculator.swift in Sources */,
 				CE1E00D22E03411D00331C7D /* StreaksSection.swift in Sources */,
 				CE59A5D52E0C245F0004FAA7 /* ReportingPeriod.swift in Sources */,
@@ -789,6 +818,7 @@
 				CEA845E02E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift in Sources */,
 				CECA55632E0B196A00C86021 /* SettingsStore.swift in Sources */,
 				CE7BDF332C2C850100D260F1 /* QuickEntryViewWatch.swift in Sources */,
+				CEABEB9F2E1076DA007DEA9F /* HealingMomentumCalculator.swift in Sources */,
 				CEFEF5122DFB587E0056E83A /* QuickActionHandler.swift in Sources */,
 				CEA845E42E0DCF5800F1DF02 /* LimitsCard.swift in Sources */,
 				CE7BDF2F2C2C81A300D260F1 /* Date+Extensions.swift in Sources */,
