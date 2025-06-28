@@ -23,7 +23,8 @@ struct DrinkingStatusSection: View {
                         if let status = DrinkingStatusCalculator.calculateStatus(
                             for: period,
                             drinks: drinkRecords,
-                            settingsStore: settingsStore
+                            userSex: settingsStore.userSex,
+                            trackingStartDate: settingsStore.drinkingStatusStartDate
                         ) {
                             Text(status.rawValue)
                                 .foregroundStyle(colorForStatus(status))
@@ -36,7 +37,7 @@ struct DrinkingStatusSection: View {
                     if let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
                         for: period,
                         drinks: drinkRecords,
-                        settingsStore: settingsStore
+                        trackingStartDate: settingsStore.drinkingStatusStartDate
                     ) {
                         HStack {
                             Text("Average: \(Formatter.formatDecimal(average)) drinks per day")
@@ -56,13 +57,14 @@ struct DrinkingStatusSection: View {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: period,
             drinks: drinkRecords,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
             for: period,
             drinks: drinkRecords,
-            settingsStore: settingsStore
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         var label = "\(period.rawValue): "

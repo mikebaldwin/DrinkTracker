@@ -12,18 +12,14 @@ struct DrinkingStatusCalculator {
     static func calculateStatus(
         for period: ReportingPeriod,
         drinks: [DrinkRecord], 
-        settingsStore: SettingsStore
+        userSex: Sex,
+        trackingStartDate: Date
     ) -> DrinkingStatus? {
         Logger.drinkingStatus.info("🧮 Starting drinking status calculation")
         Logger.drinkingStatus.info("📊 Input: period=\(period.days) days, drinks count=\(drinks.count)")
-        Logger.drinkingStatus.info("⚙️ Settings: tracking enabled=\(settingsStore.drinkingStatusTrackingEnabled), userSex=\(settingsStore.userSex.rawValue), startDate=\(settingsStore.drinkingStatusStartDate)")
+        Logger.drinkingStatus.info("⚙️ Settings: userSex=\(userSex.rawValue), startDate=\(trackingStartDate)")
         
-        guard settingsStore.drinkingStatusTrackingEnabled else { 
-            Logger.drinkingStatus.info("❌ Tracking disabled, returning nil")
-            return nil 
-        }
-        
-        let trackingStartDate = settingsStore.drinkingStatusStartDate
+        let trackingStartDate = trackingStartDate
         let periodStartDate = Calendar.current.date(
             byAdding: .day, 
             value: -period.days, 
@@ -62,7 +58,7 @@ struct DrinkingStatusCalculator {
         
         Logger.drinkingStatus.info("📊 Calculation: totalDrinks=\(totalDrinks), weeksInPeriod=\(weeksInPeriod), drinksPerWeek=\(drinksPerWeek)")
         
-        let result = classifyDrinkingStatus(drinksPerWeek: drinksPerWeek, sex: settingsStore.userSex)
+        let result = classifyDrinkingStatus(drinksPerWeek: drinksPerWeek, sex: userSex)
 //        Logger.drinkingStatus.info("✅ Final result: \(result)")
         
         return result
@@ -71,11 +67,9 @@ struct DrinkingStatusCalculator {
     static func calculateAverageDrinksPerDay(
         for period: ReportingPeriod,
         drinks: [DrinkRecord], 
-        settingsStore: SettingsStore
+        trackingStartDate: Date
     ) -> Double? {
-        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
-        
-        let trackingStartDate = settingsStore.drinkingStatusStartDate
+        let trackingStartDate = trackingStartDate
         let periodStartDate = Calendar.current.date(
             byAdding: .day, 
             value: -period.days, 

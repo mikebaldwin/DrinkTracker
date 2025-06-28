@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DashboardCardView: View {
     let currentStreak: Int
@@ -13,6 +14,35 @@ struct DashboardCardView: View {
     let drinkingStatus30Days: DrinkingStatus?
     let drinkingStatusYear: DrinkingStatus?
     let weeklyProgress: String
+    let drinkRecords: [DrinkRecord]
+    let settingsStore: SettingsStore
+    
+    private var average7Days: Double? {
+        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
+        return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .week7,
+            drinks: drinkRecords,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+    }
+    
+    private var average30Days: Double? {
+        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
+        return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .days30,
+            drinks: drinkRecords,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+    }
+    
+    private var averageYear: Double? {
+        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
+        return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .year,
+            drinks: drinkRecords,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -44,6 +74,11 @@ struct DashboardCardView: View {
                     Text("Last 7 days:")
                         .font(.subheadline)
                         .foregroundStyle(Color.secondary)
+                    if let average = average7Days {
+                        Text("\(Formatter.formatDecimal(average)) per day")
+                            .font(.subheadline)
+                            .foregroundStyle(Color.secondary)
+                    }
                     Spacer()
                     if let status = drinkingStatus7Days {
                         Text(status.rawValue)
@@ -60,6 +95,11 @@ struct DashboardCardView: View {
                     Text("Last 30 days:")
                         .font(.subheadline)
                         .foregroundStyle(Color.secondary)
+                    if let average = average30Days {
+                        Text("\(Formatter.formatDecimal(average)) per day")
+                            .font(.subheadline)
+                            .foregroundStyle(Color.secondary)
+                    }
                     Spacer()
                     if let status = drinkingStatus30Days {
                         Text(status.rawValue)
@@ -76,6 +116,11 @@ struct DashboardCardView: View {
                     Text("Last year:")
                         .font(.subheadline)
                         .foregroundStyle(Color.secondary)
+                    if let average = averageYear {
+                        Text("\(Formatter.formatDecimal(average)) per day")
+                            .font(.subheadline)
+                            .foregroundStyle(Color.secondary)
+                    }
                     Spacer()
                     if let status = drinkingStatusYear {
                         Text(status.rawValue)
@@ -133,13 +178,25 @@ struct DashboardCardView: View {
         
         label += "Drinking status: "
         if let status7 = drinkingStatus7Days {
-            label += "Last 7 days \(status7.rawValue), "
+            label += "Last 7 days \(status7.rawValue)"
+            if let avg = average7Days {
+                label += ", \(Formatter.formatDecimal(avg)) drinks per day"
+            }
+            label += ", "
         }
         if let status30 = drinkingStatus30Days {
-            label += "Last 30 days \(status30.rawValue), "
+            label += "Last 30 days \(status30.rawValue)"
+            if let avg = average30Days {
+                label += ", \(Formatter.formatDecimal(avg)) drinks per day"
+            }
+            label += ", "
         }
         if let statusYear = drinkingStatusYear {
-            label += "Last year \(statusYear.rawValue). "
+            label += "Last year \(statusYear.rawValue)"
+            if let avg = averageYear {
+                label += ", \(Formatter.formatDecimal(avg)) drinks per day"
+            }
+            label += ". "
         }
         
         label += "Weekly progress: \(weeklyProgress)"
@@ -149,12 +206,27 @@ struct DashboardCardView: View {
 }
 
 #Preview {
+    let sampleDrinks = [
+        DrinkRecord(standardDrinks: 1.5, date: Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date()),
+        DrinkRecord(standardDrinks: 2.0, date: Calendar.current.date(byAdding: .day, value: -3, to: Date()) ?? Date())
+    ]
+    
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(
+        for: DrinkRecord.self, CustomDrink.self, UserSettings.self,
+        configurations: config
+    )
+    let context = ModelContext(container)
+    let settingsStore = SettingsStore(modelContext: context)
+    
     DashboardCardView(
         currentStreak: 6,
         drinkingStatus7Days: .lightDrinker,
         drinkingStatus30Days: .heavyDrinker,
         drinkingStatusYear: .heavyDrinker,
-        weeklyProgress: "2 drinks below limit"
+        weeklyProgress: "2 drinks below limit",
+        drinkRecords: sampleDrinks,
+        settingsStore: settingsStore
     )
     .padding()
 }
