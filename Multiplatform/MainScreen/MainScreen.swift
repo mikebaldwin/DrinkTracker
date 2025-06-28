@@ -37,6 +37,10 @@ struct MainScreen: View {
         settingsStore.longestStreak
     }
     
+    private var healingMomentumDays: Double {
+        settingsStore.healingMomentumDays
+    }
+    
     private var businessLogic: MainScreenBusinessLogic {
         MainScreenBusinessLogic.create(context: modelContext)
     }
@@ -143,7 +147,8 @@ struct MainScreen: View {
                     currentStreak: currentStreak,
                     longestStreak: longestStreak,
                     showSavings: settingsStore.showSavings,
-                    monthlyAlcoholSpend: settingsStore.monthlyAlcoholSpend
+                    monthlyAlcoholSpend: settingsStore.monthlyAlcoholSpend,
+                    healingMomentumDays: healingMomentumDays
                 )
                 
                 if dailyLimit != nil || weeklyLimit != nil {
@@ -212,11 +217,13 @@ struct MainScreen: View {
         if newPhase == .active {
             _ = allDrinks
             currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
+            settingsStore.updateHealingMomentum(with: allDrinks)  // Always update on foreground
         }
     }
     
     private func handleDrinksChange() {
         currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
+        settingsStore.updateHealingMomentum(with: allDrinks)  // Always update
     }
     
     private func handleQuickActionChange(_ activeAction: QuickActionType?) {
@@ -228,6 +235,10 @@ struct MainScreen: View {
     
     private func handleOnAppear() {
         currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
+        
+        // Always initialize and update healing momentum
+        settingsStore.initializeHealingMomentumIfNeeded(with: allDrinks)
+        settingsStore.updateHealingMomentum(with: allDrinks)
         
         router.setQuickActionHandlers(
             addCustomDrink: businessLogic.addCustomDrink,
