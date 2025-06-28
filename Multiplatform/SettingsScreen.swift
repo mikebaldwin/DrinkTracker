@@ -24,6 +24,8 @@ struct SettingsScreen: View {
     @State private var selectedProfile: TestDataDrinkingProfile?
     @State private var isGeneratingData = false
     @State private var generationProgress: Double = 0.0
+    @State private var showMonthlySpendAlert = false
+    @State private var monthlySpendText = ""
     
     var body: some View {
         NavigationStack {
@@ -31,6 +33,7 @@ struct SettingsScreen: View {
                 limitsSection
                 measurementDefaultsSection
                 drinkingStatusSection
+                savingsSection
                 developerSection
             }
             .navigationTitle("Settings")
@@ -67,6 +70,34 @@ struct SettingsScreen: View {
             },
             generateTestData: generateTestData
         ))
+        .alert("Monthly Alcohol Spending", isPresented: $showMonthlySpendAlert) {
+            TextField("Amount", text: $monthlySpendText)
+                .keyboardType(.decimalPad)
+                .accessibilityLabel("Monthly spending amount")
+                .accessibilityHint("Enter average monthly spending on alcohol")
+            
+            Button("Cancel", role: .cancel) {
+                monthlySpendText = ""
+            }
+            .accessibilityLabel("Cancel")
+            .accessibilityHint("Cancels editing monthly spending")
+            
+            Button("Save") {
+                if let amount = Double(monthlySpendText), amount >= 0 {
+                    settingsStore.monthlyAlcoholSpend = amount
+                }
+                monthlySpendText = ""
+            }
+            .accessibilityLabel("Save amount")
+            .accessibilityHint("Saves the entered monthly spending amount")
+        } message: {
+            Text("Enter your average monthly spending on alcohol to track savings during alcohol-free streaks.")
+        }
+        .onChange(of: showMonthlySpendAlert) { _, isPresented in
+            if isPresented {
+                monthlySpendText = settingsStore.monthlyAlcoholSpend > 0 ? String(settingsStore.monthlyAlcoholSpend) : ""
+            }
+        }
     }
     
     private var limitsSection: some View {
@@ -184,6 +215,37 @@ struct SettingsScreen: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .accessibilityLabel("Drinking status tracking explanation")
+            }
+        }
+    }
+    
+    private var savingsSection: some View {
+        Section("Savings Tracker") {
+            Toggle("Show Savings Tracker", isOn: Binding(
+                get: { settingsStore.showSavings },
+                set: { settingsStore.showSavings = $0 }
+            ))
+            .accessibilityLabel("Show savings tracker")
+            .accessibilityHint("Displays money saved during alcohol-free streaks")
+            
+            if settingsStore.showSavings {
+                Button {
+                    showMonthlySpendAlert = true
+                } label: {
+                    HStack {
+                        Text("Monthly alcohol spending")
+                        Spacer()
+                        Text(SavingsCalculator.formatCurrency(settingsStore.monthlyAlcoholSpend))
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .accessibilityLabel("Monthly alcohol spending")
+                .accessibilityValue(SavingsCalculator.formatCurrency(settingsStore.monthlyAlcoholSpend))
+                .accessibilityHint("Tap to edit monthly alcohol spending amount")
+                
+                Text("Used to calculate money saved during alcohol-free streaks")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
     }
