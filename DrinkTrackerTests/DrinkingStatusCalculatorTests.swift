@@ -44,7 +44,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .nonDrinker)
@@ -63,7 +64,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .lightDrinker)
@@ -82,7 +84,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .moderateDrinker)
@@ -101,7 +104,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .moderateDrinker)
@@ -120,7 +124,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .heavyDrinker)
@@ -139,7 +144,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .heavyDrinker)
@@ -153,7 +159,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .lightDrinker)
@@ -168,7 +175,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .heavyDrinker)
@@ -183,7 +191,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .heavyDrinker)
@@ -191,20 +200,6 @@ struct DrinkingStatusCalculatorTests {
     
     // MARK: - Tracking Period Tests
     
-    @Test("Tracking disabled returns nil") func testTrackingDisabled() throws {
-        let settingsStore = try createTestSettingsStore()
-        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
-        settingsStore.drinkingStatusTrackingEnabled = false
-        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 5.0)]
-        
-        let status = DrinkingStatusCalculator.calculateStatus(
-            for: .week7,
-            drinks: drinks,
-            settingsStore: settingsStore
-        )
-        
-        #expect(status == nil)
-    }
     
     @Test("Insufficient tracking period returns nil") func testInsufficientTrackingPeriod() throws {
         let settingsStore = try createTestSettingsStore()
@@ -215,7 +210,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == nil)
@@ -234,7 +230,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         // Should be light drinker (1 drink/week), not heavy (11 drinks/week)
@@ -256,7 +253,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .days30,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .moderateDrinker)
@@ -275,7 +273,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .year,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .moderateDrinker)
@@ -297,7 +296,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(status == .lightDrinker)
@@ -317,7 +317,8 @@ struct DrinkingStatusCalculatorTests {
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         // 8.5 drinks/week = heavy for female
@@ -344,7 +345,7 @@ struct DrinkingStatusCalculatorTests {
         let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(average == 2.0) // 14 drinks ÷ 7 days = 2.0 drinks/day
@@ -363,7 +364,7 @@ struct DrinkingStatusCalculatorTests {
         let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
             for: .days30,
             drinks: drinks,
-            settingsStore: settingsStore
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(average == 2.0) // 60 drinks ÷ 30 days = 2.0 drinks/day
@@ -382,28 +383,13 @@ struct DrinkingStatusCalculatorTests {
         let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
             for: .year,
             drinks: simpleDrinks,
-            settingsStore: settingsStore
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         let expectedAverage = 729.0 / 365.0 // ≈ 1.997 drinks/day
         #expect(abs(average! - expectedAverage) < 0.01)
     }
 
-    @Test("Average per day returns nil when tracking disabled") 
-    func testAveragePerDayReturnsNilWhenTrackingDisabled() throws {
-        let settingsStore = try createTestSettingsStore()
-        settingsStore.drinkingStatusTrackingEnabled = false
-        
-        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 2.0)]
-        
-        let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-            for: .week7,
-            drinks: drinks,
-            settingsStore: settingsStore
-        )
-        
-        #expect(average == nil)
-    }
 
     @Test("Average per day returns nil for insufficient tracking period") 
     func testAveragePerDayReturnsNilForInsufficientPeriod() throws {
@@ -415,7 +401,7 @@ struct DrinkingStatusCalculatorTests {
         let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(average == nil)
@@ -431,7 +417,7 @@ struct DrinkingStatusCalculatorTests {
         let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         #expect(average == 0.0)
@@ -451,7 +437,7 @@ struct DrinkingStatusCalculatorTests {
         let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         let expectedAverage = 5.0 / 7.0 // ~0.714
@@ -471,13 +457,13 @@ struct DrinkingStatusCalculatorTests {
         ]
         
         let weekAverage = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-            for: .week7, drinks: drinks, settingsStore: settingsStore
+            for: .week7, drinks: drinks, trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         let monthAverage = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-            for: .days30, drinks: drinks, settingsStore: settingsStore
+            for: .days30, drinks: drinks, trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         let yearAverage = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-            for: .year, drinks: drinks, settingsStore: settingsStore
+            for: .year, drinks: drinks, trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         // Week period: 1 drink ÷ 7 days = ~0.143 drinks/day
@@ -503,7 +489,7 @@ struct DrinkingStatusCalculatorTests {
         let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
             for: .week7,
             drinks: drinks,
-            settingsStore: settingsStore
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
         
         let expectedAverage = 3.0 / 7.0 // ~0.429 drinks/day

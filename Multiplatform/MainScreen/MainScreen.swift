@@ -66,7 +66,8 @@ struct MainScreen: View {
         DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: allDrinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
     }
     
@@ -74,7 +75,8 @@ struct MainScreen: View {
         DrinkingStatusCalculator.calculateStatus(
             for: .days30,
             drinks: allDrinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
     }
     
@@ -82,7 +84,8 @@ struct MainScreen: View {
         DrinkingStatusCalculator.calculateStatus(
             for: .year,
             drinks: allDrinks,
-            settingsStore: settingsStore
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
         )
     }
     
@@ -127,7 +130,9 @@ struct MainScreen: View {
                     drinkingStatus7Days: drinkingStatus7Days,
                     drinkingStatus30Days: drinkingStatus30Days,
                     drinkingStatusYear: drinkingStatusYear,
-                    weeklyProgress: weeklyProgressMessage
+                    weeklyProgress: weeklyProgressMessage,
+                    drinkRecords: allDrinks,
+                    settingsStore: settingsStore
                 )
                 
                 HistoryNavigationCard {
