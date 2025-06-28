@@ -9,7 +9,25 @@ import Foundation
 import SwiftData
 
 // MARK: - Current Model Typealiases
-typealias UserSettings = AppSchemaV2.UserSettings
+typealias UserSettings = AppSchemaV3.UserSettings
+
+extension AppSchemaV3 {
+    @Model
+    final class UserSettings {
+        var dailyLimit: Double = 0.0
+        var weeklyLimit: Double = 0.0
+        var longestStreak: Int = 0
+        var useMetricAsDefault: Bool = false
+        var useProofAsDefault: Bool = false
+        var drinkingStatusTrackingEnabled: Bool = true
+        var drinkingStatusStartDate: Date = Date()
+        var userSex: Sex? = Sex.female
+        var showSavings: Bool = false
+        var monthlyAlcoholSpend: Double = 0.0
+        
+        init() {}
+    }
+}
 
 extension AppSchemaV2 {
     @Model

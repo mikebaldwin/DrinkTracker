@@ -106,6 +106,16 @@ final class SettingsStore {
         set { updateSettings { $0.userSex = newValue } }
     }
     
+    var showSavings: Bool {
+        get { settings.showSavings }
+        set { updateSettings { $0.showSavings = newValue } }
+    }
+    
+    var monthlyAlcoholSpend: Double {
+        get { settings.monthlyAlcoholSpend }
+        set { updateSettings { $0.monthlyAlcoholSpend = newValue } }
+    }
+    
     // MARK: - Migration Verification
     
     private func verifyMigration() {
