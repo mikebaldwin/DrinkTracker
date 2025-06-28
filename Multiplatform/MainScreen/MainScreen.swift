@@ -141,7 +141,9 @@ struct MainScreen: View {
                 
                 AlcoholFreeDaysCard(
                     currentStreak: currentStreak,
-                    longestStreak: longestStreak
+                    longestStreak: longestStreak,
+                    showSavings: settingsStore.showSavings,
+                    monthlyAlcoholSpend: settingsStore.monthlyAlcoholSpend
                 )
                 
                 if dailyLimit != nil || weeklyLimit != nil {

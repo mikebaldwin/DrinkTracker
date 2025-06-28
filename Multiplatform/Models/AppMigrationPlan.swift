@@ -14,12 +14,16 @@ enum AppMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] { 
         [
             AppSchemaV1.self,
-            AppSchemaV2.self
+            AppSchemaV2.self,
+            AppSchemaV3.self
         ] 
     }
     
     static var stages: [MigrationStage] { 
-        [migrateV1toV2] 
+        [
+            migrateV1toV2,
+            migrateV2toV3
+        ] 
     }
     
     static let migrateV1toV2 = MigrationStage.lightweight(
@@ -59,5 +63,10 @@ enum AppMigrationPlan: SchemaMigrationPlan {
 //            
 //            Logger.settings.info("Migration from UserSettings V1 to V2 completed successfully")
 //        }
+    )
+    
+    static let migrateV2toV3 = MigrationStage.lightweight(
+        fromVersion: AppSchemaV2.self,
+        toVersion: AppSchemaV3.self
     )
 }
