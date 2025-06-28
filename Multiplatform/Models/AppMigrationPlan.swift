@@ -15,14 +15,16 @@ enum AppMigrationPlan: SchemaMigrationPlan {
         [
             AppSchemaV1.self,
             AppSchemaV2.self,
-            AppSchemaV3.self
+            AppSchemaV3.self,
+            AppSchemaV4.self
         ] 
     }
     
     static var stages: [MigrationStage] { 
         [
             migrateV1toV2,
-            migrateV2toV3
+            migrateV2toV3,
+            migrateV3toV4
         ] 
     }
     
@@ -68,5 +70,10 @@ enum AppMigrationPlan: SchemaMigrationPlan {
     static let migrateV2toV3 = MigrationStage.lightweight(
         fromVersion: AppSchemaV2.self,
         toVersion: AppSchemaV3.self
+    )
+    
+    static let migrateV3toV4 = MigrationStage.lightweight(
+        fromVersion: AppSchemaV3.self,
+        toVersion: AppSchemaV4.self
     )
 }

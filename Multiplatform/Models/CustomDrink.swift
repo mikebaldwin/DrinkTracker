@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 // MARK: - Current Model Typealias
-typealias CustomDrink = AppSchemaV3.CustomDrink
+typealias CustomDrink = AppSchemaV4.CustomDrink
 
 extension AppSchemaV3 {
     @Model
