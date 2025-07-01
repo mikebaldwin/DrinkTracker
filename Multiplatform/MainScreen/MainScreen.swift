@@ -24,6 +24,7 @@ struct MainScreen: View {
     ) private var allDrinks: [DrinkRecord]
     
     @State private var currentStreak: Int = 0
+    @State private var factRandomizationTrigger: Int = 0
     
     private var dailyLimit: Double? {
         settingsStore.dailyLimit > 0 ? settingsStore.dailyLimit : nil
@@ -148,7 +149,8 @@ struct MainScreen: View {
                     longestStreak: longestStreak,
                     showSavings: settingsStore.showSavings,
                     monthlyAlcoholSpend: settingsStore.monthlyAlcoholSpend,
-                    healingMomentumDays: healingMomentumDays
+                    healingMomentumDays: healingMomentumDays,
+                    randomizationTrigger: factRandomizationTrigger
                 )
                 
                 if dailyLimit != nil || weeklyLimit != nil {
@@ -218,6 +220,7 @@ struct MainScreen: View {
             _ = allDrinks
             currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
             settingsStore.updateHealingMomentum(with: allDrinks)  // Always update on foreground
+            factRandomizationTrigger += 1  // Trigger brain fact randomization
         }
     }
     
