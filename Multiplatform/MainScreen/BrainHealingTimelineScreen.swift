@@ -170,7 +170,7 @@ struct TimelineStageView: View {
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
                 } else if !isCurrentStage {
-                    Text("Key benefits include improved mood, better sleep, enhanced memory, and increased cognitive function.")
+                    Text(stage.summary)
                         .font(.caption)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
