@@ -19,29 +19,53 @@ struct DashboardCardView: View {
     
     private var average7Days: Double? {
         guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
-        return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-            for: .week7,
-            drinks: drinkRecords,
-            trackingStartDate: settingsStore.drinkingStatusStartDate
-        )
+        if drinkingStatus7Days == .lightDrinker {
+            return DrinkingStatusCalculator.calculateAverageDrinksPerWeek(
+                for: .week7,
+                drinks: drinkRecords,
+                trackingStartDate: settingsStore.drinkingStatusStartDate
+            )
+        } else {
+            return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+                for: .week7,
+                drinks: drinkRecords,
+                trackingStartDate: settingsStore.drinkingStatusStartDate
+            )
+        }
     }
     
     private var average30Days: Double? {
         guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
-        return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-            for: .days30,
-            drinks: drinkRecords,
-            trackingStartDate: settingsStore.drinkingStatusStartDate
-        )
+        if drinkingStatus30Days == .lightDrinker {
+            return DrinkingStatusCalculator.calculateAverageDrinksPerWeek(
+                for: .days30,
+                drinks: drinkRecords,
+                trackingStartDate: settingsStore.drinkingStatusStartDate
+            )
+        } else {
+            return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+                for: .days30,
+                drinks: drinkRecords,
+                trackingStartDate: settingsStore.drinkingStatusStartDate
+            )
+        }
     }
     
     private var averageYear: Double? {
         guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
-        return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-            for: .year,
-            drinks: drinkRecords,
-            trackingStartDate: settingsStore.drinkingStatusStartDate
-        )
+        if drinkingStatusYear == .lightDrinker {
+            return DrinkingStatusCalculator.calculateAverageDrinksPerWeek(
+                for: .year,
+                drinks: drinkRecords,
+                trackingStartDate: settingsStore.drinkingStatusStartDate
+            )
+        } else {
+            return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+                for: .year,
+                drinks: drinkRecords,
+                trackingStartDate: settingsStore.drinkingStatusStartDate
+            )
+        }
     }
     
     var body: some View {
@@ -75,7 +99,8 @@ struct DashboardCardView: View {
                         .font(.subheadline)
                         .foregroundStyle(Color.secondary)
                     if let average = average7Days {
-                        Text("\(Formatter.formatDecimal(average)) per day")
+                        let unit = drinkingStatus7Days == .lightDrinker ? "per week" : "per day"
+                        Text("\(Formatter.formatDecimal(average)) \(unit)")
                             .font(.subheadline)
                             .foregroundStyle(Color.secondary)
                     }
@@ -96,7 +121,8 @@ struct DashboardCardView: View {
                         .font(.subheadline)
                         .foregroundStyle(Color.secondary)
                     if let average = average30Days {
-                        Text("\(Formatter.formatDecimal(average)) per day")
+                        let unit = drinkingStatus30Days == .lightDrinker ? "per week" : "per day"
+                        Text("\(Formatter.formatDecimal(average)) \(unit)")
                             .font(.subheadline)
                             .foregroundStyle(Color.secondary)
                     }
@@ -117,7 +143,8 @@ struct DashboardCardView: View {
                         .font(.subheadline)
                         .foregroundStyle(Color.secondary)
                     if let average = averageYear {
-                        Text("\(Formatter.formatDecimal(average)) per day")
+                        let unit = drinkingStatusYear == .lightDrinker ? "per week" : "per day"
+                        Text("\(Formatter.formatDecimal(average)) \(unit)")
                             .font(.subheadline)
                             .foregroundStyle(Color.secondary)
                     }
@@ -180,21 +207,24 @@ struct DashboardCardView: View {
         if let status7 = drinkingStatus7Days {
             label += "Last 7 days \(status7.rawValue)"
             if let avg = average7Days {
-                label += ", \(Formatter.formatDecimal(avg)) drinks per day"
+                let unit = status7 == .lightDrinker ? "per week" : "per day"
+                label += ", \(Formatter.formatDecimal(avg)) drinks \(unit)"
             }
             label += ", "
         }
         if let status30 = drinkingStatus30Days {
             label += "Last 30 days \(status30.rawValue)"
             if let avg = average30Days {
-                label += ", \(Formatter.formatDecimal(avg)) drinks per day"
+                let unit = status30 == .lightDrinker ? "per week" : "per day"
+                label += ", \(Formatter.formatDecimal(avg)) drinks \(unit)"
             }
             label += ", "
         }
         if let statusYear = drinkingStatusYear {
             label += "Last year \(statusYear.rawValue)"
             if let avg = averageYear {
-                label += ", \(Formatter.formatDecimal(avg)) drinks per day"
+                let unit = statusYear == .lightDrinker ? "per week" : "per day"
+                label += ", \(Formatter.formatDecimal(avg)) drinks \(unit)"
             }
             label += ". "
         }
