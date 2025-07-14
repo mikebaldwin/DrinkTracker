@@ -23,8 +23,8 @@ struct DrinkingStatusCalculator {
         let periodStartDate = Calendar.current.date(
             byAdding: .day, 
             value: -period.days, 
-            to: Date()
-        ) ?? Date()
+            to: Calendar.current.startOfDay(for: Date())
+        ) ?? Calendar.current.startOfDay(for: Date())
         
         Logger.drinkingStatus.info("📅 Date calculations: trackingStart=\(trackingStartDate), periodStart=\(periodStartDate)")
         
@@ -73,8 +73,8 @@ struct DrinkingStatusCalculator {
         let periodStartDate = Calendar.current.date(
             byAdding: .day, 
             value: -period.days, 
-            to: Date()
-        ) ?? Date()
+            to: Calendar.current.startOfDay(for: Date())
+        ) ?? Calendar.current.startOfDay(for: Date())
         
         let effectiveStartDate = max(trackingStartDate, periodStartDate)
         
