@@ -495,4 +495,91 @@ struct DrinkingStatusCalculatorTests {
         let expectedAverage = 3.0 / 7.0 // ~0.429 drinks/day
         #expect(abs(average! - expectedAverage) < 0.001)
     }
+    
+    // MARK: - Bug Fix Tests
+    
+    @Test("Bug fix: 0.4 drinks per day over 30 days should be light drinker")
+    func testBugFixPointFourDrinksPerDayThirtyDays() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -40, to: Date()) ?? Date()
+        
+        // 0.4 drinks per day over 30 days = 12 drinks total = 2.8 drinks per week
+        // This should be classified as light drinker (0.0-3.0 drinks/week)
+        let drinks = Array(1...12).map { i in
+            createDrinkRecord(daysAgo: i * 2, standardDrinks: 1.0)
+        }
+        
+        let status = DrinkingStatusCalculator.calculateStatus(
+            for: .days30,
+            drinks: drinks,
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+        
+        #expect(status == .lightDrinker)
+        
+        // Also verify the average calculation
+        let average = DrinkingStatusCalculator.calculateAverageDrinksPerDay(
+            for: .days30,
+            drinks: drinks,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+        
+        #expect(abs(average! - 0.4) < 0.001)
+    }
+    
+    @Test("Boundary test: very small positive drinks per week")
+    func testVerySmallPositiveDrinksPerWeek() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        
+        // 0.1 drinks per week (very small positive amount)
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 0.1)]
+        
+        let status = DrinkingStatusCalculator.calculateStatus(
+            for: .week7,
+            drinks: drinks,
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+        
+        #expect(status == .lightDrinker)
+    }
+    
+    @Test("Boundary test: exactly 3.0 drinks per week edge case")
+    func testExactlyThreePointZeroDrinksPerWeek() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        
+        // Exactly 3.0 drinks per week
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 3.0)]
+        
+        let status = DrinkingStatusCalculator.calculateStatus(
+            for: .week7,
+            drinks: drinks,
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+        
+        #expect(status == .lightDrinker)
+    }
+    
+    @Test("Boundary test: just over 3.0 drinks per week")
+    func testJustOverThreeDrinksPerWeek() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        settingsStore.userSex = .male
+        
+        // 3.1 drinks per week should be moderate
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 3.1)]
+        
+        let status = DrinkingStatusCalculator.calculateStatus(
+            for: .week7,
+            drinks: drinks,
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+        
+        #expect(status == .moderateDrinker)
+    }
 }
