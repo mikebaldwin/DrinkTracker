@@ -134,21 +134,21 @@ struct DrinkingStatusCalculator {
     private static func classifyDrinkingStatus(drinksPerWeek: Double, sex: Sex) -> DrinkingStatus {
         Logger.drinkingStatus.info("🔍 Classifying: drinksPerWeek=\(drinksPerWeek), sex=\(sex.rawValue)")
         
-        switch drinksPerWeek {
-        case 0:
+        // Use explicit conditionals instead of switch to avoid floating point precision issues
+        if drinksPerWeek == 0.0 {
             Logger.drinkingStatus.info("📊 Classification: 0 drinks → nonDrinker")
             return .nonDrinker
-        case 0.1...3:
-            Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) drinks (0.1-3.0) → lightDrinker")
+        } else if drinksPerWeek > 0.0 && drinksPerWeek <= 3.0 {
+            Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) drinks (0.0-3.0) → lightDrinker")
             return .lightDrinker
-        case 3.1...:
+        } else if drinksPerWeek > 3.0 {
             // Apply CDC sex-specific heavy drinking thresholds
             let heavyThreshold: Double = switch sex {
             case .female: 8.0  // 8+ drinks/week for females
             case .male: 15.0   // 15+ drinks/week for males
             }
             
-            Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) drinks (3.1+), heavyThreshold=\(heavyThreshold) for \(sex.rawValue)")
+            Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) drinks (3.0+), heavyThreshold=\(heavyThreshold) for \(sex.rawValue)")
             
             if drinksPerWeek >= heavyThreshold {
                 Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) >= \(heavyThreshold) → heavyDrinker")
@@ -157,8 +157,8 @@ struct DrinkingStatusCalculator {
                 Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) < \(heavyThreshold) → moderateDrinker")
                 return .moderateDrinker
             }
-        default:
-            Logger.drinkingStatus.info("📊 Classification: default case → nonDrinker")
+        } else {
+            Logger.drinkingStatus.info("📊 Classification: fallback case → nonDrinker")
             return .nonDrinker
         }
     }
