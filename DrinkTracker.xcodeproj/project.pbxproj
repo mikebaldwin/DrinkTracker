@@ -241,6 +241,7 @@
 		CEA845DC2E0DCF1100F1DF02 /* HistoryNavigationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryNavigationCard.swift; sourceTree = "<group>"; };
 		CEA845DF2E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlcoholFreeDaysCard.swift; sourceTree = "<group>"; };
 		CEA845E22E0DCF5800F1DF02 /* LimitsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitsCard.swift; sourceTree = "<group>"; };
+		CEAA7BAA2E26572B00AA17AA /* DrinkTracker Dev.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = "DrinkTracker Dev.xctestplan"; path = "DrinkTrackerTests/DrinkTracker Dev.xctestplan"; sourceTree = "<group>"; };
 		CEABEB952E1076C6007DEA9F /* AppSchemaV4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSchemaV4.swift; sourceTree = "<group>"; };
 		CEABEB962E1076C6007DEA9F /* BrainHealingStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainHealingStage.swift; sourceTree = "<group>"; };
 		CEABEB972E1076C6007DEA9F /* HealingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealingPhase.swift; sourceTree = "<group>"; };
@@ -365,6 +366,7 @@
 		CE4169882BD97FB10028D64A = {
 			isa = PBXGroup;
 			children = (
+				CEAA7BAA2E26572B00AA17AA /* DrinkTracker Dev.xctestplan */,
 				CEFEF51C2E0336F40056E83A /* Documentation */,
 				CE4169932BD97FB10028D64A /* Multiplatform */,
 				CE4169A62BD97FB30028D64A /* DrinkTrackerTests */,

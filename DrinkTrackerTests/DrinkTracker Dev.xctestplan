@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "2039449B-94A3-4E05-A3F0-2A66CE1BE5A5",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:DrinkTracker.xcodeproj",
+        "identifier" : "CE4169A22BD97FB30028D64A",
+        "name" : "DrinkTrackerTests"
+      }
+    }
+  ],
+  "version" : 1
+}
