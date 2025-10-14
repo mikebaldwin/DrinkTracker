@@ -79,7 +79,7 @@ struct DashboardCardView: View {
                     .foregroundStyle(Color.primary)
             }
             
-            Text("\(currentStreak) days")
+            Text(Formatter.formatStreakDuration(currentStreak))
                 .font(.title)
                 .fontWeight(.semibold)
                 .foregroundStyle(.primary)
@@ -201,7 +201,7 @@ struct DashboardCardView: View {
     }
     
     private func accessibilityLabel() -> String {
-        var label = "Dashboard summary. Current streak: \(currentStreak) days. "
+        var label = "Dashboard summary. Current streak: \(Formatter.formatStreakDuration(currentStreak)). "
         
         label += "Drinking status: "
         if let status7 = drinkingStatus7Days {
