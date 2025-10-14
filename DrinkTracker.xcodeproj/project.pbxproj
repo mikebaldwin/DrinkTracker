@@ -69,6 +69,7 @@
 		CE59F00A2C3C6E43000C8630 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE05229C2C0F6A4200840AB9 /* Day.swift */; };
 		CE59F00D2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE59F00C2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift */; };
 		CE59F00F2C3D5DB1000C8630 /* SettingsScreenWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE59F00E2C3D5DB1000C8630 /* SettingsScreenWatch.swift */; };
+		CE5A02762E9ED5AC00B8085E /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A02752E9ED5AC00B8085E /* FormatterTests.swift */; };
 		CE659C4E2E10285400A1BFA9 /* AppSchemaV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE659C4D2E10285400A1BFA9 /* AppSchemaV3.swift */; };
 		CE659C4F2E10285400A1BFA9 /* AppSchemaV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE659C4D2E10285400A1BFA9 /* AppSchemaV3.swift */; };
 		CE659C512E10286300A1BFA9 /* SavingsCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE659C502E10286300A1BFA9 /* SavingsCalculator.swift */; };
@@ -225,6 +226,7 @@
 		CE59A5D42E0C245F0004FAA7 /* Sex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sex.swift; sourceTree = "<group>"; };
 		CE59F00C2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksHistoryScreenWatch.swift; sourceTree = "<group>"; };
 		CE59F00E2C3D5DB1000C8630 /* SettingsScreenWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenWatch.swift; sourceTree = "<group>"; };
+		CE5A02752E9ED5AC00B8085E /* FormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterTests.swift; sourceTree = "<group>"; };
 		CE5F44272C2DADC10023B8DA /* Watch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Watch.entitlements; sourceTree = "<group>"; };
 		CE5F44282C2DADD20023B8DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CE659C4D2E10285400A1BFA9 /* AppSchemaV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSchemaV3.swift; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 		CE4169A62BD97FB30028D64A /* DrinkTrackerTests */ = {
 			isa = PBXGroup;
 			children = (
+				CE5A02752E9ED5AC00B8085E /* FormatterTests.swift */,
 				CE3ECA2E2BE92BD30046E242 /* DrinkCalculatorTests.swift */,
 				CECA556A2E0C171D00C86021 /* DrinkingStatusCalculatorTests.swift */,
 				CE52A1F12C010DC800BAEBF3 /* IngredientTests.swift */,
@@ -772,6 +775,7 @@
 				CE659C542E10286E00A1BFA9 /* SavingsCalculatorTests.swift in Sources */,
 				CECA556B2E0C171D00C86021 /* DrinkingStatusCalculatorTests.swift in Sources */,
 				CE3ECA2F2BE92BD30046E242 /* DrinkCalculatorTests.swift in Sources */,
+				CE5A02762E9ED5AC00B8085E /* FormatterTests.swift in Sources */,
 				CE07BA0E2E0351510059CAC6 /* StreakCalculatorTests.swift in Sources */,
 				CE1E00DD2E034B3800331C7D /* MainScreenBusinessLogicTests.swift in Sources */,
 			);
