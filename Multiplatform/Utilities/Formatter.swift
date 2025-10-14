@@ -16,4 +16,23 @@ struct Formatter {
 
         return formatter.string(from: number as NSNumber) ?? "0"
     }
+
+    static func formatStreakDuration(_ days: Int) -> String {
+        guard days >= 90 else {
+            let dayText = days == 1 ? "day" : "days"
+            return "\(days) \(dayText)"
+        }
+
+        let months = days / 30
+        let remainingDays = days % 30
+
+        let monthText = months == 1 ? "month" : "months"
+
+        if remainingDays == 0 {
+            return "\(months) \(monthText)"
+        } else {
+            let dayText = remainingDays == 1 ? "day" : "days"
+            return "\(months) \(monthText), \(remainingDays) \(dayText)"
+        }
+    }
 }
