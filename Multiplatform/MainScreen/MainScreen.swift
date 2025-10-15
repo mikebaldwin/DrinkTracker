@@ -144,16 +144,18 @@ struct MainScreen: View {
                 HistoryNavigationCard {
                     router.push(.drinksHistory)
                 }
-                
-                AlcoholFreeDaysCard(
-                    currentStreak: currentStreak,
-                    longestStreak: longestStreak,
-                    showSavings: settingsStore.showSavings,
-                    monthlyAlcoholSpend: settingsStore.monthlyAlcoholSpend,
-                    healingMomentumDays: healingMomentumDays,
-                    randomizationTrigger: factRandomizationTrigger
-                )
-                
+
+                if settingsStore.goal == .abstinence {
+                    AlcoholFreeDaysCard(
+                        currentStreak: currentStreak,
+                        longestStreak: longestStreak,
+                        showSavings: settingsStore.showSavings,
+                        monthlyAlcoholSpend: settingsStore.monthlyAlcoholSpend,
+                        healingMomentumDays: healingMomentumDays,
+                        randomizationTrigger: factRandomizationTrigger
+                    )
+                }
+
                 if dailyLimit != nil || weeklyLimit != nil {
                     LimitsCard(
                         dailyLimit: dailyLimit,
