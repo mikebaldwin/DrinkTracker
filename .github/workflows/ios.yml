@@ -8,19 +8,30 @@ on:
 
 jobs:
   build-and-test:
+    # Using macOS 15 runner for compatibility with Xcode 26.0.1
     runs-on: macos-15
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Cache DerivedData
+      uses: actions/cache@v4
+      with:
+        path: ~/Library/Developer/Xcode/DerivedData
+        key: ${{ runner.os }}-xcode-${{ hashFiles('**/*.xcodeproj') }}
+
+    # Using Xcode 26.0.1 to match development environment and support iOS 26.0
     - name: Select Xcode version
       run: sudo xcode-select -s /Applications/Xcode_26.0.1.app
 
     - name: Install dependencies
       run: bundle install
 
+    # Testing with iPhone 17 simulator on iOS 26.0 to match latest deployment target
+    # Timeout set to prevent hung builds from consuming CI minutes
     - name: Build and Test
+      timeout-minutes: 30
       run: |
         set -o pipefail
         xcodebuild test \
