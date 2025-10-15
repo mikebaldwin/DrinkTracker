@@ -15,7 +15,13 @@
       "Bash(echo:*)",
       "Bash(git checkout:*)",
       "Bash(gh issue view:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(bundle install)",
+      "Bash(set -o pipefail)",
+      "Bash(bundle exec:*)",
+      "Bash(exit $PIPESTATUS[0])",
+      "Bash(git push:*)",
+      "Bash(gh pr create:*)"
     ],
     "deny": []
   }
