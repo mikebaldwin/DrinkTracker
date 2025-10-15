@@ -115,7 +115,12 @@ final class SettingsStore {
         get { settings.monthlyAlcoholSpend }
         set { updateSettings { $0.monthlyAlcoholSpend = newValue } }
     }
-    
+
+    var goal: Goal {
+        get { settings.goal ?? .abstinence }
+        set { updateSettings { $0.goal = newValue } }
+    }
+
     // MARK: - Brain Healing Properties (Always Enabled)
     
     var healingMomentumDays: Double {

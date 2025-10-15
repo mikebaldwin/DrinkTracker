@@ -107,37 +107,54 @@ struct SettingsScreen: View {
     
     private var limitsSection: some View {
         Section {
-            Stepper {
-                Text("Daily limit: \(Formatter.formatDecimal(settingsStore.dailyLimit))")
-            } onIncrement: {
-                settingsStore.dailyLimit += 1
-                UIAccessibility.post(notification: .announcement, argument: "Daily limit set to \(Formatter.formatDecimal(settingsStore.dailyLimit))")
-            } onDecrement: {
-                if settingsStore.dailyLimit > 0 {
-                    settingsStore.dailyLimit -= 1
+            Picker("Goal", selection: Binding(
+                get: { settingsStore.goal },
+                set: { newValue in
+                    settingsStore.goal = newValue
+                }
+            )) {
+                Text("Moderation").tag(Goal.moderation)
+                    .accessibilityLabel("Moderation goal")
+                Text("Abstinence").tag(Goal.abstinence)
+                    .accessibilityLabel("Abstinence goal")
+            }
+            .pickerStyle(.segmented)
+            .accessibilityLabel("Drinking goal")
+            .accessibilityHint("Choose between moderating alcohol intake or abstaining completely")
+
+            if settingsStore.goal == .moderation {
+                Stepper {
+                    Text("Daily limit: \(Formatter.formatDecimal(settingsStore.dailyLimit))")
+                } onIncrement: {
+                    settingsStore.dailyLimit += 1
                     UIAccessibility.post(notification: .announcement, argument: "Daily limit set to \(Formatter.formatDecimal(settingsStore.dailyLimit))")
+                } onDecrement: {
+                    if settingsStore.dailyLimit > 0 {
+                        settingsStore.dailyLimit -= 1
+                        UIAccessibility.post(notification: .announcement, argument: "Daily limit set to \(Formatter.formatDecimal(settingsStore.dailyLimit))")
+                    }
                 }
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Daily drink limit")
-            .accessibilityValue("\(Formatter.formatDecimal(settingsStore.dailyLimit)) drinks")
-            .accessibilityHint("Use increment and decrement to adjust daily limit")
-            
-            Stepper {
-                Text("Weekly limit: \(Formatter.formatDecimal(settingsStore.weeklyLimit))")
-            } onIncrement: {
-                settingsStore.weeklyLimit += 1
-                UIAccessibility.post(notification: .announcement, argument: "Weekly limit set to \(Formatter.formatDecimal(settingsStore.weeklyLimit))")
-            } onDecrement: {
-                if settingsStore.weeklyLimit > 0 {
-                    settingsStore.weeklyLimit -= 1
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Daily drink limit")
+                .accessibilityValue("\(Formatter.formatDecimal(settingsStore.dailyLimit)) drinks")
+                .accessibilityHint("Use increment and decrement to adjust daily limit")
+
+                Stepper {
+                    Text("Weekly limit: \(Formatter.formatDecimal(settingsStore.weeklyLimit))")
+                } onIncrement: {
+                    settingsStore.weeklyLimit += 1
                     UIAccessibility.post(notification: .announcement, argument: "Weekly limit set to \(Formatter.formatDecimal(settingsStore.weeklyLimit))")
+                } onDecrement: {
+                    if settingsStore.weeklyLimit > 0 {
+                        settingsStore.weeklyLimit -= 1
+                        UIAccessibility.post(notification: .announcement, argument: "Weekly limit set to \(Formatter.formatDecimal(settingsStore.weeklyLimit))")
+                    }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Weekly drink limit")
+                .accessibilityValue("\(Formatter.formatDecimal(settingsStore.weeklyLimit)) drinks")
+                .accessibilityHint("Use increment and decrement to adjust weekly limit")
             }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Weekly drink limit")
-            .accessibilityValue("\(Formatter.formatDecimal(settingsStore.weeklyLimit)) drinks")
-            .accessibilityHint("Use increment and decrement to adjust weekly limit")
             
             Button {
                 showResetLongestStreakConfirmation = true

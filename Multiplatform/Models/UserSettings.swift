@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 // MARK: - Current Model Typealiases
-typealias UserSettings = AppSchemaV4.UserSettings
+typealias UserSettings = AppSchemaV5.UserSettings
 
 extension AppSchemaV3 {
     @Model
