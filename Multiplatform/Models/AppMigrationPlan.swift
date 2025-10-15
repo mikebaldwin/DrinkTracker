@@ -11,21 +11,23 @@ import OSLog
 
 // MARK: - Migration Plan
 enum AppMigrationPlan: SchemaMigrationPlan {
-    static var schemas: [any VersionedSchema.Type] { 
+    static var schemas: [any VersionedSchema.Type] {
         [
             AppSchemaV1.self,
             AppSchemaV2.self,
             AppSchemaV3.self,
-            AppSchemaV4.self
-        ] 
+            AppSchemaV4.self,
+            AppSchemaV5.self
+        ]
     }
-    
-    static var stages: [MigrationStage] { 
+
+    static var stages: [MigrationStage] {
         [
             migrateV1toV2,
             migrateV2toV3,
-            migrateV3toV4
-        ] 
+            migrateV3toV4,
+            migrateV4toV5
+        ]
     }
     
     static let migrateV1toV2 = MigrationStage.lightweight(
@@ -75,5 +77,10 @@ enum AppMigrationPlan: SchemaMigrationPlan {
     static let migrateV3toV4 = MigrationStage.lightweight(
         fromVersion: AppSchemaV3.self,
         toVersion: AppSchemaV4.self
+    )
+
+    static let migrateV4toV5 = MigrationStage.lightweight(
+        fromVersion: AppSchemaV4.self,
+        toVersion: AppSchemaV5.self
     )
 }

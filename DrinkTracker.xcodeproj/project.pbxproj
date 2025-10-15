@@ -70,6 +70,11 @@
 		CE59F00D2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE59F00C2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift */; };
 		CE59F00F2C3D5DB1000C8630 /* SettingsScreenWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE59F00E2C3D5DB1000C8630 /* SettingsScreenWatch.swift */; };
 		CE5A02762E9ED5AC00B8085E /* FormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A02752E9ED5AC00B8085E /* FormatterTests.swift */; };
+		CE5A02782E9FCB8D00B8085E /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A02772E9FCB8D00B8085E /* Goal.swift */; };
+		CE5A02792E9FCB8D00B8085E /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A02772E9FCB8D00B8085E /* Goal.swift */; };
+		CE5A027B2E9FCB9600B8085E /* GoalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A027A2E9FCB9600B8085E /* GoalTests.swift */; };
+		CE5A027D2E9FCEC600B8085E /* AppSchemaV5.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A027C2E9FCEC600B8085E /* AppSchemaV5.swift */; };
+		CE5A027E2E9FCEC600B8085E /* AppSchemaV5.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A027C2E9FCEC600B8085E /* AppSchemaV5.swift */; };
 		CE659C4E2E10285400A1BFA9 /* AppSchemaV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE659C4D2E10285400A1BFA9 /* AppSchemaV3.swift */; };
 		CE659C4F2E10285400A1BFA9 /* AppSchemaV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE659C4D2E10285400A1BFA9 /* AppSchemaV3.swift */; };
 		CE659C512E10286300A1BFA9 /* SavingsCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE659C502E10286300A1BFA9 /* SavingsCalculator.swift */; };
@@ -227,6 +232,9 @@
 		CE59F00C2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksHistoryScreenWatch.swift; sourceTree = "<group>"; };
 		CE59F00E2C3D5DB1000C8630 /* SettingsScreenWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenWatch.swift; sourceTree = "<group>"; };
 		CE5A02752E9ED5AC00B8085E /* FormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterTests.swift; sourceTree = "<group>"; };
+		CE5A02772E9FCB8D00B8085E /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
+		CE5A027A2E9FCB9600B8085E /* GoalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTests.swift; sourceTree = "<group>"; };
+		CE5A027C2E9FCEC600B8085E /* AppSchemaV5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSchemaV5.swift; sourceTree = "<group>"; };
 		CE5F44272C2DADC10023B8DA /* Watch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Watch.entitlements; sourceTree = "<group>"; };
 		CE5F44282C2DADD20023B8DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CE659C4D2E10285400A1BFA9 /* AppSchemaV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSchemaV3.swift; sourceTree = "<group>"; };
@@ -423,6 +431,7 @@
 		CE4169A62BD97FB30028D64A /* DrinkTrackerTests */ = {
 			isa = PBXGroup;
 			children = (
+				CE5A027A2E9FCB9600B8085E /* GoalTests.swift */,
 				CE5A02752E9ED5AC00B8085E /* FormatterTests.swift */,
 				CE3ECA2E2BE92BD30046E242 /* DrinkCalculatorTests.swift */,
 				CECA556A2E0C171D00C86021 /* DrinkingStatusCalculatorTests.swift */,
@@ -437,6 +446,8 @@
 		CE4169C32BD981A10028D64A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CE5A027C2E9FCEC600B8085E /* AppSchemaV5.swift */,
+				CE5A02772E9FCB8D00B8085E /* Goal.swift */,
 				CE66104A2C236823006E824D /* AlcoholStrength.swift */,
 				CE049D262E0C6617009D415F /* AppMigrationPlan.swift */,
 				CE049D272E0C6617009D415F /* AppSchemaV1.swift */,
@@ -721,6 +732,7 @@
 				CE2638FA2BED28CB000B7CDD /* HealthStoreManager.swift in Sources */,
 				CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */,
 				CED1BC532C2200EF004F45FC /* StreakCalculator.swift in Sources */,
+				CE5A027D2E9FCEC600B8085E /* AppSchemaV5.swift in Sources */,
 				CECA55662E0C16F700C86021 /* DrinkingStatusCalculator.swift in Sources */,
 				CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */,
 				CE1E00D32E03411D00331C7D /* StreaksSection.swift in Sources */,
@@ -741,6 +753,7 @@
 				CEEDC17C2BEBAE420019DF65 /* DrinksHistoryScreen.swift in Sources */,
 				CE1E00CA2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */,
 				CE1E00CB2E03407500331C7D /* DrinkLimitCalculator.swift in Sources */,
+				CE5A02792E9FCB8D00B8085E /* Goal.swift in Sources */,
 				CE1E00D02E0340F800331C7D /* LimitsSection.swift in Sources */,
 				CE866B682C1B354D00461411 /* DataSynchronizer.swift in Sources */,
 				CE07BA192E05B1930059CAC6 /* Notification+Extensions.swift in Sources */,
@@ -771,6 +784,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE5A027B2E9FCB9600B8085E /* GoalTests.swift in Sources */,
 				CE52A1F22C010DC800BAEBF3 /* IngredientTests.swift in Sources */,
 				CE659C542E10286E00A1BFA9 /* SavingsCalculatorTests.swift in Sources */,
 				CECA556B2E0C171D00C86021 /* DrinkingStatusCalculatorTests.swift in Sources */,
@@ -819,10 +833,12 @@
 				CECA55692E0C170C00C86021 /* DrinkingStatusSection.swift in Sources */,
 				CE1E00D62E03414100331C7D /* ActionsSection.swift in Sources */,
 				CE7BDF2D2C2C817700D260F1 /* CustomDrink.swift in Sources */,
+				CE5A02782E9FCB8D00B8085E /* Goal.swift in Sources */,
 				CECA55622E0B196A00C86021 /* SettingsMigrator.swift in Sources */,
 				CEA845DB2E0DC74D00F1DF02 /* DashboardCardView.swift in Sources */,
 				CEA845E02E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift in Sources */,
 				CECA55632E0B196A00C86021 /* SettingsStore.swift in Sources */,
+				CE5A027E2E9FCEC600B8085E /* AppSchemaV5.swift in Sources */,
 				CE7BDF332C2C850100D260F1 /* QuickEntryViewWatch.swift in Sources */,
 				CEABEB9F2E1076DA007DEA9F /* HealingMomentumCalculator.swift in Sources */,
 				CEFEF5122DFB587E0056E83A /* QuickActionHandler.swift in Sources */,
