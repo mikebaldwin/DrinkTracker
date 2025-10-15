@@ -137,7 +137,8 @@ struct MainScreen: View {
                     drinkingStatusYear: drinkingStatusYear,
                     weeklyProgress: weeklyProgressMessage,
                     drinkRecords: allDrinks,
-                    settingsStore: settingsStore
+                    settingsStore: settingsStore,
+                    goal: settingsStore.goal
                 )
                 
                 HistoryNavigationCard {

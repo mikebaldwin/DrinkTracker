@@ -16,6 +16,7 @@ struct DashboardCardView: View {
     let weeklyProgress: String
     let drinkRecords: [DrinkRecord]
     let settingsStore: SettingsStore
+    let goal: Goal
     
     private var average7Days: Double? {
         guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
@@ -160,19 +161,21 @@ struct DashboardCardView: View {
                     }
                 }
             }
-            
-            HStack {
-                Image(systemName: "target")
-                    .foregroundStyle(Color.primaryAction)
-                    .accessibilityHidden(true)
-                Text("Weekly Progress")
-                    .font(.subheadline)
-                    .foregroundStyle(Color.secondary)
+
+            if goal == .moderation {
+                HStack {
+                    Image(systemName: "target")
+                        .foregroundStyle(Color.primaryAction)
+                        .accessibilityHidden(true)
+                    Text("Weekly Progress")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.secondary)
+                }
+
+                Text(weeklyProgress)
+                    .font(.headline)
+                    .foregroundStyle(progressColor())
             }
-            
-            Text(weeklyProgress)
-                .font(.headline)
-                .foregroundStyle(progressColor())
         }
         .cardStyle()
         .accessibilityElement(children: .combine)
@@ -202,7 +205,7 @@ struct DashboardCardView: View {
     
     private func accessibilityLabel() -> String {
         var label = "Dashboard summary. Current streak: \(Formatter.formatStreakDuration(currentStreak)). "
-        
+
         label += "Drinking status: "
         if let status7 = drinkingStatus7Days {
             label += "Last 7 days \(status7.rawValue)"
@@ -228,9 +231,11 @@ struct DashboardCardView: View {
             }
             label += ". "
         }
-        
-        label += "Weekly progress: \(weeklyProgress)"
-        
+
+        if goal == .moderation {
+            label += "Weekly progress: \(weeklyProgress)"
+        }
+
         return label
     }
 }
@@ -256,7 +261,8 @@ struct DashboardCardView: View {
         drinkingStatusYear: .heavyDrinker,
         weeklyProgress: "2 drinks below limit",
         drinkRecords: sampleDrinks,
-        settingsStore: settingsStore
+        settingsStore: settingsStore,
+        goal: .moderation
     )
     .padding()
 }
