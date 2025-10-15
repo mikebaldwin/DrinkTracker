@@ -13,7 +13,9 @@
       "Bash(ls:*)",
       "WebFetch(domain:www.hackingwithswift.com)",
       "Bash(echo:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(gh issue view:*)",
+      "Bash(git pull:*)"
     ],
     "deny": []
   }
