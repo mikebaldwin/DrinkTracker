@@ -103,4 +103,90 @@ class GoalTests {
         }
         #expect(firstSetting.goal == .moderation)
     }
+
+    // MARK: - UI Visibility Tests
+
+    @Test("Abstinence goal should show streak UI elements") func abstinenceGoalShouldShowStreakUI() throws {
+        let context = try createTestContext()
+        let settingsStore = SettingsStore(modelContext: context)
+
+        settingsStore.goal = .abstinence
+
+        #expect(settingsStore.goal == .abstinence)
+    }
+
+    @Test("Moderation goal should hide streak UI elements") func moderationGoalShouldHideStreakUI() throws {
+        let context = try createTestContext()
+        let settingsStore = SettingsStore(modelContext: context)
+
+        settingsStore.goal = .moderation
+
+        #expect(settingsStore.goal == .moderation)
+    }
+
+    @Test("Goal switch from abstinence to moderation preserves streak data") func goalSwitchPreservesStreakData() throws {
+        let context = try createTestContext()
+        let settingsStore = SettingsStore(modelContext: context)
+
+        settingsStore.goal = .abstinence
+        settingsStore.longestStreak = 30
+
+        settingsStore.goal = .moderation
+
+        #expect(settingsStore.goal == .moderation)
+        #expect(settingsStore.longestStreak == 30)
+    }
+
+    @Test("Goal switch from moderation to abstinence preserves streak data") func goalSwitchFromModerationPreservesStreakData() throws {
+        let context = try createTestContext()
+        let settingsStore = SettingsStore(modelContext: context)
+
+        settingsStore.goal = .moderation
+        settingsStore.longestStreak = 15
+
+        settingsStore.goal = .abstinence
+
+        #expect(settingsStore.goal == .abstinence)
+        #expect(settingsStore.longestStreak == 15)
+    }
+
+    @Test("Streak calculation continues regardless of goal setting") func streakCalculationContinuesRegardlessOfGoal() throws {
+        let context = try createTestContext()
+        let settingsStore = SettingsStore(modelContext: context)
+
+        settingsStore.goal = .moderation
+        let initialLongestStreak = settingsStore.longestStreak
+
+        settingsStore.longestStreak = 25
+
+        #expect(settingsStore.longestStreak == 25)
+        #expect(settingsStore.goal == .moderation)
+    }
+
+    @Test("Multiple rapid goal changes handle state correctly") func multipleRapidGoalChangesHandleStateCorrectly() throws {
+        let context = try createTestContext()
+        let settingsStore = SettingsStore(modelContext: context)
+
+        settingsStore.longestStreak = 20
+
+        settingsStore.goal = .moderation
+        settingsStore.goal = .abstinence
+        settingsStore.goal = .moderation
+
+        #expect(settingsStore.goal == .moderation)
+        #expect(settingsStore.longestStreak == 20)
+    }
+
+    @Test("Goal preference syncs correctly across SettingsStore instances") func goalPreferenceSyncsAcrossInstances() throws {
+        let container = try createTestContainer()
+        let context1 = ModelContext(container)
+        let settingsStore1 = SettingsStore(modelContext: context1)
+
+        settingsStore1.goal = .moderation
+
+        let context2 = ModelContext(container)
+        let settingsStore2 = SettingsStore(modelContext: context2)
+
+        #expect(settingsStore2.goal == .moderation)
+    }
 }

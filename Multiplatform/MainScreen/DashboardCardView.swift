@@ -71,20 +71,22 @@ struct DashboardCardView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "trophy.fill")
-                    .foregroundStyle(Color.primaryAction)
-                    .accessibilityHidden(true)
-                Text("Current Streak")
-                    .font(.headline)
-                    .foregroundStyle(Color.primary)
+            if goal == .abstinence {
+                HStack {
+                    Image(systemName: "trophy.fill")
+                        .foregroundStyle(Color.primaryAction)
+                        .accessibilityHidden(true)
+                    Text("Current Streak")
+                        .font(.headline)
+                        .foregroundStyle(Color.primary)
+                }
+
+                Text(Formatter.formatStreakDuration(currentStreak))
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.primary)
             }
-            
-            Text(Formatter.formatStreakDuration(currentStreak))
-                .font(.title)
-                .fontWeight(.semibold)
-                .foregroundStyle(.primary)
-            
+
             HStack {
                 Image(systemName: "chart.bar.fill")
                     .foregroundStyle(Color.primaryAction)
@@ -204,7 +206,11 @@ struct DashboardCardView: View {
     }
     
     private func accessibilityLabel() -> String {
-        var label = "Dashboard summary. Current streak: \(Formatter.formatStreakDuration(currentStreak)). "
+        var label = "Dashboard summary. "
+
+        if goal == .abstinence {
+            label += "Current streak: \(Formatter.formatStreakDuration(currentStreak)). "
+        }
 
         label += "Drinking status: "
         if let status7 = drinkingStatus7Days {

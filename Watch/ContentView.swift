@@ -76,7 +76,9 @@ struct ContentView: View {
                 if dailyLimit != nil || weeklyLimit != nil {
                     limitsSection
                 }
-                streaksSection
+                if settingsStore.goal == .abstinence {
+                    streaksSection
+                }
                 historySection
             }
             .padding()
