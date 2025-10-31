@@ -43,9 +43,9 @@ final actor HealthStoreManager {
         
         do {
             try await self.healthStore.save(sample)
-            Logger.healthKit.info("Successfully saved drink record to HealthKit")
+            await Logger.healthKit.info("Successfully saved drink record to HealthKit")
         } catch {
-            Logger.healthKit.error("Failed to save drink record: \(error.localizedDescription)")
+            await Logger.healthKit.error("Failed to save drink record: \(error.localizedDescription)")
             throw error
         }
     }
@@ -157,8 +157,8 @@ final actor HealthStoreManager {
         let alcoholicBeverageType = try getAlcoholicBeverageType()
         try await validateAuthorizationAndType()
         
-        let startOfWeek = Date.startOfWeek
-        let endOfWeek = Date.endOfWeek
+        let startOfWeek = await Date.startOfWeek
+        let endOfWeek = await Date.endOfWeek
         
         let predicate = HKQuery.predicateForSamples(
             withStart: startOfWeek,
@@ -221,7 +221,7 @@ final actor HealthStoreManager {
             options: []
         )
 
-        Logger.healthKit.debug("Starting HealthKit sample fetch")
+        await Logger.healthKit.debug("Starting HealthKit sample fetch")
 
         let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKQuantitySample], Error>) in
             let query = HKSampleQuery(
