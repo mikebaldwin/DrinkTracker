@@ -28,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: bundle install
 
-    # Testing with iPhone 17 simulator on iOS 26.0 to match latest deployment target
+    # Testing with iPhone 17 simulator on iOS 26.0.1 to match latest deployment target
     # Timeout set to prevent hung builds from consuming CI minutes
     - name: Build and Test
       timeout-minutes: 30
@@ -37,7 +37,7 @@ jobs:
         xcodebuild test \
           -project DrinkTracker.xcodeproj \
           -scheme "DrinkTracker Dev" \
-          -destination "platform=iOS Simulator,name=iPhone 17,OS=26.0" \
+          -destination "platform=iOS Simulator,name=iPhone 17,OS=26.0.1" \
           -only-testing:DrinkTrackerTests \
           ENABLE_SWIFT_TESTING=YES \
           | xcpretty && exit ${PIPESTATUS[0]}
