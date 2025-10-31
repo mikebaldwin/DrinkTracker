@@ -25,7 +25,8 @@
       "Bash(gh pr view:*)",
       "Bash(git remote get-url:*)",
       "WebFetch(domain:github.com)",
-      "Bash(gh run view:*)"
+      "Bash(gh run view:*)",
+      "Read(//private/var/folders/pv/mqp_r3gx1zn5g1x908vnfx2r0000gn/T/DrinkTracker Dev_2025-10-31_09-16-18.487.xcdistributionlogs/**)"
     ],
     "deny": []
   }
