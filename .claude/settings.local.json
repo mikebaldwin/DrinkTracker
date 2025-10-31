@@ -23,7 +23,9 @@
       "Bash(git push:*)",
       "Bash(gh pr create:*)",
       "Bash(gh pr view:*)",
-      "Bash(git remote get-url:*)"
+      "Bash(git remote get-url:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(gh run view:*)"
     ],
     "deny": []
   }
