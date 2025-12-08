@@ -78,6 +78,7 @@ class MainScreenBusinessLogic {
         }
         
         modelContext.insert(drink)
+        try? modelContext.save()
         recordingDrinkComplete.toggle()
     }
     

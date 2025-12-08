@@ -288,8 +288,10 @@ struct MainScreen: View {
         switch sheet {
         case .quickEntry:
             return AnyView(QuickEntryView { drinkRecord in
-                Task { await businessLogic.recordDrink(drinkRecord) }
-                router.dismiss()
+                Task {
+                    await businessLogic.recordDrink(drinkRecord)
+                    router.dismiss()
+                }
             }
             .presentationDetents([.fraction(0.2)]))
         case .calculator(let createCustomDrink, let createDrinkRecord):
