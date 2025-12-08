@@ -68,7 +68,11 @@ struct DashboardCardView: View {
             )
         }
     }
-    
+
+    private var totalDrinksToday: Double {
+        drinkRecords.todaysRecords.totalStandardDrinks
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             if goal == .abstinence {
@@ -82,6 +86,22 @@ struct DashboardCardView: View {
                 }
 
                 Text(Formatter.formatStreakDuration(currentStreak))
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.primary)
+            }
+
+            if goal == .moderation {
+                HStack {
+                    Image(systemName: "drop.fill")
+                        .foregroundStyle(Color.primaryAction)
+                        .accessibilityHidden(true)
+                    Text("Today's Drinks")
+                        .font(.headline)
+                        .foregroundStyle(Color.primary)
+                }
+
+                Text(Formatter.formatDecimal(totalDrinksToday))
                     .font(.title)
                     .fontWeight(.semibold)
                     .foregroundStyle(.primary)
@@ -210,6 +230,8 @@ struct DashboardCardView: View {
 
         if goal == .abstinence {
             label += "Current streak: \(Formatter.formatStreakDuration(currentStreak)). "
+        } else if goal == .moderation {
+            label += "Today's drinks: \(Formatter.formatDecimal(totalDrinksToday)). "
         }
 
         label += "Drinking status: "
