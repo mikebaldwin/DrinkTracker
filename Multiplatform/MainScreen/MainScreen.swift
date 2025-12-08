@@ -130,16 +130,25 @@ struct MainScreen: View {
     private func mainContentView() -> some View {
         ScrollView {
             VStack(spacing: 16) {
-                DashboardCardView(
-                    currentStreak: currentStreak,
-                    drinkingStatus7Days: drinkingStatus7Days,
-                    drinkingStatus30Days: drinkingStatus30Days,
-                    drinkingStatusYear: drinkingStatusYear,
-                    weeklyProgress: weeklyProgressMessage,
-                    drinkRecords: allDrinks,
-                    settingsStore: settingsStore,
-                    goal: settingsStore.goal
-                )
+                if settingsStore.goal == .abstinence {
+                    AbstinenceDashboardView(
+                        currentStreak: currentStreak,
+                        drinkingStatus7Days: drinkingStatus7Days,
+                        drinkingStatus30Days: drinkingStatus30Days,
+                        drinkingStatusYear: drinkingStatusYear,
+                        drinkRecords: allDrinks,
+                        settingsStore: settingsStore
+                    )
+                } else {
+                    ModerationDashboardView(
+                        drinkingStatus7Days: drinkingStatus7Days,
+                        drinkingStatus30Days: drinkingStatus30Days,
+                        drinkingStatusYear: drinkingStatusYear,
+                        weeklyProgress: weeklyProgressMessage,
+                        drinkRecords: allDrinks,
+                        settingsStore: settingsStore
+                    )
+                }
                 
                 HistoryNavigationCard {
                     router.push(.drinksHistory)
