@@ -8,9 +8,9 @@
 import SwiftUI
 
 enum WeeklyProgressStatus {
-    case belowLimit(Int)
+    case belowLimit(Double)
     case onTrack
-    case overLimit(Int)
+    case overLimit(Double)
     case noLimitSet
 
     init(weeklyLimit: Double?, totalThisWeek: Double) {
@@ -22,26 +22,30 @@ enum WeeklyProgressStatus {
         let remaining = weeklyLimit - totalThisWeek
 
         if remaining > 1 {
-            self = .belowLimit(Int(remaining))
+            self = .belowLimit(remaining)
         } else if remaining > 0 {
-            self = .belowLimit(1)
+            self = .belowLimit(remaining)
         } else if remaining == 0 {
             self = .onTrack
         } else if remaining >= -1 {
-            self = .overLimit(1)
+            self = .overLimit(abs(remaining))
         } else {
-            self = .overLimit(Int(abs(remaining)))
+            self = .overLimit(abs(remaining))
         }
     }
 
     var displayText: String {
         switch self {
-        case .belowLimit(let count):
-            return count == 1 ? "1 drink below limit" : "\(count) drinks below limit"
+        case .belowLimit(let remaining):
+            let formatted = Formatter.formatDecimal(remaining)
+            let noun = remaining == 1.0 ? "drink" : "drinks"
+            return "\(formatted) \(noun) below limit"
         case .onTrack:
             return "On track"
-        case .overLimit(let count):
-            return count == 1 ? "1 drink over limit" : "\(count) drinks over limit"
+        case .overLimit(let over):
+            let formatted = Formatter.formatDecimal(over)
+            let noun = over == 1.0 ? "drink" : "drinks"
+            return "\(formatted) \(noun) over limit"
         case .noLimitSet:
             return "No weekly limit set"
         }
