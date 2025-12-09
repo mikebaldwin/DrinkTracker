@@ -94,7 +94,7 @@ struct MainScreen: View {
         )
     }
     
-    private var weeklyProgressMessage: String {
+    private var weeklyProgressMessage: WeeklyProgressStatus {
         DrinkLimitCalculator.weeklyProgressMessage(
             weeklyLimit: weeklyLimit,
             totalThisWeek: totalStandardDrinksThisWeek
