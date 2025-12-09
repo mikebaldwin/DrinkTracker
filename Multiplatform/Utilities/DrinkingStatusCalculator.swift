@@ -144,17 +144,17 @@ struct DrinkingStatusCalculator {
         } else if drinksPerWeek > 3.0 {
             // Apply CDC sex-specific heavy drinking thresholds
             let heavyThreshold: Double = switch sex {
-            case .female: 8.0  // 8+ drinks/week for females
-            case .male: 15.0   // 15+ drinks/week for males
+            case .female: 7.0  // >7 drinks/week for females
+            case .male: 14.0   // >14 drinks/week for males
             }
-            
+
             Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) drinks (3.0+), heavyThreshold=\(heavyThreshold) for \(sex.rawValue)")
-            
-            if drinksPerWeek >= heavyThreshold {
-                Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) >= \(heavyThreshold) → heavyDrinker")
+
+            if drinksPerWeek > heavyThreshold {
+                Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) > \(heavyThreshold) → heavyDrinker")
                 return .heavyDrinker
             } else {
-                Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) < \(heavyThreshold) → moderateDrinker")
+                Logger.drinkingStatus.info("📊 Classification: \(drinksPerWeek) <= \(heavyThreshold) → moderateDrinker")
                 return .moderateDrinker
             }
         } else {
