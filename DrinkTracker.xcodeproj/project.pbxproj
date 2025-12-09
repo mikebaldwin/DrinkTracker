@@ -130,6 +130,8 @@
 		CECE06CF2EE75F810057CFAE /* AbstinenceDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06CD2EE75F810057CFAE /* AbstinenceDashboardView.swift */; };
 		CECE06D12EE75FB60057CFAE /* ModerationDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06D02EE75FB60057CFAE /* ModerationDashboardView.swift */; };
 		CECE06D22EE75FB60057CFAE /* ModerationDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06D02EE75FB60057CFAE /* ModerationDashboardView.swift */; };
+		CECE06D42EE84DEE0057CFAE /* WeeklyProgressStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06D32EE84DEE0057CFAE /* WeeklyProgressStatus.swift */; };
+		CECE06D52EE84DEE0057CFAE /* WeeklyProgressStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06D32EE84DEE0057CFAE /* WeeklyProgressStatus.swift */; };
 		CED1BC532C2200EF004F45FC /* StreakCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC522C2200EF004F45FC /* StreakCalculator.swift */; };
 		CEEDC17C2BEBAE420019DF65 /* DrinksHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17B2BEBAE420019DF65 /* DrinksHistoryScreen.swift */; };
 		CEEDC17E2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */; };
@@ -273,6 +275,7 @@
 		CECE06CA2EE75F450057CFAE /* DrinkingStatusCardSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkingStatusCardSection.swift; sourceTree = "<group>"; };
 		CECE06CD2EE75F810057CFAE /* AbstinenceDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstinenceDashboardView.swift; sourceTree = "<group>"; };
 		CECE06D02EE75FB60057CFAE /* ModerationDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModerationDashboardView.swift; sourceTree = "<group>"; };
+		CECE06D32EE84DEE0057CFAE /* WeeklyProgressStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyProgressStatus.swift; sourceTree = "<group>"; };
 		CED1BC522C2200EF004F45FC /* StreakCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalculator.swift; sourceTree = "<group>"; };
 		CEEDC17B2BEBAE420019DF65 /* DrinksHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksHistoryScreen.swift; sourceTree = "<group>"; };
 		CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkRecordDetailScreen.swift; sourceTree = "<group>"; };
@@ -354,6 +357,7 @@
 				CE1E00D72E03462E00331C7D /* MainScreenBusinessLogic.swift */,
 				CECE06D02EE75FB60057CFAE /* ModerationDashboardView.swift */,
 				CE1E00D12E03411D00331C7D /* StreaksSection.swift */,
+				CECE06D32EE84DEE0057CFAE /* WeeklyProgressStatus.swift */,
 			);
 			path = MainScreen;
 			sourceTree = "<group>";
@@ -787,6 +791,7 @@
 				CE59A5DA2E0C245F0004FAA7 /* Sex.swift in Sources */,
 				CE3DACE62BDFD49A00BB52EA /* ChartView.swift in Sources */,
 				CEA845B52E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */,
+				CECE06D42EE84DEE0057CFAE /* WeeklyProgressStatus.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -816,6 +821,7 @@
 				CE59F00A2C3C6E43000C8630 /* Day.swift in Sources */,
 				CE07BA112E041ABE0059CAC6 /* UserDefaultsProviding.swift in Sources */,
 				CE1E00D82E03462E00331C7D /* MainScreenBusinessLogic.swift in Sources */,
+				CECE06D52EE84DEE0057CFAE /* WeeklyProgressStatus.swift in Sources */,
 				CE7BDF362C2C883B00D260F1 /* DailyTotal.swift in Sources */,
 				CEA845B42E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */,
 				CEABEBA42E1076F5007DEA9F /* BrainHealingTimelineScreen.swift in Sources */,

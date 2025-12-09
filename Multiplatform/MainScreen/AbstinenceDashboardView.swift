@@ -16,57 +16,6 @@ struct AbstinenceDashboardView: View {
     let drinkRecords: [DrinkRecord]
     let settingsStore: SettingsStore
 
-    private var average7Days: Double? {
-        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
-        if drinkingStatus7Days == .lightDrinker {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerWeek(
-                for: .week7,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        } else {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-                for: .week7,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        }
-    }
-
-    private var average30Days: Double? {
-        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
-        if drinkingStatus30Days == .lightDrinker {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerWeek(
-                for: .days30,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        } else {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-                for: .days30,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        }
-    }
-
-    private var averageYear: Double? {
-        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
-        if drinkingStatusYear == .lightDrinker {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerWeek(
-                for: .year,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        } else {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-                for: .year,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        }
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -87,9 +36,8 @@ struct AbstinenceDashboardView: View {
                 drinkingStatus7Days: drinkingStatus7Days,
                 drinkingStatus30Days: drinkingStatus30Days,
                 drinkingStatusYear: drinkingStatusYear,
-                average7Days: average7Days,
-                average30Days: average30Days,
-                averageYear: averageYear
+                drinkRecords: drinkRecords,
+                settingsStore: settingsStore
             )
         }
         .cardStyle()
@@ -104,28 +52,13 @@ struct AbstinenceDashboardView: View {
 
         label += "Drinking status: "
         if let status7 = drinkingStatus7Days {
-            label += "Last 7 days \(status7.rawValue)"
-            if let avg = average7Days {
-                let unit = status7 == .lightDrinker ? "per week" : "per day"
-                label += ", \(Formatter.formatDecimal(avg)) drinks \(unit)"
-            }
-            label += ", "
+            label += "Last 7 days \(status7.rawValue), "
         }
         if let status30 = drinkingStatus30Days {
-            label += "Last 30 days \(status30.rawValue)"
-            if let avg = average30Days {
-                let unit = status30 == .lightDrinker ? "per week" : "per day"
-                label += ", \(Formatter.formatDecimal(avg)) drinks \(unit)"
-            }
-            label += ", "
+            label += "Last 30 days \(status30.rawValue), "
         }
         if let statusYear = drinkingStatusYear {
-            label += "Last year \(statusYear.rawValue)"
-            if let avg = averageYear {
-                let unit = statusYear == .lightDrinker ? "per week" : "per day"
-                label += ", \(Formatter.formatDecimal(avg)) drinks \(unit)"
-            }
-            label += ". "
+            label += "Last year \(statusYear.rawValue). "
         }
 
         return label

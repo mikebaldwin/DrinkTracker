@@ -12,60 +12,9 @@ struct ModerationDashboardView: View {
     let drinkingStatus7Days: DrinkingStatus?
     let drinkingStatus30Days: DrinkingStatus?
     let drinkingStatusYear: DrinkingStatus?
-    let weeklyProgress: String
+    let weeklyProgress: WeeklyProgressStatus
     let drinkRecords: [DrinkRecord]
     let settingsStore: SettingsStore
-
-    private var average7Days: Double? {
-        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
-        if drinkingStatus7Days == .lightDrinker {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerWeek(
-                for: .week7,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        } else {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-                for: .week7,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        }
-    }
-
-    private var average30Days: Double? {
-        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
-        if drinkingStatus30Days == .lightDrinker {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerWeek(
-                for: .days30,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        } else {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-                for: .days30,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        }
-    }
-
-    private var averageYear: Double? {
-        guard settingsStore.drinkingStatusTrackingEnabled else { return nil }
-        if drinkingStatusYear == .lightDrinker {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerWeek(
-                for: .year,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        } else {
-            return DrinkingStatusCalculator.calculateAverageDrinksPerDay(
-                for: .year,
-                drinks: drinkRecords,
-                trackingStartDate: settingsStore.drinkingStatusStartDate
-            )
-        }
-    }
 
     private var totalDrinksToday: Double {
         drinkRecords.todaysRecords.totalStandardDrinks
@@ -91,9 +40,8 @@ struct ModerationDashboardView: View {
                 drinkingStatus7Days: drinkingStatus7Days,
                 drinkingStatus30Days: drinkingStatus30Days,
                 drinkingStatusYear: drinkingStatusYear,
-                average7Days: average7Days,
-                average30Days: average30Days,
-                averageYear: averageYear
+                drinkRecords: drinkRecords,
+                settingsStore: settingsStore
             )
 
             HStack {
@@ -105,23 +53,13 @@ struct ModerationDashboardView: View {
                     .foregroundStyle(Color.secondary)
             }
 
-            Text(weeklyProgress)
+            Text(weeklyProgress.displayText)
                 .font(.headline)
-                .foregroundStyle(progressColor())
+                .foregroundStyle(weeklyProgress.color)
         }
         .cardStyle()
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityLabel())
-    }
-
-    private func progressColor() -> Color {
-        if weeklyProgress.contains("below limit") || weeklyProgress.contains("On track") {
-            return .successGreen
-        } else if weeklyProgress.contains("over") || weeklyProgress.contains("exceeded") {
-            return .dangerRed
-        } else {
-            return .warningOrange
-        }
     }
 
     private func accessibilityLabel() -> String {
@@ -131,31 +69,16 @@ struct ModerationDashboardView: View {
 
         label += "Drinking status: "
         if let status7 = drinkingStatus7Days {
-            label += "Last 7 days \(status7.rawValue)"
-            if let avg = average7Days {
-                let unit = status7 == .lightDrinker ? "per week" : "per day"
-                label += ", \(Formatter.formatDecimal(avg)) drinks \(unit)"
-            }
-            label += ", "
+            label += "Last 7 days \(status7.rawValue), "
         }
         if let status30 = drinkingStatus30Days {
-            label += "Last 30 days \(status30.rawValue)"
-            if let avg = average30Days {
-                let unit = status30 == .lightDrinker ? "per week" : "per day"
-                label += ", \(Formatter.formatDecimal(avg)) drinks \(unit)"
-            }
-            label += ", "
+            label += "Last 30 days \(status30.rawValue), "
         }
         if let statusYear = drinkingStatusYear {
-            label += "Last year \(statusYear.rawValue)"
-            if let avg = averageYear {
-                let unit = statusYear == .lightDrinker ? "per week" : "per day"
-                label += ", \(Formatter.formatDecimal(avg)) drinks \(unit)"
-            }
-            label += ". "
+            label += "Last year \(statusYear.rawValue). "
         }
 
-        label += "Weekly progress: \(weeklyProgress)"
+        label += "Weekly progress: \(weeklyProgress.displayText)"
 
         return label
     }
@@ -179,7 +102,7 @@ struct ModerationDashboardView: View {
         drinkingStatus7Days: .lightDrinker,
         drinkingStatus30Days: .moderateDrinker,
         drinkingStatusYear: .heavyDrinker,
-        weeklyProgress: "2 drinks below limit",
+        weeklyProgress: .belowLimit(2),
         drinkRecords: sampleDrinks,
         settingsStore: settingsStore
     )
