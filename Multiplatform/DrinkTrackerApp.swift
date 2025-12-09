@@ -14,10 +14,11 @@ import OSLog
 @main
 struct DrinkTrackerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
+
     @State private var trigger = false
     @State private var settingsStore: SettingsStore?
-    
+    @State private var mainScreenBusinessLogic: MainScreenBusinessLogic?
+
     private let quickActionHandler = QuickActionHandler.shared
     private let appRouter = AppRouter()
     
@@ -40,16 +41,18 @@ struct DrinkTrackerApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                if let settingsStore {
+                if let settingsStore, let mainScreenBusinessLogic {
                     MainScreen()
                         .environment(quickActionHandler)
                         .environment(appRouter)
                         .environment(settingsStore)
+                        .environment(mainScreenBusinessLogic)
                 } else {
                     // Loading state while SettingsStore initializes
                     Text("Loading...")
                         .onAppear {
                             initializeSettingsStore()
+                            initializeMainScreenBusinessLogic()
                         }
                 }
             }
@@ -94,5 +97,10 @@ struct DrinkTrackerApp: App {
     private func initializeSettingsStore() {
         let context = sharedModelContainer.mainContext
         settingsStore = SettingsStore(modelContext: context)
+    }
+
+    private func initializeMainScreenBusinessLogic() {
+        let context = sharedModelContainer.mainContext
+        mainScreenBusinessLogic = MainScreenBusinessLogic.create(context: context)
     }
 }

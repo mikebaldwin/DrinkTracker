@@ -25,25 +25,22 @@ struct MainScreen: View {
     
     @State private var currentStreak: Int = 0
     @State private var factRandomizationTrigger: Int = 0
-    
+    @Environment(MainScreenBusinessLogic.self) private var businessLogic
+
     private var dailyLimit: Double? {
         settingsStore.dailyLimit > 0 ? settingsStore.dailyLimit : nil
     }
-    
+
     private var weeklyLimit: Double? {
         settingsStore.weeklyLimit > 0 ? settingsStore.weeklyLimit : nil
     }
-    
+
     private var longestStreak: Int {
         settingsStore.longestStreak
     }
-    
+
     private var healingMomentumDays: Double {
         settingsStore.healingMomentumDays
-    }
-    
-    private var businessLogic: MainScreenBusinessLogic {
-        MainScreenBusinessLogic.create(context: modelContext)
     }
     
     private var thisWeeksDrinks: [DrinkRecord] {
@@ -250,18 +247,18 @@ struct MainScreen: View {
     
     private func handleOnAppear() {
         currentStreak = businessLogic.refreshCurrentStreak(from: allDrinks, settingsStore: settingsStore)
-        
+
         // Always initialize and update healing momentum
         settingsStore.initializeHealingMomentumIfNeeded(with: allDrinks)
         settingsStore.updateHealingMomentum(with: allDrinks)
-        
+
         router.setQuickActionHandlers(
             addCustomDrink: businessLogic.addCustomDrink,
             recordDrink: { drink in
                 Task { await businessLogic.recordDrink(drink) }
             }
         )
-        
+
         // Initial sync on app launch
         if HKHealthStore.isHealthDataAvailable() {
             Task {
