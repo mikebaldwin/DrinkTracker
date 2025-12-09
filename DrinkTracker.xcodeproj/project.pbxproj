@@ -96,8 +96,6 @@
 		CEA845B52E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845B32E0D77A000F1DF02 /* TestDataGenerator.swift */; };
 		CEA845D72E0DC6BB00F1DF02 /* CardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845D62E0DC6BB00F1DF02 /* CardStyle.swift */; };
 		CEA845D82E0DC6BB00F1DF02 /* CardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845D62E0DC6BB00F1DF02 /* CardStyle.swift */; };
-		CEA845DA2E0DC74D00F1DF02 /* DashboardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845D92E0DC74D00F1DF02 /* DashboardCardView.swift */; };
-		CEA845DB2E0DC74D00F1DF02 /* DashboardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845D92E0DC74D00F1DF02 /* DashboardCardView.swift */; };
 		CEA845DD2E0DCF1100F1DF02 /* HistoryNavigationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845DC2E0DCF1100F1DF02 /* HistoryNavigationCard.swift */; };
 		CEA845DE2E0DCF1100F1DF02 /* HistoryNavigationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845DC2E0DCF1100F1DF02 /* HistoryNavigationCard.swift */; };
 		CEA845E02E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA845DF2E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift */; };
@@ -126,6 +124,14 @@
 		CECA55682E0C170C00C86021 /* DrinkingStatusSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA55672E0C170C00C86021 /* DrinkingStatusSection.swift */; };
 		CECA55692E0C170C00C86021 /* DrinkingStatusSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA55672E0C170C00C86021 /* DrinkingStatusSection.swift */; };
 		CECA556B2E0C171D00C86021 /* DrinkingStatusCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA556A2E0C171D00C86021 /* DrinkingStatusCalculatorTests.swift */; };
+		CECE06CB2EE75F450057CFAE /* DrinkingStatusCardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06CA2EE75F450057CFAE /* DrinkingStatusCardSection.swift */; };
+		CECE06CC2EE75F450057CFAE /* DrinkingStatusCardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06CA2EE75F450057CFAE /* DrinkingStatusCardSection.swift */; };
+		CECE06CE2EE75F810057CFAE /* AbstinenceDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06CD2EE75F810057CFAE /* AbstinenceDashboardView.swift */; };
+		CECE06CF2EE75F810057CFAE /* AbstinenceDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06CD2EE75F810057CFAE /* AbstinenceDashboardView.swift */; };
+		CECE06D12EE75FB60057CFAE /* ModerationDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06D02EE75FB60057CFAE /* ModerationDashboardView.swift */; };
+		CECE06D22EE75FB60057CFAE /* ModerationDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06D02EE75FB60057CFAE /* ModerationDashboardView.swift */; };
+		CECE06D42EE84DEE0057CFAE /* WeeklyProgressStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06D32EE84DEE0057CFAE /* WeeklyProgressStatus.swift */; };
+		CECE06D52EE84DEE0057CFAE /* WeeklyProgressStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE06D32EE84DEE0057CFAE /* WeeklyProgressStatus.swift */; };
 		CED1BC532C2200EF004F45FC /* StreakCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1BC522C2200EF004F45FC /* StreakCalculator.swift */; };
 		CEEDC17C2BEBAE420019DF65 /* DrinksHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17B2BEBAE420019DF65 /* DrinksHistoryScreen.swift */; };
 		CEEDC17E2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */; };
@@ -247,7 +253,6 @@
 		CE866B672C1B354D00461411 /* DataSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSynchronizer.swift; sourceTree = "<group>"; };
 		CEA845B32E0D77A000F1DF02 /* TestDataGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataGenerator.swift; sourceTree = "<group>"; };
 		CEA845D62E0DC6BB00F1DF02 /* CardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardStyle.swift; sourceTree = "<group>"; };
-		CEA845D92E0DC74D00F1DF02 /* DashboardCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardView.swift; sourceTree = "<group>"; };
 		CEA845DC2E0DCF1100F1DF02 /* HistoryNavigationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryNavigationCard.swift; sourceTree = "<group>"; };
 		CEA845DF2E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlcoholFreeDaysCard.swift; sourceTree = "<group>"; };
 		CEA845E22E0DCF5800F1DF02 /* LimitsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitsCard.swift; sourceTree = "<group>"; };
@@ -267,6 +272,10 @@
 		CECA55642E0C16F700C86021 /* DrinkingStatusCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkingStatusCalculator.swift; sourceTree = "<group>"; };
 		CECA55672E0C170C00C86021 /* DrinkingStatusSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkingStatusSection.swift; sourceTree = "<group>"; };
 		CECA556A2E0C171D00C86021 /* DrinkingStatusCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkingStatusCalculatorTests.swift; sourceTree = "<group>"; };
+		CECE06CA2EE75F450057CFAE /* DrinkingStatusCardSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkingStatusCardSection.swift; sourceTree = "<group>"; };
+		CECE06CD2EE75F810057CFAE /* AbstinenceDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstinenceDashboardView.swift; sourceTree = "<group>"; };
+		CECE06D02EE75FB60057CFAE /* ModerationDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModerationDashboardView.swift; sourceTree = "<group>"; };
+		CECE06D32EE84DEE0057CFAE /* WeeklyProgressStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyProgressStatus.swift; sourceTree = "<group>"; };
 		CED1BC522C2200EF004F45FC /* StreakCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalculator.swift; sourceTree = "<group>"; };
 		CEEDC17B2BEBAE420019DF65 /* DrinksHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksHistoryScreen.swift; sourceTree = "<group>"; };
 		CEEDC17D2BEBC47B0019DF65 /* DrinkRecordDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkRecordDetailScreen.swift; sourceTree = "<group>"; };
@@ -332,11 +341,13 @@
 		CE3DACE42BDFD48400BB52EA /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
+				CECE06CD2EE75F810057CFAE /* AbstinenceDashboardView.swift */,
 				CE1E00D42E03414100331C7D /* ActionsSection.swift */,
 				CEA845DF2E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift */,
+				CEABEBA12E1076F5007DEA9F /* BrainHealingTimelineScreen.swift */,
 				CEA845D62E0DC6BB00F1DF02 /* CardStyle.swift */,
 				CE3DACE52BDFD49A00BB52EA /* ChartView.swift */,
-				CEA845D92E0DC74D00F1DF02 /* DashboardCardView.swift */,
+				CECE06CA2EE75F450057CFAE /* DrinkingStatusCardSection.swift */,
 				CECA55672E0C170C00C86021 /* DrinkingStatusSection.swift */,
 				CE1E00C82E03407500331C7D /* DrinkLimitCalculator.swift */,
 				CEA845DC2E0DCF1100F1DF02 /* HistoryNavigationCard.swift */,
@@ -344,8 +355,9 @@
 				CE1E00CE2E0340F800331C7D /* LimitsSection.swift */,
 				CE4169962BD97FB10028D64A /* MainScreen.swift */,
 				CE1E00D72E03462E00331C7D /* MainScreenBusinessLogic.swift */,
+				CECE06D02EE75FB60057CFAE /* ModerationDashboardView.swift */,
 				CE1E00D12E03411D00331C7D /* StreaksSection.swift */,
-				CEABEBA12E1076F5007DEA9F /* BrainHealingTimelineScreen.swift */,
+				CECE06D32EE84DEE0057CFAE /* WeeklyProgressStatus.swift */,
 			);
 			path = MainScreen;
 			sourceTree = "<group>";
@@ -733,11 +745,11 @@
 				CEB911BB2BD98A7F00224660 /* CalculatorScreen.swift in Sources */,
 				CED1BC532C2200EF004F45FC /* StreakCalculator.swift in Sources */,
 				CE5A027D2E9FCEC600B8085E /* AppSchemaV5.swift in Sources */,
+				CECE06CE2EE75F810057CFAE /* AbstinenceDashboardView.swift in Sources */,
 				CECA55662E0C16F700C86021 /* DrinkingStatusCalculator.swift in Sources */,
 				CE4169992BD97FB10028D64A /* DrinkRecord.swift in Sources */,
 				CE1E00D32E03411D00331C7D /* StreaksSection.swift in Sources */,
 				CE55F3D12C1F65CF00E3982B /* QuickEntryView.swift in Sources */,
-				CEA845DA2E0DC74D00F1DF02 /* DashboardCardView.swift in Sources */,
 				CE1E00D92E03462E00331C7D /* MainScreenBusinessLogic.swift in Sources */,
 				CECA55682E0C170C00C86021 /* DrinkingStatusSection.swift in Sources */,
 				CE6610492C23676C006E824D /* VolumeMeasurement.swift in Sources */,
@@ -749,8 +761,10 @@
 				CEA845D72E0DC6BB00F1DF02 /* CardStyle.swift in Sources */,
 				CE07BA102E041ABE0059CAC6 /* UserDefaultsProviding.swift in Sources */,
 				CE07BA212E05D81E0059CAC6 /* ConflictRow.swift in Sources */,
+				CECE06CC2EE75F450057CFAE /* DrinkingStatusCardSection.swift in Sources */,
 				CE52A1EE2C0106D000BAEBF3 /* IngredientCell.swift in Sources */,
 				CEEDC17C2BEBAE420019DF65 /* DrinksHistoryScreen.swift in Sources */,
+				CECE06D22EE75FB60057CFAE /* ModerationDashboardView.swift in Sources */,
 				CE1E00CA2E03407500331C7D /* DrinkRecord+Extensions.swift in Sources */,
 				CE1E00CB2E03407500331C7D /* DrinkLimitCalculator.swift in Sources */,
 				CE5A02792E9FCB8D00B8085E /* Goal.swift in Sources */,
@@ -777,6 +791,7 @@
 				CE59A5DA2E0C245F0004FAA7 /* Sex.swift in Sources */,
 				CE3DACE62BDFD49A00BB52EA /* ChartView.swift in Sources */,
 				CEA845B52E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */,
+				CECE06D42EE84DEE0057CFAE /* WeeklyProgressStatus.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -806,11 +821,14 @@
 				CE59F00A2C3C6E43000C8630 /* Day.swift in Sources */,
 				CE07BA112E041ABE0059CAC6 /* UserDefaultsProviding.swift in Sources */,
 				CE1E00D82E03462E00331C7D /* MainScreenBusinessLogic.swift in Sources */,
+				CECE06D52EE84DEE0057CFAE /* WeeklyProgressStatus.swift in Sources */,
 				CE7BDF362C2C883B00D260F1 /* DailyTotal.swift in Sources */,
 				CEA845B42E0D77A000F1DF02 /* TestDataGenerator.swift in Sources */,
 				CEABEBA42E1076F5007DEA9F /* BrainHealingTimelineScreen.swift in Sources */,
+				CECE06CF2EE75F810057CFAE /* AbstinenceDashboardView.swift in Sources */,
 				CECA55652E0C16F700C86021 /* DrinkingStatusCalculator.swift in Sources */,
 				CE07BA1A2E05B1930059CAC6 /* Notification+Extensions.swift in Sources */,
+				CECE06D12EE75FB60057CFAE /* ModerationDashboardView.swift in Sources */,
 				CEFEF51A2E01F2440056E83A /* AppRouter.swift in Sources */,
 				CE461A1B2C2DA191008E6E1B /* CustomDrinkScreenWatch.swift in Sources */,
 				CE59F00D2C3C6ECB000C8630 /* DrinksHistoryScreenWatch.swift in Sources */,
@@ -826,6 +844,7 @@
 				CE59A5D72E0C245F0004FAA7 /* Sex.swift in Sources */,
 				CE7BDF302C2C83EA00D260F1 /* Formatter.swift in Sources */,
 				CE59F00F2C3D5DB1000C8630 /* SettingsScreenWatch.swift in Sources */,
+				CECE06CB2EE75F450057CFAE /* DrinkingStatusCardSection.swift in Sources */,
 				CE7BDF342C2C87A900D260F1 /* HealthStoreManager.swift in Sources */,
 				CEF32C3D2C25F81500E40213 /* ContentView.swift in Sources */,
 				CEF32C3B2C25F81500E40213 /* DrinkTrackerWatchApp.swift in Sources */,
@@ -835,7 +854,6 @@
 				CE7BDF2D2C2C817700D260F1 /* CustomDrink.swift in Sources */,
 				CE5A02782E9FCB8D00B8085E /* Goal.swift in Sources */,
 				CECA55622E0B196A00C86021 /* SettingsMigrator.swift in Sources */,
-				CEA845DB2E0DC74D00F1DF02 /* DashboardCardView.swift in Sources */,
 				CEA845E02E0DCF3B00F1DF02 /* AlcoholFreeDaysCard.swift in Sources */,
 				CECA55632E0B196A00C86021 /* SettingsStore.swift in Sources */,
 				CE5A027E2E9FCEC600B8085E /* AppSchemaV5.swift in Sources */,
