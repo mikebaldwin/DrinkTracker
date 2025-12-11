@@ -39,7 +39,7 @@ struct QuickEntryView: View {
                     Text("\(Formatter.formatDecimal(drinkCount))")
                         .font(.largeTitle)
                         .frame(width: 75)
-                        .foregroundStyle(Color.black)
+                        .foregroundStyle(.primary)
                 }
                 .buttonStyle(PlainButtonStyle())
                 .accessibilityLabel("Current drink count")
