@@ -43,7 +43,7 @@ struct CustomDrinkScreen: View {
                             Spacer()
                             Text(Formatter.formatDecimal(drink.standardDrinks))
                         }
-                        .foregroundStyle(Color.black)
+                        .foregroundStyle(.primary)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Custom drink: \(drink.name)")
