@@ -214,11 +214,13 @@ struct DrinkingStatusCalculatorTests {
         #expect(status == .moderateDrinker)
     }
 
-    @Test("Boundary test: 7.1 drinks per week for female") func testSevenPointOneDrinksFemale() throws {
+    @Test("Boundary test: 7.5 drinks per week for female (clearly heavy)")
+    func testSevenPointOneDrinksFemale() throws {
         let settingsStore = try createTestSettingsStore()
         settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
         settingsStore.userSex = .female
-        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 7.1)]
+        // 7.5 drinks/week = 1.071 per day → rounds to 1.1 per day → 7.7 per week → Heavy
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 7.5)]
 
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
@@ -246,11 +248,13 @@ struct DrinkingStatusCalculatorTests {
         #expect(status == .moderateDrinker)
     }
 
-    @Test("Boundary test: 14.1 drinks per week for male") func testFourteenPointOneDrinksMale() throws {
+    @Test("Boundary test: 14.5 drinks per week for male (clearly heavy)")
+    func testFourteenPointOneDrinksMale() throws {
         let settingsStore = try createTestSettingsStore()
         settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
         settingsStore.userSex = .male
-        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 14.1)]
+        // 14.5 drinks/week = 2.071 per day → rounds to 2.1 per day → 14.7 per week → Heavy
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 14.5)]
 
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
@@ -596,17 +600,17 @@ struct DrinkingStatusCalculatorTests {
     func testVerySmallPositiveDrinksPerWeek() throws {
         let settingsStore = try createTestSettingsStore()
         settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
-        
-        // 0.1 drinks per week (very small positive amount)
-        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 0.1)]
-        
+
+        // 1.0 drinks per week (small positive amount, clearly light)
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 1.0)]
+
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
             userSex: settingsStore.userSex,
             trackingStartDate: settingsStore.drinkingStatusStartDate
         )
-        
+
         #expect(status == .lightDrinker)
     }
     
@@ -628,22 +632,76 @@ struct DrinkingStatusCalculatorTests {
         #expect(status == .lightDrinker)
     }
     
-    @Test("Boundary test: just over 3.0 drinks per week")
+    @Test("Boundary test: 3.5 drinks per week (just over 3.0)")
     func testJustOverThreeDrinksPerWeek() throws {
         let settingsStore = try createTestSettingsStore()
         settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
         settingsStore.userSex = .male
-        
-        // 3.1 drinks per week should be moderate
-        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 3.1)]
-        
+
+        // 3.5 drinks per week = 0.5 per day, clearly moderate
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 3.5)]
+
         let status = DrinkingStatusCalculator.calculateStatus(
             for: .week7,
             drinks: drinks,
             userSex: settingsStore.userSex,
             trackingStartDate: settingsStore.drinkingStatusStartDate
         )
-        
+
         #expect(status == .moderateDrinker)
+    }
+
+    @Test("Display alignment: 14.04 drinks per week for male (displays as '2 per day')")
+    func testRoundingEdgeCaseFourteenPointZeroFour() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        settingsStore.userSex = .male
+        // 14.04 drinks/week = 2.006 per day → rounds to 2.0 per day → 14.0 per week → Moderate
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 14.04)]
+
+        let status = DrinkingStatusCalculator.calculateStatus(
+            for: .week7,
+            drinks: drinks,
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+
+        #expect(status == .moderateDrinker)
+    }
+
+    @Test("Display alignment: 14.11 drinks per week for male (displays as '2 per day')")
+    func testDisplayAlignmentFourteenPointEleven() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        settingsStore.userSex = .male
+        // 14.11 drinks/week = 2.014 per day → rounds to 2.0 per day → 14.0 per week → Moderate
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 14.11)]
+
+        let status = DrinkingStatusCalculator.calculateStatus(
+            for: .week7,
+            drinks: drinks,
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+
+        #expect(status == .moderateDrinker)
+    }
+
+    @Test("Display alignment: 14.8 drinks per week for male (displays as '2.1 per day')")
+    func testDisplayAlignmentFourteenPointEight() throws {
+        let settingsStore = try createTestSettingsStore()
+        settingsStore.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        settingsStore.userSex = .male
+        // 14.8 drinks/week = 2.114 per day → rounds to 2.1 per day → 14.7 per week → Heavy
+        let drinks = [createDrinkRecord(daysAgo: 1, standardDrinks: 14.8)]
+
+        let status = DrinkingStatusCalculator.calculateStatus(
+            for: .week7,
+            drinks: drinks,
+            userSex: settingsStore.userSex,
+            trackingStartDate: settingsStore.drinkingStatusStartDate
+        )
+
+        #expect(status == .heavyDrinker)
     }
 }

@@ -57,8 +57,18 @@ struct DrinkingStatusCalculator {
         let drinksPerWeek = totalDrinks / weeksInPeriod
         
         Logger.drinkingStatus.info("📊 Calculation: totalDrinks=\(totalDrinks), weeksInPeriod=\(weeksInPeriod), drinksPerWeek=\(drinksPerWeek)")
-        
-        let result = classifyDrinkingStatus(drinksPerWeek: drinksPerWeek, sex: userSex)
+
+        // For classification alignment with display, round based on what will be shown
+        // This ensures "What You See Is What You Get" - if it displays as "2 per day", it's Moderate
+        let drinksPerDay = drinksPerWeek / 7.0
+
+        // Simulate Formatter.formatDecimal rounding (1 decimal max, 0 min)
+        let roundedDrinksPerDay = (drinksPerDay * 10).rounded() / 10
+        let displayAlignedDrinksPerWeek = roundedDrinksPerDay * 7.0
+
+        Logger.drinkingStatus.info("📊 Display per day: \(roundedDrinksPerDay), display-aligned per week: \(displayAlignedDrinksPerWeek)")
+
+        let result = classifyDrinkingStatus(drinksPerWeek: displayAlignedDrinksPerWeek, sex: userSex)
 //        Logger.drinkingStatus.info("✅ Final result: \(result)")
         
         return result
