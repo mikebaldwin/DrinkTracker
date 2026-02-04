@@ -11,6 +11,7 @@ import HealthKit
 import Observation
 import OSLog
 
+@MainActor
 @Observable
 class MainScreenBusinessLogic {
     // MARK: - State Management

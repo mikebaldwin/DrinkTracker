@@ -10,6 +10,7 @@ import Observation
 import OSLog
 import SwiftData
 
+@MainActor
 @Observable
 final class SettingsStore {
     private(set) var settings: UserSettings

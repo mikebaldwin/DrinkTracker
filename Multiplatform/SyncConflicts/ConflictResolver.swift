@@ -10,7 +10,8 @@ import HealthKit
 import SwiftData
 import OSLog
 
-actor ConflictResolver {
+@MainActor
+final class ConflictResolver {
     private let healthStoreManager = HealthStoreManager.shared
     private let context: ModelContext
     
