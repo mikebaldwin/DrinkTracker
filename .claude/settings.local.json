@@ -31,7 +31,10 @@
       "mcp__xcode__RunAllTests",
       "mcp__xcode__GetBuildLog",
       "mcp__xcode__BuildProject",
-      "mcp__xcode__XcodeListNavigatorIssues"
+      "mcp__xcode__XcodeListNavigatorIssues",
+      "mcp__xcode__DocumentationSearch",
+      "mcp__xcode__XcodeRead",
+      "Bash(xcrun simctl list:*)"
     ],
     "deny": []
   }
