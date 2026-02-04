@@ -23,6 +23,7 @@ struct DrinkingStatusCalculatorTests {
         )
     }
     
+    @MainActor
     private func createTestSettingsStore() throws -> SettingsStore {
         let container = try createTestContainer()
         let context = ModelContext(container)
