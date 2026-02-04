@@ -45,6 +45,7 @@ struct ActionsSection: View {
             }
             .accessibilityLabel("Quick Entry")
             .accessibilityHint("Quickly record drinks with simple plus and minus controls")
+            .accessibilityIdentifier(AccessibilityIdentifiers.MainScreen.quickEntryButton)
             
             HStack(spacing: 12) {
                 Button {
@@ -71,6 +72,7 @@ struct ActionsSection: View {
                 .cardStyle()
                 .accessibilityLabel("Drink Calculator")
                 .accessibilityHint("Opens calculator to determine alcohol content of mixed drinks")
+                .accessibilityIdentifier(AccessibilityIdentifiers.MainScreen.calculatorButton)
                 
                 Button {
                     onCustomDrinkTap()
@@ -96,6 +98,7 @@ struct ActionsSection: View {
                 .cardStyle()
                 .accessibilityLabel("Custom Drinks")
                 .accessibilityHint("Choose from saved drink recipes")
+                .accessibilityIdentifier(AccessibilityIdentifiers.MainScreen.customDrinksButton)
             }
         }
     }

@@ -69,6 +69,7 @@ struct DrinksHistoryScreen: View {
                             .accessibilityLabel("Drink entry")
                             .accessibilityValue("\(Formatter.formatDecimal(drink.standardDrinks)) drinks at \(formatTimestamp(drink.timestamp))")
                             .accessibilityHint("Tap to edit this drink entry")
+                            .accessibilityIdentifier(AccessibilityIdentifiers.History.drinkRow(drink.id.uuidString))
                         }
                         .onDelete { offsets in
                             delete(from: day.drinks, at: offsets)
@@ -92,6 +93,7 @@ struct DrinksHistoryScreen: View {
         }
         .accessibilityLabel("Drink history list")
         .accessibilityHint("Shows chronological list of recorded drinks with options to edit or delete")
+        .accessibilityIdentifier(AccessibilityIdentifiers.History.screen)
         .navigationTitle("Drink History")
         .onAppear {
             buildDays()

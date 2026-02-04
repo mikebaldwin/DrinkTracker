@@ -195,6 +195,7 @@ struct MainScreen: View {
                         }
                         .accessibilityLabel("Settings")
                         .accessibilityHint("Opens app settings and preferences")
+                        .accessibilityIdentifier(AccessibilityIdentifiers.MainScreen.settingsButton)
                     }
                 }
                 .navigationDestination(for: Destination.self) { destination in
