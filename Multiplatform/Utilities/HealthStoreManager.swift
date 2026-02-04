@@ -34,7 +34,6 @@ final actor HealthStoreManager {
     private var alcoholicBeverageType: HKQuantityType? {
         HKQuantityType.quantityType(forIdentifier: .numberOfAlcoholicBeverages)
     }
-    private let healthKitQueue = DispatchQueue(label: "com.DrinkTracker.healthkit", qos: .background)
     
     private init() { }
     
@@ -54,16 +53,8 @@ final actor HealthStoreManager {
         guard let sample = try await fetchSample(uuid: uuid) else {
             throw HealthKitError.quantityTypeResultsNotFound
         }
-        
-        healthKitQueue.async {
-            Task {
-                do {
-                    try await self.healthStore.delete(sample)
-                } catch {
-                    throw error
-                }
-            }
-        }
+
+        try await self.healthStore.delete(sample)
     }
     
     func updateAlcoholicBeverageDate(_ newDate: Date, withUUID uuid: UUID) async throws {
