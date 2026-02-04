@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		CE0400B62F339E5F00F09BD1 /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0400B52F339E5F00F09BD1 /* AccessibilityIdentifiers.swift */; };
 		CE0400B72F339E5F00F09BD1 /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0400B52F339E5F00F09BD1 /* AccessibilityIdentifiers.swift */; };
+		CE0400B92F33A22600F09BD1 /* UITestingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0400B82F33A22600F09BD1 /* UITestingHelpers.swift */; };
+		CE0400BA2F33A22600F09BD1 /* UITestingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0400B82F33A22600F09BD1 /* UITestingHelpers.swift */; };
 		CE049D292E0C6617009D415F /* AppMigrationPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE049D262E0C6617009D415F /* AppMigrationPlan.swift */; };
 		CE049D2A2E0C6617009D415F /* AppSchemaV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE049D272E0C6617009D415F /* AppSchemaV1.swift */; };
 		CE049D2B2E0C6617009D415F /* AppSchemaV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE049D282E0C6617009D415F /* AppSchemaV2.swift */; };
@@ -196,6 +198,7 @@
 
 /* Begin PBXFileReference section */
 		CE0400B52F339E5F00F09BD1 /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		CE0400B82F33A22600F09BD1 /* UITestingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestingHelpers.swift; sourceTree = "<group>"; };
 		CE049D262E0C6617009D415F /* AppMigrationPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMigrationPlan.swift; sourceTree = "<group>"; };
 		CE049D272E0C6617009D415F /* AppSchemaV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSchemaV1.swift; sourceTree = "<group>"; };
 		CE049D282E0C6617009D415F /* AppSchemaV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSchemaV2.swift; sourceTree = "<group>"; };
@@ -387,6 +390,7 @@
 				CEA845B32E0D77A000F1DF02 /* TestDataGenerator.swift */,
 				CE07BA0F2E041ABE0059CAC6 /* UserDefaultsProviding.swift */,
 				CE0400B52F339E5F00F09BD1 /* AccessibilityIdentifiers.swift */,
+				CE0400B82F33A22600F09BD1 /* UITestingHelpers.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -782,6 +786,7 @@
 				CE66104E2C24C7A2006E824D /* Date+Extensions.swift in Sources */,
 				CE1E00D52E03414100331C7D /* ActionsSection.swift in Sources */,
 				CE0400B72F339E5F00F09BD1 /* AccessibilityIdentifiers.swift in Sources */,
+				CE0400BA2F33A22600F09BD1 /* UITestingHelpers.swift in Sources */,
 				CE07BA1D2E05B2B10059CAC6 /* ConflictResolutionScreen.swift in Sources */,
 				CEA845DD2E0DCF1100F1DF02 /* HistoryNavigationCard.swift in Sources */,
 				CE3DACED2BDFE62000BB52EA /* SettingsScreen.swift in Sources */,
@@ -847,6 +852,7 @@
 				CEABEB992E1076C6007DEA9F /* BrainHealingStage.swift in Sources */,
 				CE0400B62F339E5F00F09BD1 /* AccessibilityIdentifiers.swift in Sources */,
 				CEABEB9A2E1076C6007DEA9F /* HealingPhase.swift in Sources */,
+				CE0400B92F33A22600F09BD1 /* UITestingHelpers.swift in Sources */,
 				CE7BDF352C2C87FC00D260F1 /* StreakCalculator.swift in Sources */,
 				CE1E00D22E03411D00331C7D /* StreaksSection.swift in Sources */,
 				CE59A5D52E0C245F0004FAA7 /* ReportingPeriod.swift in Sources */,
