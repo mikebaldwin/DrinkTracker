@@ -17,6 +17,7 @@ final class DrinkTrackerUITestsLaunchTests: XCTestCase {
         continueAfterFailure = false
     }
 
+    @MainActor
     func testLaunch() throws {
         let app = XCUIApplication()
         app.launchArguments = ["--uitesting"]

@@ -25,6 +25,7 @@ final class DrinkTrackerUITests: XCTestCase {
 
     // MARK: - Main Screen Tests
 
+    @MainActor
     func testMainScreenAppears() throws {
         // Verify main screen elements are visible
         XCTAssertTrue(app.buttons[AccessibilityID.MainScreen.quickEntryButton].exists)
@@ -32,6 +33,7 @@ final class DrinkTrackerUITests: XCTestCase {
         XCTAssertTrue(app.buttons[AccessibilityID.MainScreen.customDrinksButton].exists)
     }
 
+    @MainActor
     func testNavigateToSettings() throws {
         // Tap settings button
         let settingsButton = app.buttons[AccessibilityID.MainScreen.settingsButton]
@@ -42,6 +44,7 @@ final class DrinkTrackerUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Settings"].exists)
     }
 
+    @MainActor
     func testQuickEntryButtonTap() throws {
         // Tap quick entry button
         let quickEntryButton = app.buttons[AccessibilityID.MainScreen.quickEntryButton]
@@ -54,6 +57,7 @@ final class DrinkTrackerUITests: XCTestCase {
 
     // MARK: - Settings Tests
 
+    @MainActor
     func testChangeGoalSetting() throws {
         // Navigate to settings
         app.buttons[AccessibilityID.MainScreen.settingsButton].tap()
@@ -75,6 +79,7 @@ final class DrinkTrackerUITests: XCTestCase {
         }
     }
 
+    @MainActor
     func testModifyDailyLimit() throws {
         // Navigate to settings
         app.buttons[AccessibilityID.MainScreen.settingsButton].tap()
@@ -95,6 +100,7 @@ final class DrinkTrackerUITests: XCTestCase {
         XCTAssertTrue(dailyLimitStepper.exists)
     }
 
+    @MainActor
     func testDeleteAllDataFlow() throws {
         // Navigate to settings
         app.buttons[AccessibilityID.MainScreen.settingsButton].tap()
@@ -120,12 +126,23 @@ final class DrinkTrackerUITests: XCTestCase {
 
     // MARK: - Drinks History Tests
 
+    @MainActor
     func testNavigateToDrinksHistory() throws {
         // This test assumes there's a way to navigate to history
         // Adjust based on actual navigation implementation
 
         // Look for history navigation button/link
         // For now, we'll skip this test until navigation is clarified
+    }
+
+    // MARK: - Performance Tests
+
+    @MainActor
+    func testLaunchPerformance() throws {
+        // This measures how long it takes to launch your application.
+        measure(metrics: [XCTApplicationLaunchMetric()]) {
+            XCUIApplication().launch()
+        }
     }
 
     // MARK: - Helper Methods
