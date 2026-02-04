@@ -9,109 +9,142 @@ import Foundation
 
 /// Centralized accessibility identifiers for UI testing.
 /// Use these constants in both the app code and UI tests to ensure consistency.
-enum AccessibilityIdentifiers {
+public enum AccessibilityIdentifiers {
 
     // MARK: - Main Screen
-    enum MainScreen {
-        static let calculatorButton = "mainScreen.calculatorButton"
-        static let customDrinksButton = "mainScreen.customDrinksButton"
-        static let quickEntryButton = "mainScreen.quickEntryButton"
-        static let currentStreakLabel = "mainScreen.currentStreakLabel"
-        static let longestStreakLabel = "mainScreen.longestStreakLabel"
-        static let drinksThisWeekLabel = "mainScreen.drinksThisWeekLabel"
-        static let drinksTodayLabel = "mainScreen.drinksTodayLabel"
-        static let remainingDrinksLabel = "mainScreen.remainingDrinksLabel"
-        static let drinkingStatusBadge = "mainScreen.drinkingStatusBadge"
-        static let healingProgressView = "mainScreen.healingProgressView"
-        static let weeklyChart = "mainScreen.weeklyChart"
-        static let settingsButton = "mainScreen.settingsButton"
+    public enum MainScreen {
+        public static let calculatorButton = "mainScreen.calculatorButton"
+        public static let customDrinksButton = "mainScreen.customDrinksButton"
+        public static let quickEntryButton = "mainScreen.quickEntryButton"
+        public static let currentStreakLabel = "mainScreen.currentStreakLabel"
+        public static let longestStreakLabel = "mainScreen.longestStreakLabel"
+        public static let drinksThisWeekLabel = "mainScreen.drinksThisWeekLabel"
+        public static let drinksTodayLabel = "mainScreen.drinksTodayLabel"
+        public static let remainingDrinksLabel = "mainScreen.remainingDrinksLabel"
+        public static let drinkingStatusBadge = "mainScreen.drinkingStatusBadge"
+        public static let healingProgressView = "mainScreen.healingProgressView"
+        public static let weeklyChart = "mainScreen.weeklyChart"
+        public static let settingsButton = "mainScreen.settingsButton"
     }
 
     // MARK: - Settings Screen
-    enum Settings {
-        static let screen = "settings.screen"
-        static let dailyLimitField = "settings.dailyLimitField"
-        static let weeklyLimitField = "settings.weeklyLimitField"
-        static let drinkingStatusToggle = "settings.drinkingStatusToggle"
-        static let drinkingStatusStartDatePicker = "settings.drinkingStatusStartDatePicker"
-        static let userSexPicker = "settings.userSexPicker"
-        static let metricToggle = "settings.metricToggle"
-        static let proofToggle = "settings.proofToggle"
-        static let showSavingsToggle = "settings.showSavingsToggle"
-        static let monthlySpendField = "settings.monthlySpendField"
-        static let goalPicker = "settings.goalPicker"
-        static let syncHealthKitButton = "settings.syncHealthKitButton"
-        static let generateTestDataButton = "settings.generateTestDataButton"
-        static let deleteAllDataButton = "settings.deleteAllDataButton"
+    public enum Settings {
+        public static let screen = "settings.screen"
+        public static let dailyLimitField = "settings.dailyLimitField"
+        public static let weeklyLimitField = "settings.weeklyLimitField"
+        public static let drinkingStatusToggle = "settings.drinkingStatusToggle"
+        public static let drinkingStatusStartDatePicker = "settings.drinkingStatusStartDatePicker"
+        public static let userSexPicker = "settings.userSexPicker"
+        public static let metricToggle = "settings.metricToggle"
+        public static let proofToggle = "settings.proofToggle"
+        public static let showSavingsToggle = "settings.showSavingsToggle"
+        public static let monthlySpendField = "settings.monthlySpendField"
+        public static let goalPicker = "settings.goalPicker"
+        public static let syncHealthKitButton = "settings.syncHealthKitButton"
+        public static let generateTestDataButton = "settings.generateTestDataButton"
+        public static let deleteAllDataButton = "settings.deleteAllDataButton"
     }
 
     // MARK: - Drinks History Screen
-    enum History {
-        static let screen = "history.screen"
-        static let drinksList = "history.drinksList"
-        static let emptyStateMessage = "history.emptyStateMessage"
+    public enum History {
+        public static let screen = "history.screen"
+        public static let drinksList = "history.drinksList"
+        public static let emptyStateMessage = "history.emptyStateMessage"
 
-        static func drinkRow(_ id: String) -> String {
+        public static func drinkRow(_ id: String) -> String {
             "history.drinkRow.\(id)"
         }
 
-        static func deleteButton(_ id: String) -> String {
+        public static func deleteButton(_ id: String) -> String {
             "history.deleteButton.\(id)"
         }
 
-        static func editButton(_ id: String) -> String {
+        public static func editButton(_ id: String) -> String {
             "history.editButton.\(id)"
         }
     }
 
+    // MARK: - Calculator Screen
+    public enum Calculator {
+        public static let screen = "calculator.screen"
+        public static let totalStandardDrinksLabel = "calculator.totalStandardDrinksLabel"
+        public static let addIngredientButton = "calculator.addIngredientButton"
+        public static let cancelButton = "calculator.cancelButton"
+        public static let doneButton = "calculator.doneButton"
+        
+        public static func ingredientSection(_ index: Int) -> String {
+            "calculator.ingredient.\(index)"
+        }
+        
+        public static func ingredientVolumeField(_ index: Int) -> String {
+            "calculator.ingredient.\(index).volumeField"
+        }
+        
+        public static func ingredientVolumePicker(_ index: Int) -> String {
+            "calculator.ingredient.\(index).volumePicker"
+        }
+        
+        public static func ingredientStrengthField(_ index: Int) -> String {
+            "calculator.ingredient.\(index).strengthField"
+        }
+        
+        public static func ingredientStrengthPicker(_ index: Int) -> String {
+            "calculator.ingredient.\(index).strengthPicker"
+        }
+        
+        public static func ingredientTotalLabel(_ index: Int) -> String {
+            "calculator.ingredient.\(index).totalLabel"
+        }
+    }
+    
     // MARK: - Custom Drink Entry
-    enum CustomDrinkEntry {
-        static let screen = "customDrink.screen"
-        static let nameField = "customDrink.nameField"
-        static let totalVolumeField = "customDrink.totalVolumeField"
-        static let volumeUnitPicker = "customDrink.volumeUnitPicker"
-        static let addIngredientButton = "customDrink.addIngredientButton"
-        static let saveButton = "customDrink.saveButton"
-        static let cancelButton = "customDrink.cancelButton"
+    public enum CustomDrinkEntry {
+        public static let screen = "customDrink.screen"
+        public static let nameField = "customDrink.nameField"
+        public static let totalVolumeField = "customDrink.totalVolumeField"
+        public static let volumeUnitPicker = "customDrink.volumeUnitPicker"
+        public static let addIngredientButton = "customDrink.addIngredientButton"
+        public static let saveButton = "customDrink.saveButton"
+        public static let cancelButton = "customDrink.cancelButton"
 
-        static func ingredientRow(_ index: Int) -> String {
+        public static func ingredientRow(_ index: Int) -> String {
             "customDrink.ingredient.\(index)"
         }
 
-        static func ingredientVolumeField(_ index: Int) -> String {
+        public static func ingredientVolumeField(_ index: Int) -> String {
             "customDrink.ingredient.\(index).volumeField"
         }
 
-        static func ingredientABVField(_ index: Int) -> String {
+        public static func ingredientABVField(_ index: Int) -> String {
             "customDrink.ingredient.\(index).abvField"
         }
 
-        static func ingredientDeleteButton(_ index: Int) -> String {
+        public static func ingredientDeleteButton(_ index: Int) -> String {
             "customDrink.ingredient.\(index).deleteButton"
         }
     }
 
     // MARK: - Quick Entry
-    enum QuickEntry {
-        static let view = "quickEntry.view"
-        static let closeButton = "quickEntry.closeButton"
+    public enum QuickEntry {
+        public static let view = "quickEntry.view"
+        public static let closeButton = "quickEntry.closeButton"
 
-        static func drinkButton(_ name: String) -> String {
+        public static func drinkButton(_ name: String) -> String {
             "quickEntry.drink.\(name)"
         }
     }
 
     // MARK: - Navigation
-    enum Navigation {
-        static let mainTab = "navigation.mainTab"
-        static let historyTab = "navigation.historyTab"
-        static let settingsTab = "navigation.settingsTab"
+    public enum Navigation {
+        public static let mainTab = "navigation.mainTab"
+        public static let historyTab = "navigation.historyTab"
+        public static let settingsTab = "navigation.settingsTab"
     }
 
     // MARK: - Alerts & Dialogs
-    enum Alert {
-        static let deleteConfirmation = "alert.deleteConfirmation"
-        static let deleteConfirmButton = "alert.deleteConfirmButton"
-        static let cancelButton = "alert.cancelButton"
+    public enum Alert {
+        public static let deleteConfirmation = "alert.deleteConfirmation"
+        public static let deleteConfirmButton = "alert.deleteConfirmButton"
+        public static let cancelButton = "alert.cancelButton"
     }
 }

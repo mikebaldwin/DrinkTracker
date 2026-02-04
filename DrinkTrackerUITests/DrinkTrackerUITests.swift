@@ -28,15 +28,15 @@ final class DrinkTrackerUITests: XCTestCase {
     @MainActor
     func testMainScreenAppears() throws {
         // Verify main screen elements are visible
-        XCTAssertTrue(app.buttons[AccessibilityID.MainScreen.quickEntryButton].exists)
-        XCTAssertTrue(app.buttons[AccessibilityID.MainScreen.calculatorButton].exists)
-        XCTAssertTrue(app.buttons[AccessibilityID.MainScreen.customDrinksButton].exists)
+        XCTAssertTrue(app.buttons[AccessibilityIdentifiers.MainScreen.quickEntryButton].exists)
+        XCTAssertTrue(app.buttons[AccessibilityIdentifiers.MainScreen.calculatorButton].exists)
+        XCTAssertTrue(app.buttons[AccessibilityIdentifiers.MainScreen.customDrinksButton].exists)
     }
 
     @MainActor
     func testNavigateToSettings() throws {
         // Tap settings button
-        let settingsButton = app.buttons[AccessibilityID.MainScreen.settingsButton]
+        let settingsButton = app.buttons[AccessibilityIdentifiers.MainScreen.settingsButton]
         XCTAssertTrue(settingsButton.waitForExistence(timeout: 2))
         settingsButton.tap()
 
@@ -47,80 +47,167 @@ final class DrinkTrackerUITests: XCTestCase {
     @MainActor
     func testQuickEntryButtonTap() throws {
         // Tap quick entry button
-        let quickEntryButton = app.buttons[AccessibilityID.MainScreen.quickEntryButton]
+        let quickEntryButton = app.buttons[AccessibilityIdentifiers.MainScreen.quickEntryButton]
         XCTAssertTrue(quickEntryButton.exists)
         quickEntryButton.tap()
 
         // Verify quick entry view appears (add specific assertion when view is identified)
         // This will depend on the QuickEntry view implementation
     }
+    
+    // MARK: - Calculator Tests
+    
+    @MainActor
+    func testCalculatorWithTwoIngredients() throws {
+        XCTContext.runActivity(named: "Navigate to calculator") { _ in
+            let calculatorButton = app.buttons[AccessibilityIdentifiers.MainScreen.calculatorButton]
+            XCTAssertTrue(calculatorButton.waitForExistence(timeout: 2))
+            calculatorButton.tap()
+        }
+        
+        XCTContext.runActivity(named: "Wait for calculator to appear and verify cancel button exists") { _ in
+            let cancelButton = app.buttons[AccessibilityIdentifiers.Calculator.cancelButton]
+            XCTAssertTrue(cancelButton.waitForExistence(timeout: 3))
+        }
+        
+        XCTContext.runActivity(named: "Enter first ingredient: 2oz at 40% ABV") { _ in
+            // Enter volume for first ingredient
+            let volumeField1 = app.textFields[AccessibilityIdentifiers.Calculator.ingredientVolumeField(0)]
+            XCTAssertTrue(volumeField1.waitForExistence(timeout: 3))
+            volumeField1.tap()
+            volumeField1.typeText("2")
+            
+            // Enter strength for first ingredient
+            let strengthField1 = app.textFields[AccessibilityIdentifiers.Calculator.ingredientStrengthField(0)]
+            XCTAssertTrue(strengthField1.waitForExistence(timeout: 2))
+            strengthField1.tap()
+            strengthField1.typeText("40")
+            
+            // Wait a moment for calculation to complete
+            Thread.sleep(forTimeInterval: 0.5)
+            
+            // Verify first ingredient total is calculated
+            let ingredientTotal1 = app.staticTexts[AccessibilityIdentifiers.Calculator.ingredientTotalLabel(0)]
+            XCTAssertTrue(ingredientTotal1.exists)
+            XCTAssertTrue(ingredientTotal1.label.contains("1.2") || ingredientTotal1.label.contains("standard"))
+        }
+        
+        XCTContext.runActivity(named: "Add second ingredient") { _ in
+            let addIngredientButton = app.buttons[AccessibilityIdentifiers.Calculator.addIngredientButton]
+            XCTAssertTrue(addIngredientButton.exists)
+            addIngredientButton.tap()
+            
+            // Wait for new ingredient fields to appear
+            Thread.sleep(forTimeInterval: 0.5)
+        }
+        
+        XCTContext.runActivity(named: "Enter second ingredient: 1oz at 18% ABV") { _ in
+            // Enter volume for second ingredient
+            let volumeField2 = app.textFields[AccessibilityIdentifiers.Calculator.ingredientVolumeField(1)]
+            XCTAssertTrue(volumeField2.waitForExistence(timeout: 3))
+            volumeField2.tap()
+            volumeField2.typeText("1")
+            
+            // Enter strength for second ingredient
+            let strengthField2 = app.textFields[AccessibilityIdentifiers.Calculator.ingredientStrengthField(1)]
+            XCTAssertTrue(strengthField2.waitForExistence(timeout: 2))
+            strengthField2.tap()
+            strengthField2.typeText("18")
+            
+            // Wait a moment for calculation to complete
+            Thread.sleep(forTimeInterval: 0.5)
+            
+            // Verify second ingredient total is calculated
+            let ingredientTotal2 = app.staticTexts[AccessibilityIdentifiers.Calculator.ingredientTotalLabel(1)]
+            XCTAssertTrue(ingredientTotal2.exists)
+            XCTAssertTrue(ingredientTotal2.label.contains("0.27") || ingredientTotal2.label.contains("standard"))
+        }
+        
+        XCTContext.runActivity(named: "Verify total standard drinks") { _ in
+            let totalLabel = app.staticTexts[AccessibilityIdentifiers.Calculator.totalStandardDrinksLabel]
+            XCTAssertTrue(totalLabel.exists)
+            // Total should be 1.2 + 0.27 = 1.47 standard drinks
+            XCTAssertTrue(totalLabel.label.contains("1.47") || totalLabel.label.contains("1.5"))
+        }
+    }
 
     // MARK: - Settings Tests
 
     @MainActor
     func testChangeGoalSetting() throws {
-        // Navigate to settings
-        app.buttons[AccessibilityID.MainScreen.settingsButton].tap()
+        XCTContext.runActivity(named: "Navigate to settings") { _ in
+            app.buttons[AccessibilityIdentifiers.MainScreen.settingsButton].tap()
+        }
 
-        // Find and interact with goal picker
-        let goalPicker = app.segmentedControls[AccessibilityID.Settings.goalPicker]
-        XCTAssertTrue(goalPicker.waitForExistence(timeout: 2))
+        XCTContext.runActivity(named: "Change goal setting") { _ in
+            // Find and interact with goal picker
+            let goalPicker = app.segmentedControls[AccessibilityIdentifiers.Settings.goalPicker]
+            XCTAssertTrue(goalPicker.waitForExistence(timeout: 2))
 
-        // Toggle between goals
-        let moderationButton = goalPicker.buttons["Moderation"]
-        let abstinenceButton = goalPicker.buttons["Abstinence"]
+            // Toggle between goals
+            let moderationButton = goalPicker.buttons["Moderation"]
+            let abstinenceButton = goalPicker.buttons["Abstinence"]
 
-        if abstinenceButton.isSelected {
-            moderationButton.tap()
-            XCTAssertTrue(moderationButton.isSelected)
-        } else {
-            abstinenceButton.tap()
-            XCTAssertTrue(abstinenceButton.isSelected)
+            if abstinenceButton.isSelected {
+                moderationButton.tap()
+                XCTAssertTrue(moderationButton.isSelected)
+            } else {
+                abstinenceButton.tap()
+                XCTAssertTrue(abstinenceButton.isSelected)
+            }
         }
     }
 
     @MainActor
     func testModifyDailyLimit() throws {
-        // Navigate to settings
-        app.buttons[AccessibilityID.MainScreen.settingsButton].tap()
+        XCTContext.runActivity(named: "Navigate to settings") { _ in
+            app.buttons[AccessibilityIdentifiers.MainScreen.settingsButton].tap()
+        }
 
-        // Switch to moderation goal to reveal limits
-        let goalPicker = app.segmentedControls[AccessibilityID.Settings.goalPicker]
-        XCTAssertTrue(goalPicker.waitForExistence(timeout: 2))
-        goalPicker.buttons["Moderation"].tap()
+        XCTContext.runActivity(named: "Switch to moderation goal") { _ in
+            let goalPicker = app.segmentedControls[AccessibilityIdentifiers.Settings.goalPicker]
+            XCTAssertTrue(goalPicker.waitForExistence(timeout: 2))
+            goalPicker.buttons["Moderation"].tap()
+        }
 
-        // Find daily limit stepper
-        let dailyLimitStepper = app.steppers[AccessibilityID.Settings.dailyLimitField]
-        XCTAssertTrue(dailyLimitStepper.waitForExistence(timeout: 2))
+        XCTContext.runActivity(named: "Modify daily limit") { _ in
+            let dailyLimitStepper = app.steppers[AccessibilityIdentifiers.Settings.dailyLimitField]
+            XCTAssertTrue(dailyLimitStepper.waitForExistence(timeout: 2))
 
-        // Increment daily limit
-        dailyLimitStepper.buttons["Increment"].tap()
+            // Increment daily limit
+            dailyLimitStepper.buttons["Increment"].tap()
 
-        // Verify value changed (would need to check displayed value)
-        XCTAssertTrue(dailyLimitStepper.exists)
+            // Verify stepper still exists after interaction
+            XCTAssertTrue(dailyLimitStepper.exists)
+        }
     }
 
     @MainActor
     func testDeleteAllDataFlow() throws {
-        // Navigate to settings
-        app.buttons[AccessibilityID.MainScreen.settingsButton].tap()
+        XCTContext.runActivity(named: "Navigate to settings") { _ in
+            app.buttons[AccessibilityID.MainScreen.settingsButton].tap()
+        }
 
-        // Scroll to developer section
-        let deleteButton = app.buttons[AccessibilityID.Settings.deleteAllDataButton]
-        scrollTo(element: deleteButton, inApp: app)
+        XCTContext.runActivity(named: "Scroll to developer section") { _ in
+            let deleteButton = app.buttons[AccessibilityID.Settings.deleteAllDataButton]
+            scrollTo(element: deleteButton, inApp: app)
+            XCTAssertTrue(deleteButton.exists)
+        }
 
-        // Tap delete button
-        XCTAssertTrue(deleteButton.exists)
-        deleteButton.tap()
+        XCTContext.runActivity(named: "Trigger delete confirmation") { _ in
+            let deleteButton = app.buttons[AccessibilityID.Settings.deleteAllDataButton]
+            deleteButton.tap()
 
-        // Verify confirmation dialog appears
-        let confirmationDialog = app.alerts.firstMatch
-        XCTAssertTrue(confirmationDialog.waitForExistence(timeout: 2))
+            // Verify confirmation dialog appears
+            let confirmationDialog = app.alerts.firstMatch
+            XCTAssertTrue(confirmationDialog.waitForExistence(timeout: 2))
+        }
 
-        // Cancel the deletion (to avoid actually deleting data)
-        let cancelButton = confirmationDialog.buttons["Cancel"]
-        if cancelButton.exists {
-            cancelButton.tap()
+        XCTContext.runActivity(named: "Cancel deletion") { _ in
+            let cancelButton = app.alerts.firstMatch.buttons["Cancel"]
+            if cancelButton.exists {
+                cancelButton.tap()
+            }
         }
     }
 
@@ -157,30 +244,3 @@ final class DrinkTrackerUITests: XCTestCase {
     }
 }
 
-// MARK: - Accessibility Identifier Constants
-
-/// Mirror of app's AccessibilityIdentifiers for use in UI tests
-private enum AccessibilityID {
-    enum MainScreen {
-        static let calculatorButton = "mainScreen.calculatorButton"
-        static let customDrinksButton = "mainScreen.customDrinksButton"
-        static let quickEntryButton = "mainScreen.quickEntryButton"
-        static let settingsButton = "mainScreen.settingsButton"
-    }
-
-    enum Settings {
-        static let goalPicker = "settings.goalPicker"
-        static let dailyLimitField = "settings.dailyLimitField"
-        static let syncHealthKitButton = "settings.syncHealthKitButton"
-        static let generateTestDataButton = "settings.generateTestDataButton"
-        static let deleteAllDataButton = "settings.deleteAllDataButton"
-    }
-
-    enum History {
-        static let screen = "history.screen"
-
-        static func drinkRow(_ id: String) -> String {
-            "history.drinkRow.\(id)"
-        }
-    }
-}

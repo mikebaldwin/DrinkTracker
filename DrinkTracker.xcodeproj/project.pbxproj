@@ -733,9 +733,9 @@
 			targets = (
 				CE4169902BD97FB10028D64A /* DrinkTracker */,
 				CE4169A22BD97FB30028D64A /* DrinkTrackerTests */,
+				CE0400A72F339B8000F09BD1 /* DrinkTrackerUITests */,
 				CEF32C372C25F81500E40213 /* Watch */,
 				CEF32C462C25F81700E40213 /* WatchTests */,
-				CE0400A72F339B8000F09BD1 /* DrinkTrackerUITests */,
 			);
 		};
 /* End PBXProject section */

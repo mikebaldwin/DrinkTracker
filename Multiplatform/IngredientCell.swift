@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct IngredientCell: View {
-    init(ingredient: Binding<Ingredient>, useMetricAsDefault: Bool, useProofAsDefault: Bool, onUpdate: @escaping (() -> Void)) {
+    init(ingredient: Binding<Ingredient>, ingredientIndex: Int = 0, useMetricAsDefault: Bool, useProofAsDefault: Bool, onUpdate: @escaping (() -> Void)) {
         self._ingredient = ingredient
+        self.ingredientIndex = ingredientIndex
         self.useMetricAsDefault = useMetricAsDefault
         self.useProofAsDefault = useProofAsDefault
         self.onUpdate = onUpdate
@@ -18,6 +19,7 @@ struct IngredientCell: View {
         case volume, abv
     }
 
+    private var ingredientIndex: Int
     private var useMetricAsDefault: Bool
     private var useProofAsDefault: Bool
     
@@ -72,6 +74,7 @@ struct IngredientCell: View {
                 calculate()
             }
             .focused($volumeFieldFocus, equals: .volume)
+            .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.ingredientVolumeField(ingredientIndex))
             .accessibilityLabel("Volume amount")
             .accessibilityHint("Enter the volume of this ingredient")
             .accessibilityValue(volume.isEmpty ? "No value entered" : "\(volume) \(volumeMeasurement.title)")
@@ -83,6 +86,7 @@ struct IngredientCell: View {
                     .accessibilityLabel("Milliliters")
             }
             .pickerStyle(.segmented)
+            .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.ingredientVolumePicker(ingredientIndex))
             .accessibilityLabel("Volume unit")
             .accessibilityHint("Choose between ounces and milliliters")
         }
@@ -104,6 +108,7 @@ struct IngredientCell: View {
                     ingredient.isProof = (alcoholStrength == .proof)
                     calculate()
                 }
+                .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.ingredientStrengthField(ingredientIndex))
                 .accessibilityLabel("Alcohol strength")
                 .accessibilityHint("Enter the alcohol percentage or proof")
                 .accessibilityValue(strength.isEmpty ? "No value entered" : "\(strength) \(alcoholStrength.title)")
@@ -114,6 +119,7 @@ struct IngredientCell: View {
                     .accessibilityLabel("Proof measurement")
             }
             .pickerStyle(.segmented)
+            .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.ingredientStrengthPicker(ingredientIndex))
             .accessibilityLabel("Alcohol strength unit")
             .accessibilityHint("Choose between ABV percentage and proof")
         }
@@ -123,6 +129,7 @@ struct IngredientCell: View {
         Text("\(Formatter.formatDecimal(standardDrinks)) standard \(standardDrinks == 1 ? "drink" : "drinks")")
             .font(.caption)
             .padding(.top)
+            .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.ingredientTotalLabel(ingredientIndex))
             .accessibilityLabel("Calculated result")
             .accessibilityValue("\(Formatter.formatDecimal(standardDrinks)) standard drinks for this ingredient")
     }

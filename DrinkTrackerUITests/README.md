@@ -85,6 +85,8 @@ xcodebuild test \
 3. **Use accessibility identifiers** - Already implemented via `AccessibilityIdentifiers`
 4. **Handle animations** - Use `waitForExistence(timeout:)` for async UI
 5. **Avoid flakiness** - Use explicit waits, avoid hardcoded delays
+6. **Organize with XCTActivity** - Use `XCTContext.runActivity` for multi-step workflows (Xcode 16+)
+7. **Annotate with @MainActor** - Required for UI test methods in Swift 6
 
 ## Troubleshooting
 
