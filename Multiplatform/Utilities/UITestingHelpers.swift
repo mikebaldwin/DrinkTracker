@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import HealthKit
 
 /// Helpers for detecting and handling UI testing mode
 enum UITestingHelpers {
@@ -39,7 +40,7 @@ final class MockHealthStoreManager: HealthStoreManaging {
 
     private init() {}
 
-    func save(_ sample: Any) async throws {
+    func save(_ sample: HKQuantitySample) async throws {
         // Mock implementation - does nothing
         print("[Mock HealthKit] Saved sample")
     }
