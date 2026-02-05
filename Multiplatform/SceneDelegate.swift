@@ -24,7 +24,7 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         Logger.quickActions.debug("SceneDelegate.scene willConnectTo called")
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard scene is UIWindowScene else { return }
         
         // Check if launched from quick action
         if let shortcutItem = connectionOptions.shortcutItem {
@@ -40,7 +40,7 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
         // Handle any pending quick action
         if let pendingAction = pendingQuickAction {
             Logger.quickActions.info("Handling pending Quick Action: \(pendingAction.type, privacy: .public)")
-            handleQuickAction(pendingAction)
+            _ = handleQuickAction(pendingAction)
             pendingQuickAction = nil
         } else {
             Logger.quickActions.debug("No pending Quick Action")

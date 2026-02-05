@@ -52,6 +52,7 @@ class GoalTests {
 
     // MARK: - SettingsStore Tests
 
+    @MainActor
     @Test("SettingsStore goal getter returns correct value") func settingsStoreGoalGetter() throws {
         let context = try createTestContext()
         let settingsStore = SettingsStore(modelContext: context)
@@ -59,6 +60,7 @@ class GoalTests {
         #expect(settingsStore.goal == .abstinence)
     }
 
+    @MainActor
     @Test("SettingsStore goal setter updates value") func settingsStoreGoalSetter() throws {
         let context = try createTestContext()
         let settingsStore = SettingsStore(modelContext: context)
@@ -70,6 +72,7 @@ class GoalTests {
         #expect(settingsStore.goal == .abstinence)
     }
 
+    @MainActor
     @Test("SettingsStore goal persists across store instances") func settingsStoreGoalPersistence() throws {
         let container = try createTestContainer()
         let context1 = ModelContext(container)
@@ -106,6 +109,7 @@ class GoalTests {
 
     // MARK: - UI Visibility Tests
 
+    @MainActor
     @Test("Abstinence goal should show streak UI elements") func abstinenceGoalShouldShowStreakUI() throws {
         let context = try createTestContext()
         let settingsStore = SettingsStore(modelContext: context)
@@ -115,6 +119,7 @@ class GoalTests {
         #expect(settingsStore.goal == .abstinence)
     }
 
+    @MainActor
     @Test("Moderation goal should hide streak UI elements") func moderationGoalShouldHideStreakUI() throws {
         let context = try createTestContext()
         let settingsStore = SettingsStore(modelContext: context)
@@ -124,6 +129,7 @@ class GoalTests {
         #expect(settingsStore.goal == .moderation)
     }
 
+    @MainActor
     @Test("Goal switch from abstinence to moderation preserves streak data") func goalSwitchPreservesStreakData() throws {
         let context = try createTestContext()
         let settingsStore = SettingsStore(modelContext: context)
@@ -137,6 +143,7 @@ class GoalTests {
         #expect(settingsStore.longestStreak == 30)
     }
 
+    @MainActor
     @Test("Goal switch from moderation to abstinence preserves streak data") func goalSwitchFromModerationPreservesStreakData() throws {
         let context = try createTestContext()
         let settingsStore = SettingsStore(modelContext: context)
@@ -150,12 +157,12 @@ class GoalTests {
         #expect(settingsStore.longestStreak == 15)
     }
 
+    @MainActor
     @Test("Streak calculation continues regardless of goal setting") func streakCalculationContinuesRegardlessOfGoal() throws {
         let context = try createTestContext()
         let settingsStore = SettingsStore(modelContext: context)
 
         settingsStore.goal = .moderation
-        let initialLongestStreak = settingsStore.longestStreak
 
         settingsStore.longestStreak = 25
 
@@ -163,6 +170,7 @@ class GoalTests {
         #expect(settingsStore.goal == .moderation)
     }
 
+    @MainActor
     @Test("Multiple rapid goal changes handle state correctly") func multipleRapidGoalChangesHandleStateCorrectly() throws {
         let context = try createTestContext()
         let settingsStore = SettingsStore(modelContext: context)
@@ -177,6 +185,7 @@ class GoalTests {
         #expect(settingsStore.longestStreak == 20)
     }
 
+    @MainActor
     @Test("Goal preference syncs correctly across SettingsStore instances") func goalPreferenceSyncsAcrossInstances() throws {
         let container = try createTestContainer()
         let context1 = ModelContext(container)

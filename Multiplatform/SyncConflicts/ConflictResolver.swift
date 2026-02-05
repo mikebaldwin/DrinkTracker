@@ -52,7 +52,7 @@ final class ConflictResolver {
         let localRecord = conflict.localRecord
         
         // Delete existing HealthKit sample if it exists
-        if let healthKitSample = conflict.healthKitSample,
+        if conflict.healthKitSample != nil,
            let uuid = UUID(uuidString: conflict.id) {
             try await healthStoreManager.deleteAlcoholicBeverage(withUUID: uuid)
         }

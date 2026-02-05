@@ -1,5 +1,10 @@
 import OSLog
 
+// NOTE: nonisolated(unsafe) is required here despite compiler warnings suggesting it's unnecessary.
+// Without it, these static Logger properties are inferred as @MainActor isolated, causing
+// "Main actor-isolated static property cannot be accessed from outside of the actor" errors
+// throughout the codebase. The warning is a false positive and should be ignored.
+
 extension Logger {
     private nonisolated(unsafe) static let subsystem = Bundle.main.bundleIdentifier!
 
