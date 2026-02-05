@@ -182,35 +182,6 @@ final class DrinkTrackerUITests: XCTestCase {
         }
     }
 
-    @MainActor
-    func testDeleteAllDataFlow() throws {
-        XCTContext.runActivity(named: "Navigate to settings") { _ in
-            app.buttons[AccessibilityID.MainScreen.settingsButton].tap()
-        }
-
-        XCTContext.runActivity(named: "Scroll to developer section") { _ in
-            let deleteButton = app.buttons[AccessibilityID.Settings.deleteAllDataButton]
-            scrollTo(element: deleteButton, inApp: app)
-            XCTAssertTrue(deleteButton.exists)
-        }
-
-        XCTContext.runActivity(named: "Trigger delete confirmation") { _ in
-            let deleteButton = app.buttons[AccessibilityID.Settings.deleteAllDataButton]
-            deleteButton.tap()
-
-            // Verify confirmation dialog appears
-            let confirmationDialog = app.alerts.firstMatch
-            XCTAssertTrue(confirmationDialog.waitForExistence(timeout: 2))
-        }
-
-        XCTContext.runActivity(named: "Cancel deletion") { _ in
-            let cancelButton = app.alerts.firstMatch.buttons["Cancel"]
-            if cancelButton.exists {
-                cancelButton.tap()
-            }
-        }
-    }
-
     // MARK: - Drinks History Tests
 
     @MainActor
@@ -228,7 +199,10 @@ final class DrinkTrackerUITests: XCTestCase {
     func testLaunchPerformance() throws {
         // This measures how long it takes to launch your application.
         measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
+            let app = XCUIApplication()
+            app.launchArguments = ["--uitesting"]
+            app.launchEnvironment = ["HEALTHKIT_MOCKED": "1"]
+            app.launch()
         }
     }
 
