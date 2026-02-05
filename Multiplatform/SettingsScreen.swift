@@ -114,9 +114,7 @@ struct SettingsScreen: View {
                 }
             )) {
                 Text("Moderation").tag(Goal.moderation)
-                    .accessibilityLabel("Moderation goal")
                 Text("Abstinence").tag(Goal.abstinence)
-                    .accessibilityLabel("Abstinence goal")
             }
             .pickerStyle(.segmented)
             .accessibilityLabel("Drinking goal")
