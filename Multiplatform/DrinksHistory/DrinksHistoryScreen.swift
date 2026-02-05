@@ -58,18 +58,7 @@ struct DrinksHistoryScreen: View {
                             .accessibilityHint("No drinks recorded for this day")
                     } else {
                         ForEach(day.drinks, id: \.id) { drink in
-                            NavigationLink(value: Destination.drinkDetail(drink)) {
-                                HStack {
-                                    Text(formatTimestamp(drink.timestamp))
-                                    Spacer()
-                                    Text(Formatter.formatDecimal(drink.standardDrinks))
-                                }
-                            }
-                            .accessibilityElement(children: .combine)
-                            .accessibilityLabel("Drink entry")
-                            .accessibilityValue("\(Formatter.formatDecimal(drink.standardDrinks)) drinks at \(formatTimestamp(drink.timestamp))")
-                            .accessibilityHint("Tap to edit this drink entry")
-                            .accessibilityIdentifier(AccessibilityIdentifiers.History.drinkRow(drink.id.uuidString))
+                            drinkRowView(for: drink)
                         }
                         .onDelete { offsets in
                             delete(from: day.drinks, at: offsets)
@@ -128,7 +117,23 @@ struct DrinksHistoryScreen: View {
         formatter.dateStyle = .full
         return formatter.string(from: date)
     }
-    
+
+    @ViewBuilder
+    private func drinkRowView(for drink: DrinkRecord) -> some View {
+        NavigationLink(value: Destination.drinkDetail(drink)) {
+            HStack {
+                Text(formatTimestamp(drink.timestamp))
+                Spacer()
+                Text(Formatter.formatDecimal(drink.standardDrinks))
+            }
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Drink entry")
+        .accessibilityValue("\(Formatter.formatDecimal(drink.standardDrinks)) drinks at \(formatTimestamp(drink.timestamp))")
+        .accessibilityHint("Tap to edit this drink entry")
+        .accessibilityIdentifier(AccessibilityIdentifiers.History.drinkRow(drink.id))
+    }
+
     private func buildDays() {
         Logger.ui.debug("Building days from \(drinkRecords.count, privacy: .public) records")
         days.removeAll()
