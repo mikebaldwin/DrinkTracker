@@ -68,16 +68,17 @@ class MainScreenBusinessLogic {
                 start: drink.timestamp,
                 end: drink.timestamp
             )
-            
+
             try await healthStoreManager.save(sample)
             Logger.ui.info("Drink saved to HealthKit successfully")
-            
+
             drink.id = sample.uuid.uuidString
-            
         } catch {
             Logger.ui.error("Failed to save drink to HealthKit: \(error.localizedDescription)")
+            recordingDrinkComplete.toggle()
+            return
         }
-        
+
         modelContext.insert(drink)
         try? modelContext.save()
         recordingDrinkComplete.toggle()
