@@ -8,15 +8,15 @@
 import Foundation
 
 extension Date {
-    var isToday: Bool {
+    nonisolated var isToday: Bool {
         Calendar.current.isDateInToday(self)
     }
-    
-    static var startOfToday: Date {
+
+    nonisolated static var startOfToday: Date {
         Calendar.current.startOfDay(for: Date())
     }
-    
-    static var tomorrow: Date {
+
+    nonisolated static var tomorrow: Date {
         let calendar = Calendar.current
         return calendar.startOfDay(
             for: calendar.date(
@@ -26,8 +26,8 @@ extension Date {
             )!
         )
     }
-    
-    static var startOfWeek: Date {
+
+    nonisolated static var startOfWeek: Date {
         Calendar.current.date(
             from: Calendar.current.dateComponents(
                 [.yearForWeekOfYear, .weekOfYear],
@@ -35,8 +35,8 @@ extension Date {
             )
         )!
     }
-    
-    static var endOfWeek: Date {
+
+    nonisolated static var endOfWeek: Date {
         return Calendar.current.date(
             byAdding: .day,
             value: 7,

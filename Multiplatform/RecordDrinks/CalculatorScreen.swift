@@ -35,6 +35,7 @@ struct CalculatorScreen: View {
                 
                 addIngredientSection
             }
+            .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.screen)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
@@ -42,6 +43,7 @@ struct CalculatorScreen: View {
                     } label: {
                         Text("Cancel")
                     }
+                    .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.cancelButton)
                     .accessibilityLabel("Cancel")
                     .accessibilityHint("Closes the calculator without saving")
                 }
@@ -52,6 +54,7 @@ struct CalculatorScreen: View {
                         Text("Done")
                     }
                     .disabled(!formIsValid())
+                    .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.doneButton)
                     .accessibilityLabel("Done")
                     .accessibilityHint("Completes calculation and provides options to record or save drink")
                 }
@@ -135,24 +138,27 @@ struct CalculatorScreen: View {
     private var drinkTotalSection: some View {
         Section {
             Text("\(Formatter.formatDecimal(totalStandardDrinks)) total standard \(totalStandardDrinks == 1 ? "drink" : "drinks")")
+                .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.totalStandardDrinksLabel)
                 .accessibilityLabel("Drink total")
                 .accessibilityValue("\(Formatter.formatDecimal(totalStandardDrinks)) standard drinks")
         }
     }
     
     private var ingredientEntrySection: some View {
-        ForEach($ingredients) { ingredient in
+        ForEach(Array($ingredients.enumerated()), id: \.element.id) { index, ingredient in
             Section() {
                 IngredientCell(
                     ingredient: ingredient,
+                    ingredientIndex: index,
                     useMetricAsDefault: settingsStore.useMetricAsDefault,
                     useProofAsDefault: settingsStore.useProofAsDefault
                 ) {
                     updateTotalStandardDrinks()
                 }
             }
+            .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.ingredientSection(index))
             .accessibilityElement(children: .contain)
-            .accessibilityLabel("Ingredient \(ingredients.firstIndex(where: { $0.id == ingredient.id }) ?? 0 + 1)")
+            .accessibilityLabel("Ingredient \(index + 1)")
         }
         .onDelete { offsets in
             withAnimation {
@@ -176,6 +182,7 @@ struct CalculatorScreen: View {
                         .frame(maxWidth: .infinity)
                 }
                 .frame(maxWidth: .infinity)
+                .accessibilityIdentifier(AccessibilityIdentifiers.Calculator.addIngredientButton)
                 .accessibilityLabel("Add new ingredient")
                 .accessibilityHint("Adds another ingredient field to the calculation")
             }

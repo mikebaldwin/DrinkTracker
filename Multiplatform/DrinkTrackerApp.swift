@@ -22,6 +22,10 @@ struct DrinkTrackerApp: App {
     private let quickActionHandler = QuickActionHandler.shared
     private let appRouter = AppRouter()
     
+    private var isUITesting: Bool {
+        UITestingHelpers.isUITesting
+    }
+    
     var sharedModelContainer: ModelContainer = {
         let modelConfiguration = ModelConfiguration(
             cloudKitDatabase: .private("iCloud.com.mikebaldwin.DrinkTracker")
@@ -40,55 +44,77 @@ struct DrinkTrackerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Group {
-                if let settingsStore, let mainScreenBusinessLogic {
-                    MainScreen()
-                        .environment(quickActionHandler)
-                        .environment(appRouter)
-                        .environment(settingsStore)
-                        .environment(mainScreenBusinessLogic)
-                } else {
-                    // Loading state while SettingsStore initializes
-                    Text("Loading...")
-                        .onAppear {
-                            initializeSettingsStore()
-                            initializeMainScreenBusinessLogic()
-                        }
+            if isUITesting {
+                // UI Testing mode - skip HealthKit entirely
+                Group {
+                    if let settingsStore, let mainScreenBusinessLogic {
+                        MainScreen()
+                            .environment(quickActionHandler)
+                            .environment(appRouter)
+                            .environment(settingsStore)
+                            .environment(mainScreenBusinessLogic)
+                    } else {
+                        Text("Loading...")
+                            .onAppear {
+                                initializeSettingsStore()
+                                initializeMainScreenBusinessLogic()
+                            }
+                    }
                 }
-            }
-            .onChange(of: quickActionHandler.activeAction) { action, _ in
-                if action != nil {
-                    // The action will be handled by MainScreen's environment observation
-                    quickActionHandler.clearAction()
+                .onChange(of: quickActionHandler.activeAction) { action, _ in
+                    if action != nil {
+                        quickActionHandler.clearAction()
+                    }
                 }
-            }
-            .onAppear() {
-                if HKHealthStore.isHealthDataAvailable() {
-                    trigger.toggle()
+                .onAppear() {
+                    Logger.ui.debug("UI Testing mode - skipping HealthKit")
                 }
-            }
-            .healthDataAccessRequest(
-                store: HealthStoreManager.shared.healthStore,
-                shareTypes: [HKQuantityType(.numberOfAlcoholicBeverages)],
-                readTypes: [HKQuantityType(.numberOfAlcoholicBeverages)],
-                trigger: trigger
-            ) { result in
-                switch result {
-                case .success(_):
-                    // authorized - sync will happen in MainScreen
-                    break
-                case .failure(let error):
-                    Logger.ui.error("An error occurred while requesting authentication: \(error.localizedDescription)")
+            } else {
+                // Normal mode - include HealthKit authorization
+                Group {
+                    if let settingsStore, let mainScreenBusinessLogic {
+                        MainScreen()
+                            .environment(quickActionHandler)
+                            .environment(appRouter)
+                            .environment(settingsStore)
+                            .environment(mainScreenBusinessLogic)
+                    } else {
+                        Text("Loading...")
+                            .onAppear {
+                                initializeSettingsStore()
+                                initializeMainScreenBusinessLogic()
+                            }
+                    }
                 }
-            }
-            .task {
-                // Clear any existing dynamic quick actions to prevent duplicates
-                Task { @MainActor in
-                    UIApplication.shared.shortcutItems = nil
-                    Logger.ui.info("Cleared any existing dynamic Quick Actions")
+                .onChange(of: quickActionHandler.activeAction) { action, _ in
+                    if action != nil {
+                        quickActionHandler.clearAction()
+                    }
                 }
-                
-                // HealthKit availability check - no action needed
+                .onAppear() {
+                    if HKHealthStore.isHealthDataAvailable() {
+                        trigger.toggle()
+                    }
+                }
+                .healthDataAccessRequest(
+                    store: HealthStoreManager.shared.healthStore,
+                    shareTypes: [HKQuantityType(.numberOfAlcoholicBeverages)],
+                    readTypes: [HKQuantityType(.numberOfAlcoholicBeverages)],
+                    trigger: trigger
+                ) { result in
+                    switch result {
+                    case .success(_):
+                        break
+                    case .failure(let error):
+                        Logger.ui.error("An error occurred while requesting authentication: \(error.localizedDescription)")
+                    }
+                }
+                .task {
+                    Task { @MainActor in
+                        UIApplication.shared.shortcutItems = nil
+                        Logger.ui.info("Cleared any existing dynamic Quick Actions")
+                    }
+                }
             }
         }
         .modelContainer(sharedModelContainer)

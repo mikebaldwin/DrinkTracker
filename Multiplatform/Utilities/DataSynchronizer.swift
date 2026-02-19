@@ -10,11 +10,11 @@ import SwiftData
 import HealthKit
 import OSLog
 
-actor DataSynchronizer {
+@MainActor
+final class DataSynchronizer {
     
     private var healthStoreManager = HealthStoreManager.shared
     private var context: ModelContext
-    private var detectedConflicts: [SyncConflict] = []
     
     init(context: ModelContext) {
         self.context = context
@@ -36,12 +36,10 @@ actor DataSynchronizer {
             if !conflicts.isEmpty {
                 Logger.dataSync.warning("Found \(conflicts.count, privacy: .public) sync conflicts requiring user resolution")
                 // Post notification that conflicts exist
-                Task { @MainActor in
-                    NotificationCenter.default.post(
-                        name: .syncConflictsDetected,
-                        object: conflicts
-                    )
-                }
+                NotificationCenter.default.post(
+                    name: .syncConflictsDetected,
+                    object: conflicts
+                )
                 return
             }
             
@@ -53,7 +51,7 @@ actor DataSynchronizer {
             let samples = await fetchHealthkitRecords()
             Logger.dataSync.info("Found \(samples.count, privacy: .public) drink samples in HealthKit")
 
-            reconcile(existingRecords, with: samples)
+            try reconcile(existingRecords, with: samples)
             delete(existingRecords, absentFrom: samples)
             
             Logger.dataSync.info("Data sync completed successfully")
@@ -112,10 +110,10 @@ actor DataSynchronizer {
     private func reconcile(
         _ existingRecords: [String: DrinkRecord],
         with samples: [HKQuantitySample]
-    ) {
+    ) throws {
         let (newRecords, updatedRecords) = processHealthKitSamples(samples, against: existingRecords)
-        
-        batchInsertNewRecords(newRecords)
+
+        try batchInsertNewRecords(newRecords)
         logUpdatedRecords(updatedRecords)
     }
     
@@ -171,19 +169,15 @@ actor DataSynchronizer {
         return newRecord
     }
     
-    private func batchInsertNewRecords(_ newRecords: [DrinkRecord]) {
+    private func batchInsertNewRecords(_ newRecords: [DrinkRecord]) throws {
         guard !newRecords.isEmpty else { return }
-        
+
         for record in newRecords {
             context.insert(record)
         }
-        
-        do {
-            try context.save()
-        } catch {
-            fatalError("Failed to save context: \(error)")
-        }
-        
+
+        try context.save()
+
         Logger.dataSync.info("Batch inserted \(newRecords.count, privacy: .public) new records")
     }
     
@@ -215,19 +209,16 @@ actor DataSynchronizer {
     }
     
     func detectConflicts() async -> [SyncConflict] {
-        detectedConflicts.removeAll()
-        
+        var conflicts: [SyncConflict] = []
+
         let drinkRecords = fetchDrinks()
         let samples = await fetchHealthkitRecords()
         let existingRecords = convertToDictionary(drinkRecords)
-        
-        let sampleConflicts = detectSampleConflicts(samples: samples, existingRecords: existingRecords)
-        let deletionConflicts = detectDeletionConflicts(samples: samples, existingRecords: existingRecords)
-        
-        detectedConflicts.append(contentsOf: sampleConflicts)
-        detectedConflicts.append(contentsOf: deletionConflicts)
-        
-        return detectedConflicts
+
+        conflicts.append(contentsOf: detectSampleConflicts(samples: samples, existingRecords: existingRecords))
+        conflicts.append(contentsOf: detectDeletionConflicts(samples: samples, existingRecords: existingRecords))
+
+        return conflicts
     }
     
     private func detectSampleConflicts(

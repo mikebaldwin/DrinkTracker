@@ -26,7 +26,7 @@ struct LimitsCard: View {
             }
             
             VStack(spacing: 8) {
-                if let dailyLimit = dailyLimit {
+                if dailyLimit != nil {
                     HStack {
                         Text("Today")
                             .font(.subheadline)
@@ -38,7 +38,7 @@ struct LimitsCard: View {
                     }
                 }
                 
-                if let weeklyLimit = weeklyLimit {
+                if weeklyLimit != nil {
                     HStack {
                         Text("This week")
                             .font(.subheadline)

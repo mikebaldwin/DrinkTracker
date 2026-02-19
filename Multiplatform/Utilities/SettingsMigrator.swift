@@ -65,9 +65,9 @@ struct SettingsMigrator {
             migratedCount += 1
         }
         
-        // Set tracking start date to current date on first launch
-        settings.drinkingStatusStartDate = Date()
-        Logger.settings.debug("Set drinking status tracking start date to current date")
+        // Set tracking start date to 7 days ago so weekly drinking status works immediately
+        settings.drinkingStatusStartDate = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
+        Logger.settings.debug("Set drinking status tracking start date to 7 days ago for immediate weekly data")
         migratedCount += 1
         
         Logger.settings.info("Migration completed: \(migratedCount) settings migrated from UserDefaults to SwiftData")

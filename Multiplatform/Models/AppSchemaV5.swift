@@ -29,7 +29,7 @@ extension AppSchemaV5 {
         var useMetricAsDefault: Bool = false
         var useProofAsDefault: Bool = false
         var drinkingStatusTrackingEnabled: Bool = true
-        var drinkingStatusStartDate: Date = Date()
+        var drinkingStatusStartDate: Date = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
         var userSex: Sex? = Sex.female
         var showSavings: Bool = false
         var monthlyAlcoholSpend: Double = 0.0

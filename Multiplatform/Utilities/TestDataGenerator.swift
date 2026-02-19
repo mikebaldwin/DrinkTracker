@@ -51,7 +51,9 @@ actor TestDataGenerator {
         }
         
         // Update drinking status tracking start date to match the generated data period
-        settingsStore.drinkingStatusStartDate = startDate
+        await MainActor.run {
+            settingsStore.drinkingStatusStartDate = startDate
+        }
         
         var generatedRecords: [DrinkRecord] = []
         let calendar = Calendar.current

@@ -195,6 +195,7 @@ struct MainScreen: View {
                         }
                         .accessibilityLabel("Settings")
                         .accessibilityHint("Opens app settings and preferences")
+                        .accessibilityIdentifier(AccessibilityIdentifiers.MainScreen.settingsButton)
                     }
                 }
                 .navigationDestination(for: Destination.self) { destination in
@@ -259,8 +260,8 @@ struct MainScreen: View {
             }
         )
 
-        // Initial sync on app launch
-        if HKHealthStore.isHealthDataAvailable() {
+        // Initial sync on app launch (skip during UI testing to avoid HealthKit dialog)
+        if HKHealthStore.isHealthDataAvailable() && !UITestingHelpers.isUITesting {
             Task {
                 await businessLogic.syncData()
             }

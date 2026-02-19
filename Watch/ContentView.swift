@@ -112,7 +112,7 @@ struct ContentView: View {
     
     private var limitsSection: some View {
         Section("Limits") {
-            if let dailyLimit {
+            if dailyLimit != nil {
                 HStack {
                     Text("Today")
                         .fontWeight(.semibold)

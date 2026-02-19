@@ -94,7 +94,7 @@ struct DrinkingStatusCardSection: View {
                             .font(.subheadline)
                             .foregroundStyle(colorForStatus(status))
                     } else {
-                        Text("No data")
+                        Text("Not enough data")
                             .font(.subheadline)
                             .foregroundStyle(Color.subtleGray)
                     }
@@ -116,7 +116,7 @@ struct DrinkingStatusCardSection: View {
                             .font(.subheadline)
                             .foregroundStyle(colorForStatus(status))
                     } else {
-                        Text("No data")
+                        Text("Not enough data")
                             .font(.subheadline)
                             .foregroundStyle(Color.subtleGray)
                     }
@@ -138,7 +138,7 @@ struct DrinkingStatusCardSection: View {
                             .font(.subheadline)
                             .foregroundStyle(colorForStatus(status))
                     } else {
-                        Text("No data")
+                        Text("Not enough data")
                             .font(.subheadline)
                             .foregroundStyle(Color.subtleGray)
                     }

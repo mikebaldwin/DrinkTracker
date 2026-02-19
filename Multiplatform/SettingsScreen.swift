@@ -114,13 +114,12 @@ struct SettingsScreen: View {
                 }
             )) {
                 Text("Moderation").tag(Goal.moderation)
-                    .accessibilityLabel("Moderation goal")
                 Text("Abstinence").tag(Goal.abstinence)
-                    .accessibilityLabel("Abstinence goal")
             }
             .pickerStyle(.segmented)
             .accessibilityLabel("Drinking goal")
             .accessibilityHint("Choose between moderating alcohol intake or abstaining completely")
+            .accessibilityIdentifier(AccessibilityIdentifiers.Settings.goalPicker)
 
             if settingsStore.goal == .moderation {
                 Stepper {
@@ -138,6 +137,7 @@ struct SettingsScreen: View {
                 .accessibilityLabel("Daily drink limit")
                 .accessibilityValue("\(Formatter.formatDecimal(settingsStore.dailyLimit)) drinks")
                 .accessibilityHint("Use increment and decrement to adjust daily limit")
+                .accessibilityIdentifier(AccessibilityIdentifiers.Settings.dailyLimitField)
 
                 Stepper {
                     Text("Weekly limit: \(Formatter.formatDecimal(settingsStore.weeklyLimit))")
@@ -295,6 +295,7 @@ struct SettingsScreen: View {
             .accessibilityLabel("Delete all data")
             .accessibilityHint("Warning: This will permanently delete all recorded drinks")
             .accessibilityAddTraits(.isButton)
+            .accessibilityIdentifier(AccessibilityIdentifiers.Settings.deleteAllDataButton)
             
             Button {
                 showSyncWithHealthKitConfirmation = true
@@ -303,6 +304,7 @@ struct SettingsScreen: View {
             }
             .accessibilityLabel("Sync with HealthKit")
             .accessibilityHint("Synchronizes local drink records with Apple HealthKit")
+            .accessibilityIdentifier(AccessibilityIdentifiers.Settings.syncHealthKitButton)
             
             Button {
                 showTestDataGenerationOptions = true
@@ -312,6 +314,7 @@ struct SettingsScreen: View {
             .disabled(!drinkRecords.isEmpty)
             .accessibilityLabel("Generate test data")
             .accessibilityHint("Creates 18 months of sample drink records for testing")
+            .accessibilityIdentifier(AccessibilityIdentifiers.Settings.generateTestDataButton)
             
             if !drinkRecords.isEmpty {
                 Text("Clear existing data first to use test data generator")

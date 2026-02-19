@@ -151,12 +151,17 @@ class MainScreenBusinessLogicTests {
             healthStoreManager: mockHealthStore
         )
         let drink = DrinkRecord(standardDrinks: 1.0)
-        
+
         await businessLogic.recordDrink(drink)
-        
+
         // Should still toggle recording complete even if HealthKit fails
         #expect(businessLogic.recordingDrinkComplete == true)
         #expect(mockHealthStore.savedSamples.isEmpty)
+
+        // Drink should NOT be saved to SwiftData when HealthKit fails
+        let descriptor = FetchDescriptor<DrinkRecord>()
+        let savedDrinks = try testContext.fetch(descriptor)
+        #expect(savedDrinks.isEmpty)
     }
     
     // MARK: - Streak Calculation Tests
